@@ -1,0 +1,30 @@
+.storage-package {
+  border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fafafa;
+    min-height: 55vh;
+    max-height: 55vh;
+    h3 {
+      text-align: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      margin-left: -10px;
+      margin-right: -10px;
+      margin-top: -10px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      overflow-y: auto;
+      max-height: 45vh;
+      li {
+        padding: 2px 0;
+        label {
+          font-weight: 500;
+        }
+      }
+    }
+}

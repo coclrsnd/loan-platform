@@ -1,0 +1,63 @@
+::ng-deep {
+  .details {
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+  }
+  mat-accordion {
+    mat-expansion-panel {
+      &.mat-expansion-panel {
+        margin-bottom: 15px;
+      }
+    }
+  }
+  mat-dialog-container {
+    .mat-horizontal-stepper-content {
+      overflow-x: hidden;
+    }
+  }
+  mat-stepper {
+    position: relative;
+    .mat-horizontal-stepper-header-container {
+      padding-bottom: 25px;
+    }
+    .mat-horizontal-content-container {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      min-height: 70vh;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .mat-horizontal-stepper-header-container {
+      .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+        background-color: #16366f;
+      }
+      .mat-step-header {
+        &.cdk-program-focused {
+          background-color: rgba(0,0,0,0);
+        }
+      }
+      mat-step-header {
+        pointer-events: none;
+        &.mat-horizontal-stepper-header {
+          height: auto;
+        }
+        &:first-child {
+          padding-left: 0;
+        }
+        &:last-child {
+          padding-right: 0;
+        }
+        .mat-step-label {
+          &.mat-step-label-active {
+            .mat-step-text-label {
+              color: #16366f;
+            }
+          }
+        }
+      }
+    }
+  }
+}

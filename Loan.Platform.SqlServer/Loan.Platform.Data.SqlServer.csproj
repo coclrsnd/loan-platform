@@ -1,0 +1,117 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CommandBuilder\ContractAttachmentBuilder.cs" />
+    <Compile Remove="CommandBuilder\ContractBuilder.cs" />
+    <Compile Remove="CommandBuilder\ContractDTBuilder.cs" />
+    <Compile Remove="CommandBuilder\ContractNoteBuilder.cs" />
+    <Compile Remove="CommandBuilder\CustomerBuilder.cs" />
+    <Compile Remove="CommandBuilder\NotificationsBuilder.cs" />
+    <Compile Remove="CommandBuilder\OnboardVendorBuilder.cs" />
+    <Compile Remove="CommandBuilder\OpportunityDTBuilder.cs" />
+    <Compile Remove="CommandBuilder\OpportunitySummaryDTBuilder.cs" />
+    <Compile Remove="CommandBuilder\RailCarBuilder.cs" />
+    <Compile Remove="CommandBuilder\RailRoadBuilder.cs" />
+    <Compile Remove="CommandBuilder\StorageFacilityActivityReportBuilder.cs" />
+    <Compile Remove="CommandBuilder\StorageFacilityBuilder.cs" />
+    <Compile Remove="CommandBuilder\StorageFeatureBuilder.cs" />
+    <Compile Remove="CommandBuilder\VendorBuilder.cs" />
+    <Compile Remove="Repositories\ContractADORepository.cs" />
+    <Compile Remove="Repositories\ContractAttachmentMappingADORepository.cs" />
+    <Compile Remove="Repositories\ContractAttachmentMappingRepository.cs" />
+    <Compile Remove="Repositories\ContractDTRepository.cs" />
+    <Compile Remove="Repositories\ContractNoteMappingADORepository.cs" />
+    <Compile Remove="Repositories\ContractNoteMappingRepository.cs" />
+    <Compile Remove="Repositories\ContractRailCarChargeRepository.cs" />
+    <Compile Remove="Repositories\ContractRailCarMappingRepository - Copy.cs" />
+    <Compile Remove="Repositories\ContractRailCarMappingRepository.cs" />
+    <Compile Remove="Repositories\ContractRepository.cs" />
+    <Compile Remove="Repositories\ContractSFFeatureMappingRepository.cs" />
+    <Compile Remove="Repositories\ContractTypeRepository.cs" />
+    <Compile Remove="Repositories\CountryRepository.cs" />
+    <Compile Remove="Repositories\CurrencyRepository.cs" />
+    <Compile Remove="Repositories\CustomerADORepository.cs" />
+    <Compile Remove="Repositories\CustomerRepository.cs" />
+    <Compile Remove="Repositories\LEContentRepository.cs" />
+    <Compile Remove="Repositories\OnboardVendorRepository.cs" />
+    <Compile Remove="Repositories\OpportunityDTRepository.cs" />
+    <Compile Remove="Repositories\OpportunityFeaturesRepository.cs" />
+    <Compile Remove="Repositories\OpportunityReservedSpacesRepository.cs" />
+    <Compile Remove="Repositories\OpportunitySummaryADORepository.cs" />
+    <Compile Remove="Repositories\RailCarADORepository.cs" />
+    <Compile Remove="Repositories\RailCarRepository.cs" />
+    <Compile Remove="Repositories\RailCarTypeRepository.cs" />
+    <Compile Remove="Repositories\RailRoadADORepository.cs" />
+    <Compile Remove="Repositories\RailRoadRepository.cs" />
+    <Compile Remove="Repositories\RangeMasterRepository.cs" />
+    <Compile Remove="Repositories\RateTypeRepository.cs" />
+    <Compile Remove="Repositories\RegionRepository.cs" />
+    <Compile Remove="Repositories\ReportLogRepository.cs" />
+    <Compile Remove="Repositories\SavedSearchRepository.cs" />
+    <Compile Remove="Repositories\StateRepository.cs" />
+    <Compile Remove="Repositories\StorageFacilityActivityReportADORepository.cs" />
+    <Compile Remove="Repositories\StorageFacilityADORepository.cs" />
+    <Compile Remove="Repositories\StorageFacilityFeatureMappingRepository.cs" />
+    <Compile Remove="Repositories\StorageFacilityInterchangeLocationRepository.cs" />
+    <Compile Remove="Repositories\StorageFacilityInterchangeRepository.cs" />
+    <Compile Remove="Repositories\StorageFacilityRepository.cs" />
+    <Compile Remove="Repositories\StorageFeatureRepository.cs" />
+    <Compile Remove="Repositories\StorageOpportunityRepository.cs" />
+    <Compile Remove="Repositories\VendorADORepository.cs" />
+    <Compile Remove="Repositories\VendorRepository.cs" />
+    <Compile Remove="SeedData\ContractData.cs" />
+    <Compile Remove="SeedData\ContractSFFeatureMappingData.cs" />
+    <Compile Remove="SeedData\ContractTypeData.cs" />
+    <Compile Remove="SeedData\CountryData.cs" />
+    <Compile Remove="SeedData\CurrencyData.cs" />
+    <Compile Remove="SeedData\CustomerData.cs" />
+    <Compile Remove="SeedData\LEContentData.cs" />
+    <Compile Remove="SeedData\MailConfigurationData.cs" />
+    <Compile Remove="SeedData\NotificationEventData.cs" />
+    <Compile Remove="SeedData\RailCarTypeData.cs" />
+    <Compile Remove="SeedData\RailRoadData.cs" />
+    <Compile Remove="SeedData\RegionData.cs" />
+    <Compile Remove="SeedData\StateData.cs" />
+    <Compile Remove="SeedData\StorageFacilityData.cs" />
+    <Compile Remove="SeedData\StorageFacilityFeatureMappingData.cs" />
+    <Compile Remove="SeedData\StorageFeatureData.cs" />
+    <Compile Remove="SeedData\SwitchingScheduleData.cs" />
+    <Compile Remove="SeedData\VendorData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loan.Platform.Common\Loan.Platform.Common.csproj" />
+    <ProjectReference Include="..\Loan.Platform.Models\Loan.Platform.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DependentUpon>Resource.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

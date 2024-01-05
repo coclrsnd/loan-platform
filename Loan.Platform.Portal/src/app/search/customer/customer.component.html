@@ -1,0 +1,220 @@
+<h3 class="head-title">
+  <app-page-title></app-page-title>
+</h3>
+<div *ngIf="loadContent" class="search-holder mb-2">
+  <form [formGroup]="customerForm" class="row">
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="Organization">{{
+          "common.customer" | translate
+        }}</label>
+        <input
+          class="form-control"
+          placeholder="{{'customer-name' | translate}}"
+          #Organization
+          maxlength="50"
+          type="text"
+          formControlName="Organization"
+          [matAutocomplete]="autoCo"
+        />
+        <mat-autocomplete
+        panelWidth="auto"
+          #autoCo="matAutocomplete"
+          (optionSelected)="onOrganizationChanged($event)"
+        >
+          <mat-option
+            *ngIf="isSearching; else organizationTemplate"
+            disabled="true"
+          >
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #organizationTemplate>
+            <mat-option *ngFor="let org of orgList" [value]="org">
+              {{ org.Name }}
+            </mat-option>
+          </ng-template>
+          <mat-option
+            *ngIf="!isSearching && noResults"
+            value=""
+            disabled="true"
+          >
+            <b>No results found</b>
+          </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback">
+          <div *ngIf="customerForm.get('Organization')?.hasError('required') && customerForm.get('Organization')?.touched && customerForm.get('Organization')?.value || submittedSearch && customerForm.get('Organization')?.errors">
+              {{'common.customer' | translate}}{{'common.is_required' | translate}}</div>
+            </div>
+          </div>
+      </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="CountryId">{{ "common.country" | translate }}</label>
+        <mat-select
+          formControlName="CountryId"
+          class="form-control"
+          (selectionChange)="onCountrySelectionChanged($event)"
+        >
+        <mat-option [value]="defaultSelectedValueForDropdownlist">
+          {{ "common.select" | translate }}
+        </mat-option>
+          <mat-option *ngFor="let option of CountryList" [value]="option.Id">
+            {{ option.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="StateId">{{ "common.state" | translate }}</label>
+        <mat-select formControlName="StateId" class="form-control">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let option of StatesList" [value]="option.Id">
+            {{ option.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="CityName">{{ "common.city" | translate }}</label>
+
+        <mat-select formControlName="CityName" class="form-control" multiple>
+          <app-multi-select [FormControlModel]="customerForm.get('CityName')" [InputValues]="CityList">
+          </app-multi-select>
+
+          <mat-option *ngFor="let cityName of CityList" [value]="cityName">
+            {{ cityName }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-8 mb-2">
+      <div class="float-end mt-4">
+        <button class="ml-2 secondary-btn" type="button" mat-raised-button
+      (click)="onResetSearch()">
+        {{ "common.reset" | translate }}
+      </button>
+        <!-- <button class="ml-2 secondary-btn" type="button" mat-raised-button
+      (click)="onSaveSearch()">
+        {{ "common.save-search" | translate }}
+      </button> -->
+        <button
+        class="ml-2"
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="onSearchCustomerClick()"
+      >
+        {{ "common.quick-search" | translate }}
+      </button>
+
+
+      </div>
+    </div>
+  </form>
+</div>
+<app-saved-search
+  [isSearchEnable]="isSearch"
+  (isContentLoad)="onBackToSearchButtonClick($event)"
+  (searchFormData)="onSavedSearchCustomerClick($event)"
+>
+</app-saved-search>
+<!-- <div class="bg-box mb-2">
+  <div class="d-table">
+    <div class="d-table-cell total-holder" *ngFor="let item of numInfo">
+      <span class="description">
+        {{ item.details }}
+      </span>
+      <span class="number">
+        {{ item.number }}
+      </span>
+    </div>
+  </div>
+</div> -->
+<div class="bg-box mb-3 mt-3">
+  <div class="d-table">
+      <div class="d-table-cell total-holder" *ngFor="let item of customerRibbonModel">
+          <span class="description">
+      {{ item[0] | translate}}
+      </span>
+          <span class="number">
+      {{ item[1] }}
+      </span>
+      </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 mt-3 customer-table header-no-padding table-with-bottom responsive-table table-height-container">
+    <table mat-table
+      #table
+      matSort
+      [dataSource]="customerDataSource"
+      (matSortChange)="onSorting($event)"
+    >
+      <ng-container
+        [matColumnDef]="column"
+        *ngFor="let column of displayedColumns"
+      >
+        <ng-container *ngIf="column === 'Customer'">
+          <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+            {{ "Customer" | translate }}
+          </th>
+          <td mat-cell [attr.aria-label]="'Customer' | translate" *matCellDef="let element">
+            <a routerLink="./customer-details/view/{{ element.Id }}">
+              {{ element.Name }}</a
+            >
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column === 'PrimaryContact'">
+          <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+            {{ column | translate }}
+          </th>
+          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+            {{ element.PrimaryContactNo }}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="column === 'PrimaryEmail'">
+          <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+            {{ column | translate }}
+          </th>
+          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+            {{ element.PrimaryContactEmail }}
+          </td>
+        </ng-container>
+        <ng-container *ngIf="column !== 'Customer'">
+          <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+            {{ column | translate }}
+          </th>
+          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+            {{ element[column] }}
+          </td>
+        </ng-container>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <table class="w-100 no-record">
+      <tr *ngIf="!customerDataSource.data.length">
+        <td [attr.colspan]="displayedColumns.length">
+          {{'no-records-found' | translate}}
+        </td>
+      </tr>
+    </table>
+
+    <!-- <mat-paginator
+      #paginator
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+    ></mat-paginator> -->
+
+    <mat-paginator *ngIf="isPaginationEnabled" [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"
+    [showFirstLastButtons]="true">
+  </mat-paginator>
+
+  </div>
+</div>

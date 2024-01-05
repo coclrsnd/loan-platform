@@ -1,0 +1,15 @@
+<div class="angular-carousel-holder" *ngIf="isNotificationShown">
+    <h3>Notification
+        <mat-icon title="{{'close' | translate}}" (click)="hideNotification()">close</mat-icon>
+    </h3>
+    <angular-carousel [bullets]="false" [infinite]="false" [auto]="false" [duration]="5000">
+        <ng-container *ngFor="let item of navItems; let i = index;">
+            <ng-container *angularCarouselSlide>
+                <div class="slider-content">
+                    <span class="slide-number">{{i+1}}/ {{navItems.length}}</span>
+                    <p>My Content {{i+1}}</p>
+                </div>
+            </ng-container>
+        </ng-container>
+    </angular-carousel>
+</div>

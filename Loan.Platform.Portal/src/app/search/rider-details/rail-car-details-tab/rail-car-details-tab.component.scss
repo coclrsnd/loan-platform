@@ -1,0 +1,20 @@
+@import "/src/assets/scss/variables";
+.bluish-bg {
+  background-color: $whight-colour;
+}
+.table-with-bottom {
+  table {
+    tr {
+      &.mat-row {
+        &.top-row {
+          border-bottom: 0;
+        }
+        &.example-detail-row {
+          td {
+            height: 0;
+          }
+        }
+      }
+    }
+  }
+}

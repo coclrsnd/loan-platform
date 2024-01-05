@@ -1,0 +1,273 @@
+@import '~ngx-ui-switch/ui-switch.component.scss';
+@import "/src/assets/scss/variables";
+::ng-deep {
+  ngx-slider {
+        &.ngx-slider {
+            span {
+                &.ngx-slider-floor,
+                &.ngx-slider-ceil,
+                &.ngx-slider-model-value,
+                &.ngx-slider-model-high {
+                    display: none !important;
+                }
+                &.ngx-slider-tick {
+                    &.ngx-slider-selected {
+                        background-color: #596bb6;
+                    }
+                }
+                &.ngx-slider-tick-legend {
+                    white-space: nowrap !important;
+                    max-width: initial !important;
+                    color: #596bb6;
+                    font-size: 12px;
+                    top: 15px;
+                }
+                &.ngx-slider-pointer,
+                &.ngx-slider-selection {
+                    background-color: #596bb6;
+                    &::after {
+                        background-color: #596bb6;
+                        top: 6px;
+                        left: 6px;
+                    }
+                    &.ngx-slider-active {
+                        border: 1px solid #596bb6;
+                        background-color: #596bb6;
+                    }
+                }
+                &.ngx-slider-pointer {
+                    cursor: pointer;
+                    width: 20px;
+                    height: 20px;
+                    top: -8px;
+                }
+            }
+        }
+    }
+    mat-drawer-container {
+        margin-left: -16px !important;
+        .mat-drawer-content {
+            padding-left: 0;
+            overflow: hidden;
+        }
+        .mat-drawer-inner-container {
+         // overflow: hidden;
+          div {
+            &.content {
+              overflow: scroll;
+              min-height: 100vh;
+              &::-webkit-scrollbar {
+                width: 0;
+              }
+            }
+          }
+        }
+        .mat-drawer {
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+            .header {
+                h3 {
+                    background-color: $light-text-colour;
+                    padding: 10px 10px 10px 25px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    div {
+        &.trimblemaps-map {
+            width: 101% !important;
+        }
+    }
+    ul {
+        &.rate-holder {
+            padding-left: 0;
+            list-style-type: none;
+            li {
+                border-left: 5px solid $application-gray-colour;
+                &.one {
+                    border-color: #8895ad;
+                }
+                &.two {
+                    border-color: #596bb6;
+                }
+                &.three {
+                    border-color: #888432;
+                }
+                ul {
+                    list-style-type: none;
+                    position: relative;
+                    border-bottom: 1px solid $application-gray-colour;
+                    padding: 10px 10px;
+                    li {
+                        padding-left: 10px;
+                        border-left: none;
+                        margin-bottom: 2px;
+                        color: #6485ad;
+                        font-weight: 400;
+                        .favorate {
+                            position: absolute;
+                            right: 10px;
+                            cursor: pointer;
+                        }
+                        &.distance {}
+                        &.availibility {
+                          color: #596bb6;
+                        }
+                        &.current-facility-details {
+                            color: #193361;
+                            font-size: 18px;
+                        }
+                        &.rating-details {
+                            span {
+                                &.rating-star {
+                                  mat-icon {
+                                    color: #ffba00;
+                                    font-size: 16px;
+                                    width: 16px;
+                                    height: 16px;
+                                  }
+                                }
+                                &.count {}
+                            }
+                        }
+                        &.citystate {}
+                        &.availibility {}
+                        &.ratedetails {
+                            span {
+                              color: #778092;
+                              font-weight: 500;
+                                &.rate {
+                                    color: #1eaec8;
+                                    font-weight: 500;
+                                    display: block;
+                                    font-size: 25px;
+                                    line-height: 30px;
+                                }
+                                &.mat-button-wrapper {
+                                  color: $whight-colour;
+                                }
+                            }
+                        }
+                        button {
+                            height: 35px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .features {
+        .featureslist {
+            .line {
+                height: 5px;
+                width: 25px;
+                display: inline-block;
+                margin: 0px 10px 3px 10px;
+
+            }
+            .mat-spinner {
+              width: 13px !important;
+              height: 13px !important;
+              display: inline-block;
+              margin-left: 10px;
+              svg {
+                width: 13px !important;
+                height: 13px !important;
+              }
+            }
+            .loading {
+              margin-left: 10px;
+              display: inline-block;
+              &.blink {
+                animation: blink 1.4s linear infinite;
+              }
+            }
+            @keyframes blink{
+              0%{opacity: 0;}
+              50%{opacity: .5;}
+              100%{opacity: 1;}
+            }
+        }
+    }
+    .side-arrow {
+        position: absolute;
+        z-index: 10;
+        left: 0px;
+        background: $whight-colour;
+        width: 25px;
+        height: 35px;
+        border: 1px solid $application-gray-colour;
+        border-left: 0;
+        border-radius: 0 5px 5px 0;
+        top: 45px;
+        cursor: pointer;
+        span {
+            &.signs {
+                display: inline-block;
+                margin-top: 6px;
+                app-svg-icon {
+                  svg {
+                    fill: $application-base-color !important;
+                  }
+                }
+            }
+        }
+    }
+    .form-group {
+        label {
+            display: block;
+        }
+    }
+    select {
+        border-radius: 20px;
+    }
+    optgroup {
+        border-bottom: 1px solid $application-gray-colour;
+        padding: 0 10px;
+        option {
+            cursor: pointer;
+            font-weight: normal;
+            padding: 5px 0;
+        }
+    }
+    optgroup:before {
+        content: attr(label);
+        display: block;
+        padding: 10px 0;
+    }
+    .switcher {
+        text-align: center;
+        app-svg-icon {
+          width: 35px;
+          height: 35px;
+          cursor: pointer;
+           svg {
+
+           }
+        }
+    }
+
+    .multiselect-dropdown {
+        .dropdown-btn {
+            .selected-item-container {
+                .selected-item {
+                    background-color: #16366f !important;
+                    border-color: #16366f !important;
+                }
+            }
+        }
+    }
+    .multiselect-item-checkbox {
+        input[type=checkbox] {
+            &:checked+div:before {
+                background-color: #16366f !important;
+            }
+            +div {
+                &:before {
+                    border-color: #16366f !important;
+                }
+            }
+        }
+    }
+}

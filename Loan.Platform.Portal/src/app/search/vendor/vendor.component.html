@@ -1,0 +1,405 @@
+<h3 class="head-title">
+  {{ "vendor.search-vendor" | translate }}
+</h3>
+<div *ngIf="loadContent" class="search-holder mb-3">
+  <form [formGroup]="vendorForm" class="row">
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="Vendor">{{ "vendor.vendor" | translate }}</label>
+        <input
+          class="form-control"
+          maxlength="50"
+          #Organization
+          type="text"
+          formControlName="Vendor"
+          [matAutocomplete]="autoCo"
+          (change)="onVendorChanged()"
+          placeholder="{{'vendor-name' | translate}}"
+          [ngClass]="{ 'is-invalid': vendorForm.get('Vendor')?.hasError('pattern') }"
+        />
+        <mat-autocomplete
+        panelWidth="auto"
+          #autoCo="matAutocomplete"
+          (optionSelected)="onVendorSelection($event)"
+        >
+          <mat-option
+            *ngIf="isSearching; else organizationTemplate"
+            disabled="true"
+          >
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #organizationTemplate>
+            <mat-option *ngFor="let org of orgList" [value]="org">
+              {{ org.Organization }}
+            </mat-option>
+          </ng-template>
+          <mat-option
+            *ngIf="!isSearching && noResults"
+            value=""
+            disabled="true"
+          >
+            <b>No results found</b>
+          </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback">
+          <div *ngIf="vendorForm.get('Vendor')?.hasError('pattern')">
+            {{ "vendor.vendor" | translate }}{{ "common.is_not_valid" | translate }}
+                    </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="StorageFacilityId">{{
+          "vendor.storage-facility" | translate
+        }}</label>
+        <mat-select formControlName="StorageFacilityId" class="form-control"
+        (selectionChange)="onStorageFacilitySelectionChanged($event)">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option
+            *ngFor="let facility of facilityList"
+            [value]="facility.Id"
+          >
+            {{ facility.Name }}
+          </mat-option>
+        </mat-select>
+        <!-- <input
+          matInput
+          class="form-control height35"
+          placeholder="Storage Facility..."
+          #Organization
+          type="text"
+          formControlName="StorageFacility"
+          [matAutocomplete]="autoCoFacility"
+        />
+        <mat-autocomplete
+          #autoCoFacility="matAutocomplete"
+          (optionSelected)="onSelectedFacilityChanged($event)"
+        >
+          <mat-option
+            *ngIf="isSearchingForSF; else facilityTemplate"
+            disabled="true"
+          >
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #facilityTemplate>
+            <mat-option
+              *ngFor="let facility of storageFacilityList"
+              [value]="facility"
+            >
+              {{ facility.Name }}
+            </mat-option>
+          </ng-template>
+          <mat-option
+            *ngIf="!isSearchingForSF && noResultsForSF"
+            value=""
+            disabled="true"
+          >
+            <b>No results found</b>
+          </mat-option>
+        </mat-autocomplete> -->
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="InterchangeId">{{
+          "vendor.interchanges" | translate
+        }}</label>
+        <mat-select formControlName="InterchangeId" class="form-control">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option
+            *ngFor="let option of InterchangesList"
+            [value]="option.RailRoadId"
+          >
+            {{ option.MarkCode}}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="CountryId">{{ "common.country" | translate }}</label>
+        <mat-select
+          formControlName="CountryId"
+          class="form-control"
+          (selectionChange)="onCountrySelectionChanged($event)"
+        >
+        <mat-option [value]="defaultSelectedValueForDropdownlist">
+          {{ "common.select" | translate }}
+        </mat-option>
+          <mat-option *ngFor="let option of CountryList" [value]="option.Id">
+            {{ option.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="StateId">{{ "common.state" | translate }}</label>
+        <mat-select formControlName="StateId" class="form-control">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let option of StatesList" [value]="option.Id">
+            {{ option.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="City">{{ "common.city" | translate }}</label>
+        <mat-select formControlName="City" class="form-control" multiple>
+          <app-multi-select
+          *ngIf="CityList"
+            [FormControlModel]="vendorForm.get('City')"
+            [InputValues]="CityList"
+          >
+          </app-multi-select>
+
+          <mat-option *ngFor="let cityName of CityList" [value]="cityName">
+            {{ cityName }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-2">
+    </div>
+    <div class="col-lg-6 mb-2">
+      <div class="float-end">
+        <button class="mr-2 secondary-btn" type="button" mat-raised-button
+        (click)="onReset()">
+          {{ "common.reset" | translate }}
+        </button>
+        <!-- <button class="mr-2 secondary-btn" type="button" mat-raised-button
+        (click)="onSaveSearch()">
+          {{ "common.save-search" | translate }}
+        </button> -->
+        <button
+          type="button"
+          mat-raised-button
+          color="primary"
+          (click)="onSubmitVendorForm()"
+        >
+          {{ "common.quick-search" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<app-saved-search
+  [isSearchEnable]="isSearch"
+  (isContentLoad)="onBackToSearchButtonClick($event)"
+  (searchFormData)="onVendorSavedSearchClick($event)"
+>
+</app-saved-search>
+<!-- <div class="bg-box">
+  <div class="d-table">
+    <div class="d-table-cell total-holder" *ngFor="let item of numInfo">
+      <span class="description">
+        {{ item.details }}
+      </span>
+      <span class="number">
+        {{ item.number }}
+      </span>
+    </div>
+  </div>
+</div> -->
+<div class="bg-box mb-3 mt-3">
+  <div class="d-table">
+      <div class="d-table-cell total-holder" *ngFor="let item of vendorRibbonModel">
+          <span class="description">
+      {{ item[0] | translate}}
+      </span>
+          <span class="number">
+      {{ item[1] }}
+      </span>
+      </div>
+  </div>
+</div>
+<div class="table-container mt-3 mb-3 table-height-container">
+<div class="vendors-table header-no-padding table-with-bottom responsive-table">
+  <table mat-table
+    #table
+    [dataSource]="vendorDataSource"
+    class="mt-3 w-100"
+    multiTemplateDataRows
+    matSort
+    #sort="matSort"
+  >
+    <ng-container matColumnDef="action">
+      <th mat-header-cell scope="col" *matHeaderCellDef></th>
+      <td aria-label="Details" mat-cell *matCellDef="let element">
+        <span
+          *ngIf="expandedElement !== element"
+          class="signs left-icon"
+          [class.expanded]="expandedElement === element"
+          (click)="expandedElement = element"
+          ><app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon
+        ></span>
+        <span
+          *ngIf="expandedElement === element"
+          class="signs"
+          [class.expanded]="expandedElement === undefined"
+          (click)="expandedElement = undefined"
+          ><app-svg-icon icon="icon-hyphen" class="icon"></app-svg-icon>
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Vendor">
+      <th mat-header-cell scope="col" *matHeaderCellDef>{{ "vendors" | translate }}</th>
+      <td mat-cell [attr.aria-label]="'vendors' | translate" *matCellDef="let element">
+        <a routerLink="../vendor/vendor-details/view/{{ element.Id }}">{{
+          element.Vendor
+        }}</a>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Facility">
+      <th mat-header-cell scope="col" *matHeaderCellDef>
+        {{ "facilityName" | translate }}
+      </th>
+      <td mat-cell [attr.aria-label]="'common.facilityName' | translate" *matCellDef="let element">{{ element.Facility }}</td>
+    </ng-container>
+    <ng-container matColumnDef="location">
+      <th mat-header-cell scope="col" *matHeaderCellDef>
+        {{ "common.location" | translate }}
+      </th>
+      <td mat-cell [attr.aria-label]="'common.location' | translate" *matCellDef="let element">{{ element.Location }}</td>
+    </ng-container>
+    <ng-container matColumnDef="Interchanges">
+      <th mat-header-cell scope="col" *matHeaderCellDef>
+        {{ "Interchanges" | translate }}
+      </th>
+      <td mat-cell [attr.aria-label]="'Interchanges' | translate" *matCellDef="let element">{{ element.Interchanges }}</td>
+    </ng-container>
+    <ng-container matColumnDef="ContractedSpace">
+      <th mat-header-cell scope="col" *matHeaderCellDef>
+        {{ "ContractedSpace" | translate }}
+      </th>
+      <td mat-cell [attr.aria-label]="'ContractedSpace' | translate" *matCellDef="let element">{{ element.ContractedSpace }}</td>
+    </ng-container>
+    <ng-container matColumnDef="CarsStored">
+      <th mat-header-cell scope="col" *matHeaderCellDef>{{ "CarsStored" | translate }}</th>
+      <td mat-cell [attr.aria-label]="'CarsStored' | translate" *matCellDef="let element">{{ element.CarsStored }}</td>
+    </ng-container>
+    <ng-container matColumnDef="TotalAmount">
+      <th mat-header-cell scope="col" *matHeaderCellDef>{{ "TotalAmount" | translate }}</th>
+      <td mat-cell [attr.aria-label]="'TotalAmount' | translate" *matCellDef="let element">
+        {{ element.TotalAmount | currency }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="avg_monthly_cost">
+      <th mat-header-cell scope="col" *matHeaderCellDef>
+        {{ "avg_monthly_cost" | translate }}
+      </th>
+      <td mat-cell [attr.aria-label]="'avg_monthly_cost' | translate" *matCellDef="let element">
+        {{ element.AVGMonthlyCost | currency }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="avg_par_car_cost">
+      <th mat-header-cell scope="col" *matHeaderCellDef>
+        {{ "avg_par_car_cost" | translate }}
+      </th>
+      <td mat-cell [attr.aria-label]="'avg_par_car_cost' | translate" *matCellDef="let element">
+        {{ element.AVGCarCost | currency }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="displayedColumns.length"
+      >
+        <table
+          class="vendor-inner"
+          #inneTables
+          mat-table
+          #innrSort="matSort"
+          [dataSource]="element?.VendorChildData"
+          matSort
+        >
+
+
+          <ng-container
+            matColumnDef="{{ col }}"
+            *ngFor="let col of innerDisplayedColumns"
+          >
+          <ng-container *ngIf="col === 'Location'">
+            <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>{{ col }}</th>
+            <td mat-cell [attr.aria-label]="'Location' | translate" *matCellDef="let children">
+              <span class="d-block mb-1" *ngFor="let location of children[col]">
+              {{location}}
+            </span></td>
+          </ng-container>
+          <ng-container *ngIf="col === 'Interchanges'">
+            <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>{{ col }}</th>
+            <td mat-cell [attr.aria-label]="'Interchanges' | translate" *matCellDef="let children">
+              <span class="d-block mb-1" *ngFor="let interchange of children[col]">
+              {{interchange}}
+            </span></td>
+          </ng-container>
+          <ng-container *ngIf="col === 'TotalAmount'">
+            <th mat-header-cell scope="col" *matHeaderCellDef>{{ "TotalAmount" | translate }}</th>
+            <td mat-cell [attr.aria-label]="'TotalAmount' | translate" *matCellDef="let element">
+              {{ element.TotalAmount | currency }}
+            </td>
+          </ng-container>
+          <ng-container *ngIf="col === 'AVGMonthlyCost'">
+            <th mat-header-cell scope="col" *matHeaderCellDef>
+              {{ "avg_monthly_cost" | translate }}
+            </th>
+            <td mat-cell [attr.aria-label]="'avg_monthly_cost' | translate" *matCellDef="let element">
+              {{ element.AVGMonthlyCost | currency }}
+            </td>
+          </ng-container>
+          <ng-container *ngIf="col === 'AVGCarCost'">
+            <th mat-header-cell scope="col" *matHeaderCellDef>
+              {{ "avg_par_car_cost" | translate }}
+            </th>
+            <td mat-cell [attr.aria-label]="'avg_par_car_cost' | translate" *matCellDef="let element">
+              {{ element.AVGCarCost | currency }}
+            </td>
+          </ng-container>
+          <ng-container>
+            <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>{{ col }}</th>
+            <td mat-cell [attr.aria-label]="col | translate" *matCellDef="let children">{{ children[col] }}</td>
+          </ng-container>
+          <!-- <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>{{ col }}</th>
+          <td mat-cell [attr.aria-label]="'common.description' | translate" *matCellDef="let children">{{ children[col] }}</td> -->
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="innerDisplayedColumns"
+            class="d-none"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let children; columns: innerDisplayedColumns"
+          ></tr>
+        </table>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      [@detailExpand]="row === expandedElement ? 'expanded' : 'collapsed'"
+      style="overflow: hidden"
+    ></tr>
+  </table>
+  <table class="w-100 no-record">
+    <tr *ngIf="!vendorDataSource.data.length">
+      <td [attr.colspan]="displayedColumns.length">
+        {{'no-records-found' | translate}}
+      </td>
+    </tr>
+  </table>
+  <!-- <mat-paginator *ngIf="vendorDataSource" class="paginator" #MatPaginator pageSize="5"></mat-paginator> -->
+</div>
+</div>

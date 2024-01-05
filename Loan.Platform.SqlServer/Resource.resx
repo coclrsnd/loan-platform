@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Country" xml:space="preserve">
+    <value>[{"Id":1,"Name":"United States","Code":"USA","IsActive":true,"CreatedTime":"2022-06-09T12:25:05.3266667","CreatedBy":1,"ModifiedTime":"2022-06-09T12:25:05.3266667","ModifiedBy":1,"OrganizationId":1,"TenantId":1},{"Id":2,"Name":"Canada","Code":"CAN","IsActive":true,"CreatedTime":"2022-06-09T12:25:05.3266667","CreatedBy":1,"ModifiedTime":"2022-06-09T12:25:05.3266667","ModifiedBy":1,"OrganizationId":1,"TenantId":1},{"Id":3,"Name":"Mexico","Code":"MEX","IsActive":true,"CreatedTime":"2022-06-09T12:25:05.3266667","CreatedBy":1,"ModifiedTime":"2022-06-09T12:25:05.3266667","ModifiedBy":1,"OrganizationId":1,"TenantId":1}]</value>
+  </data>
+  <data name="MailConfigurations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotificationEvents" xml:space="preserve">
+    <value>[{"Id":1,"Name":"SignUpVerification","Description":"Email Verification","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":2,"Name":"PasswordReset","Description":"Reset Password","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":3,"Name":"Rejected","Description":"Access Denied","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":4,"Name":"Approved","Description":"Access Approved","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":5,"Name":"AlreadySignedUp","Description":"Already Registered","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":6,"Name":"StorageOpportunity","Description":"Storage Opportunity","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":7,"Name":"BookingConfirmation","Description":"Booking Confirmation","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1},{"Id":8,"Name":"ApprovalRequest","Description":"Approval Request to RCL Support","IsActive":true,"CreatedTime":"2022-07-13T18:32:28.3490093","CreatedBy":1,"ModifiedTime":"2022-07-13T18:32:28.3490093","ModifiedBy":1,"OrganizationId":0,"TenantId":1}]</value>
+  </data>
+  <data name="RailcarTypes" xml:space="preserve">
+    <value>[{"Id":1,"Name":"A-Equipped box cars","Description":"Equipped box cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":2,"Name":"B-Unequipped box cars","Description":"Unequipped box cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":3,"Name":"C-Covered hopper cars","Description":"Covered hopper cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":4,"Name":"D-Locomotive","Description":"Locomotive","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":5,"Name":"E-Equipped gondola","Description":"Equipped gondola","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":6,"Name":"F-Flat cars","Description":"Flat cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":7,"Name":"G-Unequipped gondola","Description":"Unequipped gondola","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":8,"Name":"H-Unequipped hopper","Description":"Unequipped hopper","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":9,"Name":"J-Gondola car","Description":"Gondola car","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":10,"Name":"K-Equipped hopper cars","Description":"Equipped hopper cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":11,"Name":"L-Special type cars","Description":"Special type cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":13,"Name":"P-Conventional intermodal cars","Description":"Conventional intermodal cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":14,"Name":"Q-Lighter weight, low-profile intermodal cars","Description":"Lighter weight, low-profile intermodal cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":15,"Name":"R-Refrigerator cars","Description":"Refrigerator cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":16,"Name":"S-Stack car","Description":"Stack car","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":17,"Name":"T-Tank cars","Description":"Tank cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":18,"Name":"U-Containers","Description":"Containers","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":19,"Name":"V-Vehicular flat cars","Description":"Vehicular flat cars","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0},{"Id":20,"Name":"Z-Trailers","Description":"Trailers","IsActive":true,"CreatedTime":"0001-01-01T00:00:00","CreatedBy":0,"ModifiedTime":"0001-01-01T00:00:00","ModifiedBy":0,"OrganizationId":0,"TenantId":0}]</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>[
+  {
+    "Id": 1,
+    "Name": "US Central Region",
+    "CountryId": 1,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 2,
+    "Name": "US Midwest Region",
+    "CountryId": 1,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 3,
+    "Name": "US Northeast Region",
+    "CountryId": 1,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 4,
+    "Name": "US Northwest Region",
+    "CountryId": 1,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 5,
+    "Name": "US Southeast Region",
+    "CountryId": 1,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 6,
+    "Name": "US Southwest Region",
+    "CountryId": 1,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 7,
+    "Name": "Canada Atlantic Region",
+    "CountryId": 2,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 8,
+    "Name": "Canada Ontario Region",
+    "CountryId": 2,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 9,
+    "Name": "Canada Pacific Region",
+    "CountryId": 2,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 10,
+    "Name": "Canada Prairie &amp; Northwest Region",
+    "CountryId": 2,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  },
+  {
+    "Id": 11,
+    "Name": "Canada Quebec Region",
+    "CountryId": 2,
+    "IsActive": true,
+    "CreatedTime": "2022-06-09T01:43:38.8133333",
+    "CreatedBy": 1,
+    "ModifiedTime": "2022-06-09T01:43:38.8133333",
+    "ModifiedBy": 1,
+    "OrganizationId": 1,
+    "TenantId": 1
+  }
+]</value>
+  </data>
+  <data name="States" xml:space="preserve">
+    <value>[{"Id":1,"Name":"Alabama","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"AL","CountryId":1},{"Id":2,"Name":"Alaska","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"AK","CountryId":1},{"Id":3,"Name":"Alberta","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"AB","CountryId":2},{"Id":4,"Name":"Arizona","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"AZ","CountryId":1},{"Id":5,"Name":"Arkansas","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"AR","CountryId":1},{"Id":6,"Name":"British Columbia","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"BC","CountryId":2},{"Id":7,"Name":"California","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"CA","CountryId":1},{"Id":8,"Name":"Colorado","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"CO","CountryId":1},{"Id":9,"Name":"Connecticut","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"CT","CountryId":1},{"Id":10,"Name":"Delaware","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"DE","CountryId":1},{"Id":11,"Name":"Dist. of Columbia","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"DC","CountryId":1},{"Id":12,"Name":"Florida","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"FL","CountryId":1},{"Id":13,"Name":"Georgia","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"GA","CountryId":1},{"Id":14,"Name":"Idaho","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"ID","CountryId":1},{"Id":15,"Name":"Illinois","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"IL","CountryId":1},{"Id":16,"Name":"Indiana","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"IN","CountryId":1},{"Id":17,"Name":"Iowa","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"IA","CountryId":1},{"Id":18,"Name":"Kansas","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"KS","CountryId":1},{"Id":19,"Name":"Kentucky","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"KY","CountryId":1},{"Id":20,"Name":"Louisiana","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"LA","CountryId":1},{"Id":21,"Name":"Maine","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"ME","CountryId":1},{"Id":22,"Name":"Manitoba","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MB","CountryId":2},{"Id":23,"Name":"Maryland","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MD","CountryId":1},{"Id":24,"Name":"Massach1etts","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MA","CountryId":1},{"Id":25,"Name":"Michigan","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MI","CountryId":1},{"Id":26,"Name":"Minnesota","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MN","CountryId":1},{"Id":27,"Name":"Mississippi","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MS","CountryId":1},{"Id":28,"Name":"Missouri","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MO","CountryId":1},{"Id":29,"Name":"Montana","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"MT","CountryId":1},{"Id":30,"Name":"Nebraska","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NE","CountryId":1},{"Id":31,"Name":"Nevada","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NV","CountryId":1},{"Id":32,"Name":"New Brunswick","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NB","CountryId":2},{"Id":33,"Name":"New Hampshire","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NH","CountryId":1},{"Id":34,"Name":"New Jersey","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NJ","CountryId":1},{"Id":35,"Name":"New Mexico","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NM","CountryId":1},{"Id":36,"Name":"New York","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NY","CountryId":1},{"Id":37,"Name":"Newfoundland &amp; Labrador","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NL","CountryId":2},{"Id":38,"Name":"North Carolina","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NC","CountryId":1},{"Id":39,"Name":"North Dakota","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"ND","CountryId":1},{"Id":40,"Name":"Northwest Territory","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NT","CountryId":2},{"Id":41,"Name":"Nova Scotia","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NS","CountryId":2},{"Id":42,"Name":"Nunavut","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"NU","CountryId":2},{"Id":43,"Name":"Ohio","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"OH","CountryId":1},{"Id":44,"Name":"Oklahoma","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"OK","CountryId":1},{"Id":45,"Name":"Ontario","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"ON","CountryId":2},{"Id":46,"Name":"Oregon","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"OR","CountryId":1},{"Id":47,"Name":"Pennsylvania","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"PA","CountryId":1},{"Id":48,"Name":"Prince Edward Island","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"PE","CountryId":2},{"Id":49,"Name":"Quebec","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"QC","CountryId":2},{"Id":50,"Name":"Rhode Island","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"RI","CountryId":1},{"Id":51,"Name":"Saskatchewan","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"SK","CountryId":2},{"Id":52,"Name":"South Carolina","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"SC","CountryId":1},{"Id":53,"Name":"South Dakota","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"SD","CountryId":1},{"Id":54,"Name":"Tennessee","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"TN","CountryId":1},{"Id":55,"Name":"Texas","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"TX","CountryId":1},{"Id":56,"Name":"Utah","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"UT","CountryId":1},{"Id":57,"Name":"Vermont","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"VT","CountryId":1},{"Id":58,"Name":"Virginia","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"VA","CountryId":1},{"Id":59,"Name":"Washington","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"WA","CountryId":1},{"Id":60,"Name":"West Virginia","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"WV","CountryId":1},{"Id":61,"Name":"Wisconsin","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"WI","CountryId":1},{"Id":62,"Name":"Wyoming","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"WY","CountryId":1},{"Id":63,"Name":"Yukon Territory","IsActive":true,"CreatedTime":"2022-06-09T15:13:05.8300000","CreatedBy":1,"ModifiedTime":"2022-06-09T15:13:05.8300000","ModifiedBy":1,"OrganizationId":1,"TenantId":1,"Code":"YT","CountryId":2}]</value>
+  </data>
+</root>

@@ -1,0 +1,859 @@
+<div>
+  <div class="header mb-3">
+    <h1 mat-dialog-title class="cursor-none">{{dilogueData.title}}</h1>
+    <button class="icon" (click)="cancel(stepper)" title="Close">x</button>
+  </div>
+  <mat-stepper linear (selectionChange)="selectionChange($event)" [disableRipple]="true" #stepper [orientation]="(stepperOrientation | async)!">
+    <ng-template matStepperIcon="done" let-index="index">{{index + 1}}</ng-template>
+    <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+      <div class="my-0" #RailCarDetailsForm>
+      </div>
+      <div class="row min-height-book-now">
+        <div class="col-md-9">
+          <form [formGroup]="firstFormGroup" class="row mb-3">
+            <ng-template matStepLabel>{{'booknow.storage_parameters' | translate}}</ng-template>
+            <div class="col-lg-4 col-md-6 mb-2">
+              <div class="form-group">
+                <label class="required" for="StartDate">{{'common.anticipated-start-date' | translate}}</label>
+                <span class="date-holder">
+                  <input placeholder="{{'common.date-placeholder' | translate}}" #input type="text" [min]="todayDate" class="form-control"
+                         [ngClass]="{ 'is-invalid': isFirstFormSubmitted && firstFormGroup.get('StartDate')?.errors }" formControlName="StartDate" [matDatepicker]="picker"
+                         (focus)="picker.open()">
+                  <mat-datepicker-toggle matSuffix [for]="picker">
+                    <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+                </span>
+                <div class="invalid-feedback">
+                  <div *ngIf="firstFormGroup.get('StartDate')?.hasError('required') && firstFormGroup.get('StartDate')?.touched || isFirstFormSubmitted && firstFormGroup.get('StartDate')?.errors">
+                    {{"common.anticipated-start-date" | translate}}
+                    {{'common.is_required' | translate}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-2">
+              <div class="form-group">
+                <label class="required" for="EndDate">{{'common.anticipated-end-date' | translate}}</label>
+                <span class="date-holder">
+                  <input placeholder="{{'common.date-placeholder' | translate}}" [min]="todayDate" #input2 type="text" class="form-control" formControlName="EndDate" [matDatepicker]="picker2"
+                         (focus)="picker2.open()"
+                         [ngClass]="{ 'is-invalid': firstFormGroup.hasError('expiryIssues')}">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+                </span>
+                <div class="invalid-feedback">
+                  <div *ngIf="firstFormGroup.get('EndDate')?.hasError('required') && firstFormGroup.get('EndDate')?.touched || isFirstFormSubmitted && firstFormGroup.get('EndDate')?.errors">
+                    {{"common.anticipated-end-date" | translate}}
+                    {{'common.is_required' | translate}}
+                  </div>
+                  <div *ngIf="firstFormGroup.hasError('expiryIssues')">{{'error.anticipatedStartDateLessThanEndDate' | translate}}</div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="col-12 designed-accordian">
+            <mat-accordion multi>
+              <mat-expansion-panel hideToggle [expanded]="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'rider.railcar-details' | translate}}
+                    <span class="material-icons">expand_more</span>
+                  </mat-panel-title>
+                  <mat-panel-description *ngIf="!isViewMode">
+                    <div class="text-right">
+                    </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <!-- Railcar Details Table Start-->
+                <form [formGroup]="railCarForm" class="row">
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="form-group">
+                      <label for="LandE" [ngClass]="{'required' : isRailCarMandatory}">{{ "LandE" | translate }}</label>
+                      <mat-select formControlName="LandE"
+                                  [ngClass]="{ 'is-invalid' : railCarForm.controls['LandE'].errors || (railCarForm.controls['LandE'].touched && railCarForm.controls['LandE'].value===defaultSelectedValueForDropdownlist && isRailCarMandatory)}"
+                                  (selectionChange)="onLandSelectionChanged($event)"
+                                  >
+                        <mat-option [value]="defaultSelectedValueForDropdownlist">
+                          {{ "common.select" | translate }}
+                        </mat-option>
+                        <mat-option *ngFor="let option of LandE" [value]="option.Id">
+                          {{ option.Name }}
+                        </mat-option>
+                      </mat-select>
+                      <div class="invalid-feedback">
+                        <div *ngIf="(railCarForm.get('LandE')?.hasError('required')|| railCarForm.get('LandE')?.value===defaultSelectedValueForDropdownlist  && isRailCarMandatory) && railCarForm.get('LandE')?.touched || firstFormGroup.get('LandE')?.errors">
+                          {{"LandE" | translate}}
+                          {{'common.is_required' | translate}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="form-group">
+                      <label for="Commodity" [ngClass]="{'required' : isRailCarMandatory}">
+                        {{
+                      "booknow.commodity" | translate
+                        }}</label>
+                      <input type="text"
+                      formControlName="Commodity"
+                      class="form-control"
+                      [ngClass]="{ 'is-invalid': (railCarForm.controls['Commodity'].errors && railCarForm.controls['Commodity'].touched && isRailCarMandatory) }"
+                      placeholder="{{'customer-contents' | translate}}"
+                      maxlength="50" />
+                       <div class="invalid-feedback">
+                         <div *ngIf="((railCarForm.get('Commodity')?.hasError('required') || railCarForm.get('Commodity')?.hasError('defaultValue')) && railCarForm.get('Commodity')?.touched && isRailCarMandatory) || firstFormGroup.get('Commodity')?.errors">
+                           {{"booknow.commodity" | translate}}
+                           {{'common.is_required' | translate}}
+                         </div>
+                       </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="form-group">
+                      <label for="Hazmat" [ngClass]="{'required' : isRailCarMandatory}">
+                        {{
+                      "rider.hazmat" | translate
+                        }}</label>
+                      <mat-select formControlName="Hazmat"
+                                  [ngClass]="{ 'is-invalid': railCarForm.controls['Hazmat'].errors || (railCarForm.controls['Hazmat'].touched && railCarForm.controls['Hazmat'].value===defaultSelectedValueForDropdownlist &&  isRailCarMandatory) }"
+                                  (selectionChange)="onHazmatSelectionChanged($event)">
+                        <mat-option [value]="defaultSelectedValueForDropdownlist">
+                          {{ "common.select" | translate }}
+                        </mat-option>
+                        <mat-option *ngFor="let option of hazmatTF" [value]="option.Id">
+                          {{ option.Name }}
+                        </mat-option>
+                      </mat-select>
+                      <div class="invalid-feedback">
+                        <div *ngIf="(railCarForm.get('Hazmat')?.hasError('required')||railCarForm.get('Hazmat')?.value===defaultSelectedValueForDropdownlist && isRailCarMandatory) && railCarForm.get('Hazmat')?.touched || firstFormGroup.get('Hazmat')?.errors">
+                          {{"Hazmat" | translate}}
+                          {{'common.is_required' | translate}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="form-group">
+                      <label for="CarType" [ngClass]="{'required' : isRailCarMandatory}">{{ "common.car-type" | translate }}</label>
+                      <mat-select formControlName="CarType"
+                                  [ngClass]="{ 'is-invalid': railCarForm.controls['CarType'].errors || (railCarForm.controls['CarType'].touched && railCarForm.controls['CarType'].value===defaultSelectedValueForDropdownlist && isRailCarMandatory) }"
+                                  (selectionChange)="onCarTypeSelectionChanged($event)">
+                        <mat-option [value]="defaultSelectedValueForDropdownlist">
+                          {{ "common.select" | translate }}
+                        </mat-option>
+                        <mat-option *ngFor="let option of CarType" [value]="option.Id">
+                          {{ option.Name }}
+                        </mat-option>
+                      </mat-select>
+                      <div class="invalid-feedback">
+                        <div *ngIf="(railCarForm.get('CarType')?.hasError('required')||railCarForm.get('CarType')?.value===defaultSelectedValueForDropdownlist && isRailCarMandatory) && railCarForm.get('CarType')?.touched || firstFormGroup.get('CarType')?.errors">
+                          {{"CarType" | translate}}
+                          {{'common.is_required' | translate}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="form-group">
+                      <label for="ExpectedNumberOfCars">
+                        {{
+                        "booknow.expected-no-of-cars" | translate
+                        }}
+                      </label>
+                      <input ngNumbersOnly type="text" formControlName="ExpectedNumberOfCars" class="form-control"
+                        [ngClass]="{ 'is-invalid': railCarForm.get('ExpectedNumberOfCars')?.errors }"
+                        placeholder="{{'customer-number' | translate}}" maxlength="9" />
+                      <div class="invalid-feedback">
+                        <div *ngIf="railCarForm.get('ExpectedNumberOfCars')?.hasError('max')">
+                          {{'maximum_value_for_this_field_is' | translate}}
+                          {{railCarForm?.get('ExpectedNumberOfCars')?.errors['max']['max']}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="form-group">
+                      <label>
+                        {{
+                      "booknow.railcar-ids" | translate
+                        }}
+                        <span matTooltipClass="info-tooltip separate-by-line" class="d-inline-block max-25 cursor-pointer float-end" matTooltip="Copy/Paste or enter Railcar ID(s) separated by line. Accepted formats are:
+                        ABCD 123456
+                        ABCD123456
+                        ABCD-123456
+                        ABCD 000006
+                        ABCD000006"><mat-icon>info_outline</mat-icon></span>
+                      </label>
+                      <textarea type="text"
+                        formControlName="RailCarIds"
+                        class="form-control min-height-100"
+                        (blur)="onUpperCase($event)"
+                        placeholder="ABCD 123456
+DCBA 123654"
+                        maxlength="3000"> </textarea>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="float-end">
+                      <button *ngIf="!isEditingRailcar" (click)="addRailcar()"
+                      class="pull-right"
+                      type="button"
+                      mat-raised-button color="primary">
+                        + {{ "common.add" | translate }}
+                      </button>
+                      <button *ngIf="isEditingRailcar" class="pull-right" (click)="updateRailcar()" type="button" mat-raised-button color="primary">
+                        {{ "common.update" | translate }}
+                      </button>
+                      <button (click)="resetRailCarDetails(isEditingRailcar)" class="pull-right mr-2 secondary-btn" type="button" mat-raised-button>
+                        {{ "common.reset" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                <!--Railcar Details Table-->
+                <div class="booknow-table no-side-border intable-buttons mt-3" *ngIf="dataSource?.length">
+                  <table mat-table [dataSource]="dataSource" class="mt-3"  aria-label="Booknow Table">
+                    <ng-container matColumnDef="LandE">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'LandE' | translate}} </th>
+                      <td mat-cell *matCellDef="let element"> {{element.LandE}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Commodity">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'Commodity' | translate}} </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Commodity}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Hazmat">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'Hazmat' | translate}} </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Hazmat}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="CarType">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'CarType' | translate}} </th>
+                      <td mat-cell *matCellDef="let element"> {{element.CarTypeName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="NumberOfSpaces">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'NumberOfSpaces' | translate}} </th>
+                      <td mat-cell *matCellDef="let element"> {{element.ExpectedNumberOfCars}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="RailCarId">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'RailCarIdName' | translate}} </th>
+                      <td mat-cell *matCellDef="let element"> <span appEllipsifyMe>{{ element.RailCarIds}}</span></td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                      <th mat-header-cell scope="col" *matHeaderCellDef> {{'action' | translate}} </th>
+                      <td mat-cell *matCellDef="let element">
+                        <button type="button" (click)="onEditRailCar(element,RailCarDetailsForm)" class="cool-btn" title="Edit"><app-svg-icon icon="icon-edit" class="icon"></app-svg-icon></button>
+                        <button (click)="onRemoveRailCar(element)" class="icon cool-btn" title="Delete"><app-svg-icon icon="icon-delete" class="icon"></app-svg-icon></button>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <table class="w-100 no-record" aria-label="Empty Table">
+                    <tr class="d-none"><th></th></tr>
+                    <tr *ngIf="dataSource?.length === 0 || dataSource === undefined">
+                      <td [attr.colspan]="displayedColumns.length">
+                        {{'no-records-found' | translate}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <!-- Railcar Details End -->
+              </mat-expansion-panel>
+              <mat-expansion-panel hideToggle [(expanded)]="isUpload">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{'booknow.upload-sds-document' | translate}}
+                    <span class="material-icons">expand_more</span>
+                  </mat-panel-title>
+                  <mat-panel-description *ngIf="!isViewMode">
+                    <div class="text-right" *ngIf="!isUpload">
+                      <button class="simple-button left-icon d-inline-block" type="button" (click)="openAttachmants();$event.stopPropagation();">
+                        <input hidden (change)="selectFile($event)" #fileInput type="file" id="file">
+                        <span class="material-icons">cloud_upload</span>
+                        {{'common.upload' | translate}}
+                      </button>
+                    </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <!-- Attachments Table Start-->
+                <div class="fixed-height-tables">
+                  <div class="mb-3">
+                    <div class="search-holder mt-3">
+                      <div class="row">
+                        <div class="col-10">
+                          <span (click)="fileInput2.click()" class="d-inline-block w-100">
+                            <mat-form-field class="columns w-100">
+                              <mat-label *ngIf="selectedFiles; else newFile">{{selectedFiles?.item(0)?.name}}</mat-label>
+                              <ng-template #newFile>
+                                <mat-label>Browse</mat-label>
+                              </ng-template>
+                              <input matInput disabled>
+                              <button mat-icon-button matSuffix *ngIf="showFile">
+                                <mat-icon>attach_file</mat-icon>
+                              </button>
+                              <span class="intable-buttons position-absolute right-minus-7">
+                              <button class="icon cool-btn " matSuffix  (click)="onRemoveFile($event)" title="Remove" *ngIf="!showFile" ><app-svg-icon icon="icon-end-close-cross" class="icon"></app-svg-icon></button>
+                            </span>
+                              <input hidden (change)="selectFile($event)" #fileInput2 type="file" id="file">
+                            </mat-form-field>
+                          </span>
+                        </div>
+                        <div class="col-2">
+                          <button class="mr-2 pull-right" type="button" (click)="onSubmitUploadForm()" mat-raised-button color="primary">{{'common.upload' | translate}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row g-0">
+                    <div class="col-12 intable-buttons no-side-border attachments-holder" *ngIf="dataSourceAttachment?.length">
+                      <table mat-table [dataSource]="dataSourceAttachment" aria-label="Attachments Table">
+                        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                          <ng-container *ngIf="column === 'Name'">
+                            <th mat-header-cell scope="col" *matHeaderCellDef>
+                              {{ column | translate }}
+                            </th>
+                            <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+                              <span class="d-inline-block"> <a class="link" (click)="DownloadAttachment(element)"> {{element.Name}}</a> </span>
+
+                              <span class="d-inline-block ml-2"> {{element.Size}}</span>
+                            </td>
+                          </ng-container>
+
+                          <ng-container *ngIf="column === 'CreatedTime'">
+                            <th mat-header-cell scope="col" *matHeaderCellDef>
+                              {{ column | translate }}
+                            </th>
+                            <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+                              {{ element.CreatedDate | date:'M/d/yyyy, h:mm a' }}
+                            </td>
+                          </ng-container>
+                          <ng-container *ngIf="column === 'action'">
+                            <th mat-header-cell scope="col" *matHeaderCellDef>
+                              {{ column | translate }}
+                            </th>
+                            <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+                              <button class="icon cool-btn" (click)="onConfirmationBox(element)" title="Delete"><app-svg-icon icon="icon-delete" class="icon"></app-svg-icon></button>
+                            </td>
+                          </ng-container>
+                          <th mat-header-cell scope="col" *matHeaderCellDef> {{column | translate}} </th>
+                          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element"> {{element[column]}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+                      </table>
+                      <table class="w-100 no-record" aria-label="Empty Table">
+                        <tr class="d-none"><th></th></tr>
+                        <tr *ngIf="dataSourceAttachment?.length === 0 || dataSourceAttachment === undefined">
+                          <td [attr.colspan]="columnsToDisplay.length">
+                            {{'no-records-found' | translate}}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Attachments End -->
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+          <div class="clearfix"></div>
+
+
+        </div>
+        <div class="col-md-3">
+          <app-storage-package [storageInfo]="storageInfo" [storagefacility]="storagefacility"></app-storage-package>
+        </div>
+      </div>
+      <div class="row g-0 mt-3 stick-bottom">
+        <div class="col-12">
+          <div class="float-end">
+            <button mat-raised-button  color="primary" (click)="triggerValidation(stepper)" matStepperNext>{{'booknow.add-services' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="reservedSpacesForm" [editable]="isEditable">
+      <div class="my-0">
+      </div>
+      <div class="row ml-0 min-height-book-now">
+        <div class="col-md-9">
+          <form [formGroup]="featuresForm" class="row">
+            <ng-template matStepLabel>{{'booknow.add-services' | translate}}</ng-template>
+            <div class="features-holder">
+              <div class="features-label">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label class="required">
+                      {{'common.features' | translate}}
+                    </label>
+                  </div>
+                  <div class="col-md-9">
+                    <label>
+                      Add Comments
+                    </label> <span>
+                      (if any)
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="features-group">
+                <div>
+                  <div class="features-body" formArrayName="features" *ngFor="let item of getFeaturesControls(); let i = index;">
+                    <div [formGroupName]="i">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <input   matInput  hidden="true"  formControlName="FeatureId">
+                          <mat-checkbox formControlName="IsActive" (change)="onChange(item)">
+                            {{item.value['FeatureName']}}
+                          </mat-checkbox>
+                        </div>
+                        <div class="col-md-9">
+                          <span class="form-group">
+                            <input *ngIf="item.value['IsActive']" type="text" class="form-control" formControlName="Comments"
+                            placeholder="Comment" maxlength="200" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="getFeaturesControls()?.length === 0">
+                        {{'no-features-found' | translate}}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <mat-checkbox class="py-2 border-top" (change)="onChangeReservedSpaces($event)"
+              [disabled]="reservedSpacedataModel.length> 0 ? true : false">
+              {{'booknow.add-reserved-spaces' | translate}}
+            </mat-checkbox>
+            <div class="reserved-spaces" *ngIf="isAddReservedSpaces">
+              <div class="row" #reservedSpaces>
+                <div [formGroup]="reservedSpacesForm" class="features-body">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-6 mb-2">
+                      <div class="form-group">
+                        <label for="ReservedSpaces" [ngClass]="{'required':reservedSpacesFormValidation }">{{ "rider.reserved-spaces" | translate }}</label>
+                        <span matTooltipClass="info-tooltip">
+                        <input type="text" class="form-control" formControlName="ReservedSpaces"
+                        [ngClass]="{ 'is-invalid': addReservedSpace && reservedSpacesForm.get('ReservedSpaces')?.errors }"
+                               placeholder="Reserved Spaces" maxlength="9"
+                               ngNumbersOnly (change)="onChangeReservedSpacesRequired()" />
+                        </span>
+                      <div class="invalid-feedback">
+                      <div *ngIf="(reservedSpacesForm.get('ReservedSpaces')?.hasError('required') &&
+                        reservedSpacesForm.get('ReservedSpaces')?.touched || reservedSpacesForm.get('ReservedSpaces')?.value === '' &&
+                        (addReservedSpace && reservedSpacesForm.get('ReservedSpaces')?.errors))">
+                        {{'common.reserved_spaces' | translate}} {{'common.is_required' | translate}}
+                      </div>
+                        <div *ngIf="reservedSpacesForm.get('ReservedSpaces')?.hasError('pattern')">
+                          {{ "error.NumberAllowedOnly" | translate}}
+                        </div>
+                      <div *ngIf="reservedSpacesForm.get('ReservedSpaces')?.hasError('max')">
+                        {{'maximum_value_for_this_field_is' | translate}}
+                        {{reservedSpacesForm?.get('ReservedSpaces')?.errors['max']['max']}}
+                      </div>
+                    </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-2">
+                      <div class="form-group">
+                        <label for="EffectiveDate" [ngClass]="{'required':reservedSpacesFormValidation }">{{'common.effective-date' | translate}}</label>
+                        <span class="date-holder">
+                          <input #input
+                                 type="text"
+                                 placeholder="{{ 'common.date-placeholder' | translate }}"
+                                 class="form-control"
+                                 formControlName="EffectiveDate"
+                                 [min]="todayDate"
+                                 [matDatepicker]="picker4"
+                                 (focus)="picker4.open()"
+
+                                 [ngClass]="{ 'is-invalid': addReservedSpace && reservedSpacesForm.get('EffectiveDate')?.errors }"
+                                 (dateChange)="onChangeReservedSpacesRequired()" />
+                          <mat-datepicker-toggle matSuffix [for]="picker4">
+                            <app-svg-icon icon="icon-calendar"
+                                          class="icon"
+                                          matDatepickerToggleIcon></app-svg-icon>
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #picker4 (closed)="input.blur()"></mat-datepicker>
+                        </span>
+                        <div class="invalid-feedback">
+                          <div *ngIf="(reservedSpacesForm.get('EffectiveDate')?.hasError('required') &&
+                            reservedSpacesForm.get('EffectiveDate')?.touched ||
+                            (addReservedSpace && reservedSpacesForm.get('EffectiveDate')?.errors))">
+                            {{'common.effective-date' | translate}}
+                            {{'common.is_required' | translate}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-2">
+                      <div class="form-group">
+                        <label for="ExpirationDate" [ngClass]="{'required':reservedSpacesFormValidation }">{{'common.expiration-date' | translate}}</label>
+                        <span class="date-holder">
+                          <input #inputs
+                                 type="text"
+                                 placeholder="{{ 'common.date-placeholder' | translate }}"
+                                 class="form-control"
+                                 formControlName="ExpirationDate"
+                                 [min]="todayDate"
+                                 [matDatepicker]="picker5"
+                                 [ngClass]="{ 'is-invalid': addReservedSpace && (reservedSpacesForm.get('ExpirationDate')?.errors || reservedSpacesForm.hasError('expiryIssue')) }"
+                                 (focus)="picker5.open()"
+                                 (dateChange)="onChangeReservedSpacesRequired()" />
+                          <mat-datepicker-toggle matSuffix [for]="picker5">
+                          <app-svg-icon icon="icon-calendar"
+                                          class="icon"
+                                          matDatepickerToggleIcon></app-svg-icon>
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #picker5 (closed)="inputs.blur()"></mat-datepicker>
+                        </span>
+                        <div class="invalid-feedback">
+                          <div *ngIf="
+                      (reservedSpacesForm
+                        .get('ExpirationDate')
+                        ?.hasError('required') &&
+                        reservedSpacesForm.get('ExpirationDate')?.touched) ||
+                      (addReservedSpace &&
+                      reservedSpacesForm.get('ExpirationDate')?.errors)">
+                            {{ "common.expiration-date" | translate }} {{ "common.is_required" | translate }}
+                          </div>
+                          <div *ngIf="(reservedSpacesForm.hasError('expiryIssue') && reservedSpacesForm.get('ExpirationDate')?.dirty)">{{'error.effDateLessThanExpDate' | translate}}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-2 pr-0">
+                      <button *ngIf="!isEditingReservedSpace" (click)="onAddStorageSpace()"
+                      class="pull-right mt-4"
+                      type="button"
+                      mat-raised-button color="primary">
+                        + {{ "common.add" | translate }}
+                      </button>
+                      <button *ngIf="isEditingReservedSpace" class="pull-right mt-4" (click)="onUpdateStorageSpace()" type="button" mat-raised-button color="primary">
+                        {{ "common.update" | translate }}
+                      </button>
+                      <button (click)="onCancelStorageSpace()" class="pull-right mt-4 mr-2 secondary-btn" type="button" mat-raised-button>
+                        {{ "common.reset" | translate }}
+                      </button>
+
+
+
+
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="reserved-spaces-table white-bg no-side-border intable-buttons mt-3" *ngIf="reservedSpacedataSource?.length">
+                        <table mat-table [dataSource]="reservedSpacedataSource" class="mt-3"  aria-label="Reserved Spaces Table">
+                          <ng-container matColumnDef="ReservedSpaces">
+                            <th mat-header-cell scope="col" *matHeaderCellDef> {{'rider.reserved-spaces' | translate}} </th>
+                            <td mat-cell *matCellDef="let element"> {{element.ReservedSpaces}} </td>
+                          </ng-container>
+                          <ng-container matColumnDef="EffectiveDate">
+                            <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.effective-date' | translate}} </th>
+                            <td mat-cell *matCellDef="let element"> {{element.EffectiveDate | date:defaultDateTimeFormat}} </td>
+                          </ng-container>
+                          <ng-container matColumnDef="ExpirationDate">
+                            <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.expiration-date' | translate}} </th>
+                            <td mat-cell *matCellDef="let element"> {{element.ExpirationDate | date:defaultDateTimeFormat}} </td>
+                          </ng-container>
+                          <ng-container matColumnDef="action">
+                            <th mat-header-cell scope="col" *matHeaderCellDef> {{'action' | translate}} </th>
+                            <td mat-cell *matCellDef="let element">
+                              <button type="button" (click)="onEditReservedSpace(element, reservedSpaces)" class="cool-btn" title="Edit"><app-svg-icon icon="icon-edit" class="icon"></app-svg-icon></button>
+                              <button (click)="onReservedSpaceConfirmationBox(element)" class="icon cool-btn" title="Delete"><app-svg-icon icon="icon-delete" class="icon"></app-svg-icon></button>
+                            </td>
+                          </ng-container>
+                          <tr mat-header-row *matHeaderRowDef="resSpaceColumns; sticky: true"></tr>
+                          <tr mat-row *matRowDef="let row; columns: resSpaceColumns;"></tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-3">
+          <app-storage-package [storageInfo]="storageInfo" [opportunityModel]="opportunityModel"></app-storage-package>
+        </div>
+      </div>
+      <div class="row stick-bottom g-0">
+        <div class="col-12">
+          <div class="float-end mt-3">
+            <button mat-raised-button class="mr-2 secondary-btn"  matStepperPrevious>{{'common.back' | translate}}</button>
+            <button mat-raised-button color="primary" (click)="AddStorageAgreement()" matStepperNext>{{'booknow.review' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+      <form [formGroup]="thirdFormGroup">
+        <ng-template matStepLabel>{{'booknow.review' | translate}}</ng-template>
+        <div class="row min-height-book-now">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-lg-7 col-md-12">
+                <div class="storage-facility-review">
+                  <div class="top-title">
+                    <div class="row ">
+                      <div class="col-lg-12">
+                        {{'booknow.booking-summary' | translate}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="body-holder">
+                  <div class="top-body">
+                    <div class="row ">
+                      <div class="col-lg-6">
+                        {{'rider.storage-facility' | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        {{this.storagefacility?.FacilityName}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="top-body">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        {{'common.base-daily-rate' | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        ${{this.storagefacility?.DailyStorageRate | number : '1.2-2'}} ({{this.storagefacility?.Currency}})
+                      </div>
+                    </div>
+                  </div>
+                  <div class="top-body">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        {{"common.interchange-rr" | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        {{this.storagefacility?.Interchanges}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="top-body">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        {{"common.anticipated-start-date" | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        {{this.storagefacility?.AnticipatedStartDate}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="top-body">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        {{'common.anticipated-end-date' | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        {{this.storagefacility?.AnticipatedEndDate}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="top-body">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        {{'common.approx_no_spaces' | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        {{opportunityModel?.TotalNoApproxSpaces === null ? 'Not Available' : opportunityModel?.TotalNoApproxSpaces}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="top-body">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        {{'common.total-no-reserved_spaces' | translate}}
+                      </div>
+                      <div class="col-lg-6">
+                        <ng-container *ngIf="+storagefacility?.TotalNoReservedSpaces > 0">
+                          {{storagefacility?.TotalNoReservedSpaces}}
+                        </ng-container>
+                        <ng-container *ngIf="storagefacility?.TotalNoReservedSpaces === null">
+                          Not Available
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <div class="col-lg-5 col-md-12">
+                <div class="sds-document-review" *ngIf="dataAttachmentviewModel.length">
+                  <div class="top-title">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        {{'booknow.uploaded-sds-document' | translate}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="body-holder">
+                  <div class="top-body" *ngFor="let attachment of dataAttachmentviewModel">
+                    <div class="row doc-holder intable-buttons align-middle">
+                      <div class="col-lg-8 link" (click)="DownloadAttachment(attachment)">{{attachment.Name}}</div>
+                          <div class="d-inline-block col-lg-4">{{attachment.Size}}</div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+          </div>
+        </div>
+        <div class="row stick-bottom g-0">
+          <div class="col-12">
+            <div class="float-end mt-3">
+              <button mat-raised-button class="mr-2 secondary-btn" matStepperPrevious>{{'common.back' | translate}}</button>
+              <button mat-raised-button (click)="onPlaceOrder()"  color="primary" matStepperNext>{{'booknow.place-order' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>{{'booknow.order-placed' | translate}}</ng-template>
+      <div class="row min-height-book-now">
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-lg-12 mb-3">
+              <span class="message">
+                Thank You! Your order has been placed with the below details.
+                <br> Your Order No is <strong>{{OrderNumber}}</strong>
+                <br>
+                You will receive email confirmation with the order summary shortly at your registered email.
+            </span>
+            </div>
+            <div class="col-lg-7 col-md-12">
+              <div class="storage-facility-review">
+                <div class="top-title">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      {{'booknow.booking-summary' | translate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="body-holder">
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{'rider.storage-facility' | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      {{storagefacility.FacilityName}}
+                    </div>
+                  </div>
+                </div>
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{'common.base-daily-rate' | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      ${{storagefacility.DailyStorageRate| number : '1.2-2'}} ({{storagefacility?.Currency}})
+                    </div>
+                  </div>
+                </div>
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{"common.interchange-rr" | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      {{storagefacility.Interchanges}}
+                    </div>
+                  </div>
+                </div>
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{"common.anticipated-start-date" | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      {{storagefacility.AnticipatedStartDate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{'common.anticipated-end-date' | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      {{storagefacility.AnticipatedEndDate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{'common.approx_no_spaces' | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      {{opportunityModel?.TotalNoApproxSpaces === null ? 'Not Available' : opportunityModel?.TotalNoApproxSpaces}}
+                    </div>
+                  </div>
+                </div>
+                <div class="top-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      {{'common.total-no-reserved_spaces' | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      <ng-container *ngIf="+storagefacility?.TotalNoReservedSpaces > 0">
+                        {{storagefacility?.TotalNoReservedSpaces}}
+                      </ng-container>
+                      <ng-container *ngIf="storagefacility?.TotalNoReservedSpaces === null">
+                        Not Available
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="col-lg-5 col-md-12">
+              <div class="sds-document-review" *ngIf="dataAttachmentviewModel.length">
+                <div class="top-title">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      {{'booknow.uploaded-sds-document' | translate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="body-holder">
+                <div class="top-body" *ngFor="let attachment of dataAttachmentviewModel">
+                  <div class="row doc-holder intable-buttons align-middle">
+                    <div class="col-lg-8 link" (click)="DownloadAttachment(attachment)">{{attachment?.Name}}</div>
+                    <div class="col-lg-4 size">{{attachment?.Size}}</div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+      </div>
+      <div class="row g-0 stick-bottom">
+        <div class="col-12">
+          <div class="float-end mt-3">
+            <button mat-raised-button (click)="onOrderSummaryDownload()" class="primary-with-icon" color="primary"><span class="material-icons mr-1">cloud_download</span>{{'booknow.order-summary' | translate}}</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+
+

@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AuditLogService.cs" />
+    <Compile Remove="ContractAttachmentMappingService.cs" />
+    <Compile Remove="ContractNoteMappingService.cs" />
+    <Compile Remove="ContractRailCarChargeService.cs" />
+    <Compile Remove="ContractRailCarMappingService.cs" />
+    <Compile Remove="ContractService.cs" />
+    <Compile Remove="ContractSFFeatureMappingService.cs" />
+    <Compile Remove="ContractTypeService.cs" />
+    <Compile Remove="CurrencyService.cs" />
+    <Compile Remove="CustomerService.cs" />
+    <Compile Remove="FreightRailService.cs" />
+    <Compile Remove="LEContentService.cs" />
+    <Compile Remove="MasterDataService.cs" />
+    <Compile Remove="OnboardVendorService.cs" />
+    <Compile Remove="OpportunityService.cs" />
+    <Compile Remove="Pact\IAuditLogService.cs" />
+    <Compile Remove="Pact\IContractAttachmentMappingService.cs" />
+    <Compile Remove="Pact\IContractNoteMappingService.cs" />
+    <Compile Remove="Pact\IContractRailCarChargeService.cs" />
+    <Compile Remove="Pact\IContractRailCarMappingService.cs" />
+    <Compile Remove="Pact\IContractService.cs" />
+    <Compile Remove="Pact\IContractSFFeatureMappingService.cs" />
+    <Compile Remove="Pact\IContractTypeService.cs" />
+    <Compile Remove="Pact\ICurrencySerivice.cs" />
+    <Compile Remove="Pact\ICustomerService.cs" />
+    <Compile Remove="Pact\IFreightRailService.cs" />
+    <Compile Remove="Pact\ILEContentService.cs" />
+    <Compile Remove="Pact\IMasterDataService.cs" />
+    <Compile Remove="Pact\IOnboardVendorService.cs" />
+    <Compile Remove="Pact\IOpportunityService.cs" />
+    <Compile Remove="Pact\IRailCarService.cs" />
+    <Compile Remove="Pact\IRailCarTypeService.cs" />
+    <Compile Remove="Pact\IRailRoadService.cs" />
+    <Compile Remove="Pact\IReportService.cs" />
+    <Compile Remove="Pact\ISavedSearchService.cs" />
+    <Compile Remove="Pact\IStorageFacilityFeatureMappingService.cs" />
+    <Compile Remove="Pact\IStorageFacilityService.cs" />
+    <Compile Remove="Pact\IStorageFeatureService.cs" />
+    <Compile Remove="Pact\ISwitchingSchedule.cs" />
+    <Compile Remove="Pact\IVendorService.cs" />
+    <Compile Remove="RailCarService.cs" />
+    <Compile Remove="RailCarTypeService.cs" />
+    <Compile Remove="RailRoadService.cs" />
+    <Compile Remove="ReportService.cs" />
+    <Compile Remove="SavedSearchService.cs" />
+    <Compile Remove="StorageFacilityFeatureMappingService.cs" />
+    <Compile Remove="StorageFacilityService.cs" />
+    <Compile Remove="StorageFeatureService.cs" />
+    <Compile Remove="VendorService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML.Report" Version="0.2.4" />
+    <PackageReference Include="GeoJSON.Text" Version="1.0.0" />
+    <PackageReference Include="SendGrid" Version="9.28.0" />
+    <PackageReference Include="SharpDocx" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loan.Platform.Common\Loan.Platform.Common.csproj" />
+    <ProjectReference Include="..\Loan.Platform.Models\Loan.Platform.Models.csproj" />
+    <ProjectReference Include="..\Loan.Platform.SqlServer\Loan.Platform.Data.SqlServer.csproj" />
+  </ItemGroup>
+
+</Project>

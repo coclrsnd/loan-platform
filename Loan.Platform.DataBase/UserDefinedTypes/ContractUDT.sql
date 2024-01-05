@@ -1,0 +1,25 @@
+﻿CREATE TYPE [dbo].[ContractUDT] AS TABLE
+(
+	[Id] [bigint] NULL,
+	[VendorId] [bigint] NOT NULL,
+	[CustomerId] [bigint] NOT NULL,
+	[Rider] [nvarchar](max) NOT NULL,
+	[StorageFacilityId] [bigint] NOT NULL,
+	[EffectiveDate] [datetime2](7) NOT NULL,
+	[ExpiryDate] [datetime2](7) NULL,
+	[ContractTypeId] [bigint] NULL,
+	[TotalCars] [int] NULL,
+	[CurrencyId] [smallint] NULL,
+	[Description] [nvarchar](max) NULL,
+	[Location] [nvarchar](max) NULL,
+	[CarsStored] [bigint] NOT NULL,
+	[ReservedSpaces] [int] NULL,
+	[IsFlatRateContract] [bit] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedTime] [datetime2](7) NOT NULL,
+	[CreatedBy] [bigint] NOT NULL,
+	[ModifiedTime] [datetime2](7) NOT NULL,
+	[ModifiedBy] [bigint] NOT NULL,
+	[OrganizationId] [bigint] NOT NULL,
+	[TenantId] [bigint] NOT NULL
+)

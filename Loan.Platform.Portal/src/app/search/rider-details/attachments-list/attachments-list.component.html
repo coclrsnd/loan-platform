@@ -1,0 +1,67 @@
+<div class="mb-3" *ngIf="isUpload">
+  <div class="search-holder mt-3">
+    <div class="row">
+      <div class="col-10">
+        <span (click)="fileInput.click()" class="d-inline-block w-100">
+          <mat-form-field class="columns w-100">
+            <mat-label *ngIf="selectedFiles; else newFile">{{selectedFiles.item(0).name}}</mat-label>
+            <ng-template #newFile>
+              <mat-label>Browse</mat-label>
+            </ng-template>
+            <input matInput disabled>
+            <button mat-icon-button matSuffix>
+              <mat-icon>attach_file</mat-icon>
+            </button>
+            <input hidden (change)="selectFile($event)" #fileInput type="file" id="file">
+          </mat-form-field>
+        </span>
+      </div>
+      <div class="col-2">
+        <button class="mr-2 pull-right" type="button" mat-raised-button (click)="onSubmitUploadForm()" color="primary">{{'common.upload' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-0">
+  <div class="col-12 attachments-table responsive-table">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <ng-container *ngIf="column === 'FileName'">
+          <th mat-header-cell scope="col" *matHeaderCellDef>
+            {{ column | translate }}
+          </th>
+          <!--<td mat-cell [attr.aria-label]="'vendors' | translate" *matCellDef="let element">
+            <a routerLink="{{element.Path}}">
+              {{element.FileName}}
+            </a>
+          </td>-->
+        <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+          <!--<a [href]="'../' + element.Path | safeUrl" download>
+            {{element.FileName}}
+          </a>-->
+          <a class="link" (click)="downloadAttachment(element)"> {{element.FileName}}</a>
+        </td>
+        </ng-container>
+        <ng-container *ngIf="column === 'CreatedTime'">
+          <th mat-header-cell scope="col" *matHeaderCellDef>
+            {{ column | translate }}
+          </th>
+          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+            {{ element.CreatedTime | date:'short' }}
+          </td>
+        </ng-container>
+        <th mat-header-cell scope="col" *matHeaderCellDef> {{column | translate}} </th>
+        <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element"> {{element[column]}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    </table>
+    <table class="w-100 no-record">
+      <tr *ngIf="dataSource?.length === 0 || dataSource === undefined">
+        <td [attr.colspan]="columnsToDisplay.length">
+          {{'no-records-found' | translate}}
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

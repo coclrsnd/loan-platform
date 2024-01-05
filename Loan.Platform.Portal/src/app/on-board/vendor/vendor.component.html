@@ -1,0 +1,75 @@
+<div [formGroup]="vendorDetailsForm">
+<h3 class="head-title">
+    {{pageTitle}} {{'vendor.vendor' | translate}}
+    <button class="simple-button left-icon" type="button" (click)="onUpadate()" *ngIf="isCreateUpdate">
+      <app-svg-icon icon="icon-update-icon" class="icon"></app-svg-icon>
+      {{'common.update' | translate}}</button>
+</h3>
+<div class="search-holder mb-2">
+    <app-vendor-form  *ngIf="vendorDetailsForm" [ngClass]="{isViewMode: isViewMode}"
+    [vendorForm]="vendorDetailsForm" [mode]="mode" [isCreateUpdate]="isCreateUpdate"
+    ></app-vendor-form>
+    <!-- Removed event because now no save and update button on vendorform: (vendorFormData)="onReceiveVendorFormData($event)" -->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex mt-2">
+            <div class="mr-auto my-auto">
+                <span>
+                    <mat-checkbox (change)="copyVendorToFacility($event)" color="primary" #userCheckbox [checked]="false" class="example-margin mr-2">
+                        <span class="d-inline-block ml-10px">{{'common.storage-facility-is-same-as-vendor' | translate}}</span>
+                </mat-checkbox>
+                </span>
+            </div>
+            <button type="button" *ngIf="isStorageFacilityEnabled" class="simple-button left-icon" (click)="openStorageFacility()"><app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon> {{'vendor.storage-facility' | translate}}</button>
+        </div>
+    </div>
+</div>
+
+
+
+<app-nested-facility-details
+*ngIf="isRatesDataAvailable"
+[columnsToDisplay]="columnsToDisplay"
+[mode]="mode"
+[isFromPage]="isFromPage"
+[data]="vendorDetailsForm"
+[reFrameTable]="reFrameTable"
+(removeStorageFacility)="onRemoveStorageFacility($event)"
+></app-nested-facility-details>
+
+
+
+
+<div class="row mt-3" *ngIf="isStorageFacilityOpen">
+  <div class="col-12" formArrayName="StorageFacilities">
+    <div *ngFor="let facilityDetails of storageFacilityDetailsArray.controls; let i=index; let last = last;" class="indivisual-storage-facility">
+      <div [formGroupName]="i">
+        <app-storage-facility-details
+        [nestedDisplay]="nestedDisplay"
+        [currentIndex]="i"
+        *ngIf="last"
+        [facilityDetailsForm]="facilityDetails"
+        [vendorFormData]="copyOfVendorFormData"
+        [allStorageFacilityList]="storageFacilityDetailsArray"
+        (saveRates)="saveRates($event)"
+        [isFromPage]="isFromPage"></app-storage-facility-details>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row mt-4" *ngIf="showAddCancel">
+    <div class="col-12">
+        <div class="float-end">
+          <button class="secondary-btn mr-2" type="button" mat-raised-button
+            (click)="onResetButtonClick()">
+              {{'common.reset' | translate}}
+            </button>
+            <button class="mr-2" (click)="onOnboard()" type="button" mat-raised-button color="primary" *ngIf="isOnboardEnabled" [disabled]="onboardVendorEnable">{{'common.on-board' | translate}}</button>
+            <button type="button" mat-raised-button color="primary" (click)="onAdd()" *ngIf="isAddEnabled" [disabled]="facilityEnable" >{{'common.add' | translate}}</button>
+        </div>
+    </div>
+</div>
+</div>

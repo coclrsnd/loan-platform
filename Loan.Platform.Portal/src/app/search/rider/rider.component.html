@@ -1,0 +1,378 @@
+
+<h3 class="head-title">
+    <app-page-title></app-page-title>
+</h3>
+<div *ngIf="loadContent" class="search-holder mb-2">
+    <form [formGroup]="riderSearchForm" class="row">
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="Customer">{{'common.customer' | translate}}</label>
+                <input class="form-control"
+                       #Customer
+                       maxlength="50"
+                       type="text"
+                       formControlName="CustomerName"
+                       [matAutocomplete]="autoCoForCustomer" />
+                <mat-autocomplete #autoCoForCustomer="matAutocomplete"
+                panelWidth="auto"
+                                  (optionSelected)="onCustomerChanged($event)">
+                  <mat-option *ngIf="isSearching; else customerTemplate"
+                              disabled="true">
+                    <em>Searching...</em>
+                  </mat-option>
+                  <ng-template #customerTemplate>
+                    <mat-option *ngFor="let customer of customerList" [value]="customer">
+                      {{ customer.Name }}
+                    </mat-option>
+                  </ng-template>
+                  <mat-option *ngIf="!isSearching && noResults"
+                              value=""
+                              disabled="true">
+                    <b>No results found</b>
+                  </mat-option>
+                </mat-autocomplete>
+                <!-- <div class="invalid-feedback">
+                  <div *ngIf="riderSearchForm.get('CustomerName')?.hasError('required') && riderSearchForm.get('CustomerName')?.touched || submittedDetails && riderDetailsGetter['CustomerName'].errors">
+                    {{'common.customer' | translate}}{{'common.is_required' | translate}}
+                  </div>
+                </div> -->
+              </div>
+        </div>
+        <div class="col mb-2">
+            <div class="form-group">
+                <label for="VendorName">{{'rider.vendor' | translate}}</label>
+                <!-- <input maxlength="50" type="text" formControlName="VendorName" class="form-control"
+                [ngClass]="{ 'is-invalid': submittedSearch && riderSearchGetter['VendorName'].errors || riderSearchForm.get('VendorName')?.hasError('pattern') }" /> -->
+                <input
+                    class="form-control"
+                    #Organization
+                    maxlength="50"
+                    type="text"
+                    formControlName="Vendor"
+                    [matAutocomplete]="autoCo"
+                    (change)="onVendorChanged()"
+                    />
+                    <mat-autocomplete
+                    panelWidth="auto"
+                        #autoCo="matAutocomplete"
+                        (optionSelected)="onVendorSelection($event)"
+                        >
+                        <mat-option
+                            *ngIf="isSearching; else organizationTemplate"
+                            disabled="true"
+                        >
+                            <em>Searching...</em>
+                        </mat-option>
+                        <ng-template #organizationTemplate>
+                            <mat-option *ngFor="let org of orgList" [value]="org">
+                            {{ org.Organization }}
+                            </mat-option>
+                        </ng-template>
+                        <mat-option
+                            *ngIf="!isSearching && noResults"
+                            value=""
+                            disabled="true"
+                        >
+                            <b>No results found</b>
+                        </mat-option>
+                    </mat-autocomplete>
+                <div class="invalid-feedback">
+                  <div *ngIf="riderSearchForm.get('VendorName')?.hasError('pattern')">
+                    {{'rider.vendor' | translate}}{{ "common.is_not_valid" | translate }}
+                            </div>
+                  </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="StorageFacilityId">{{'rider.storage-facility' | translate}}</label>
+                <mat-select formControlName="StorageFacilityId" class="form-control">
+                    <mat-option [value]="defaultSelectedValueForDropdownlist">
+                        {{ "common.select" | translate }}
+                    </mat-option>
+                    <mat-option
+                        *ngFor="let facility of facilityList"
+                        [value]="facility.Id"
+                    >
+                        {{ facility.Name }}
+                    </mat-option>
+                </mat-select>
+                <div class="invalid-feedback">
+                  <div *ngIf="riderSearchForm.get('StorageFacilityId')?.hasError('pattern')">
+                    {{'rider.storage-facility' | translate}}{{ "common.is_not_valid" | translate }}
+                            </div>
+                  </div>
+                <!-- <input type="text" formControlName="StorageFacilityName" class="form-control" /> -->
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="Rider">{{'rider.rider-no' | translate}}</label>
+                <input type="text" formControlName="Rider" class="form-control"
+                placeholder="{{'customer-storage-order' | translate}}"
+                [ngClass]="{ 'is-invalid': riderSearchForm.get('Rider')?.hasError('pattern') }" />
+                <div class="invalid-feedback">
+                  <div *ngIf="riderSearchForm.get('Rider')?.hasError('pattern')">
+                    {{'rider.rider-no' | translate}}{{ "common.is_not_valid" | translate }}
+                            </div>
+                  </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="FormEffectiveDate">{{'common.estimated-start-date' | translate}}</label>
+                <span class="date-holder">
+                <input placeholder="{{'common.date-placeholder' | translate}}" #input type="text" class="form-control" formControlName="FormEffectiveDate" [matDatepicker]="picker" (focus)="picker.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <app-svg-icon icon="icon-calendar" class="icon"
+                  matDatepickerToggleIcon></app-svg-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+              </span>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="FormExpiryDate">{{'common.estimated-end-date' | translate}}</label>
+                <span class="date-holder">
+            <input placeholder="{{'common.date-placeholder' | translate}}" #input2 type="text" class="form-control" formControlName="FormExpiryDate" [matDatepicker]="picker2" (focus)="picker2.open()"
+            [ngClass]="{ 'is-invalid': riderSearchForm.hasError('dateIssue') }">
+            <mat-datepicker-toggle matSuffix [for]="picker2">
+              <app-svg-icon icon="icon-calendar" class="icon"
+              matDatepickerToggleIcon></app-svg-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+            <div class="invalid-feedback">
+              <div *ngIf="riderSearchForm.hasError('dateIssue')">{{'error.effDateLessThanExpDate' | translate}}</div>
+            </div>
+          </span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <ng-container *ngIf="isAdvanceSearch">
+            <div class="col-lg-2 col-md-4 mb-2">
+                <div class="form-group">
+                    <label for="Features">{{'rider.features' | translate}}</label>
+                    <mat-select multiple formControlName="StorageFeatureIds" placeholder="{{'search.select-feature' | translate}}" (selectionChange)="onFeaturesChange()" panelClass="mat-select" [(ngModel)]="selectedValues">
+                        <mat-option *ngFor="let feature of storageFeatureDetails; let i =index" [value]="feature.Id">
+                            {{feature.Name}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-2">
+                <div class="form-group">
+                    <label for="CurrencyId">{{'common.currency' | translate}}</label>
+                    <mat-select formControlName="CurrencyId" placeholder="{{'search.select-currency' | translate}}">
+                        <mat-option [value]="defaultSelectedValueForDropdownlist">
+                            {{ "common.select" | translate }}
+                        </mat-option>
+                        <mat-option *ngFor="let option of currencyDetails" [value]="option.Id">
+                            {{option.Code}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-2">
+                <div class="form-group">
+                        <label for="SwitchIn">{{'common.switch-in' | translate}}</label>
+                        <mat-select formControlName="SwitchInMax" placeholder="{{'search.select-switch-in' | translate}}">
+                            <mat-option [value]="defaultSelectedValueForDropdownlist">
+                                {{ "common.select" | translate }}
+                            </mat-option>
+                            <mat-option *ngFor="let option of switchIn" [value]="option.Max">
+                                {{option.DisplayValue}}
+                            </mat-option>
+                        </mat-select>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-2">
+                <div class="form-group">
+                    <div class="form-group">
+                            <label for="SwitchOut">{{'common.switch-out' | translate}}</label>
+                            <mat-select formControlName="SwitchOutMax" placeholder="{{'search.select-switch-out' | translate}}">
+                                <mat-option [value]="defaultSelectedValueForDropdownlist">
+                                    {{ "common.select" | translate }}
+                                </mat-option>
+                                <mat-option *ngFor="let option of switchOut" [value]="option.Max">
+                                    {{option.DisplayValue}}
+                                </mat-option>
+                            </mat-select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-2">
+
+            </div>
+        </ng-container>
+
+        <div class="col-12 bottom-more-less">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <span class="advance-more-less d-block mt-3" [ngClass]="{'arrow-reverse': isAdvanceSearch !== false}" (click)="toggleAdvanceSearch()">
+                <span *ngIf="isAdvanceSearch else elseBlock">{{'common.quick-search' | translate}}</span>
+                    <ng-template #elseBlock>
+                        {{'common.advanced-search' | translate}}
+                    </ng-template>
+                    <app-svg-icon icon="icon-down-arrow-double" class="icon"></app-svg-icon>
+                    </span>
+            </div>
+            <div class="col-lg-6">
+              <div class="float-end">
+                <button class="secondary-btn mr-2" type="button" mat-raised-button
+                (click)="onResetSearch()">
+                {{'common.reset' | translate}}
+              </button>
+                <!-- <button class="secondary-btn mr-2" type="button" mat-raised-button
+                (click)="onSaveSearch()">
+                {{'common.save-search' | translate}}
+              </button> -->
+              <button *ngIf="isAdvanceSearch" type="button" mat-raised-button color="primary" (click)="onSubmitRiderSearchForm()">{{'common.search' | translate}}</button>
+                <button *ngIf="!isAdvanceSearch" type="button" mat-raised-button color="primary" (click)="onSubmitRiderSearchForm()">{{'common.quick-search' | translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+</div>
+<app-saved-search
+  [isSearchEnable]="isSearch"
+  (isContentLoad)="onBackToSearchButtonClick($event)"
+  (searchFormData)="onRiderSavedSearchClick($event)"
+>
+</app-saved-search>
+
+<div class="bg-box mb-3 mt-3">
+    <div class="d-table">
+        <div class="d-table-cell total-holder" *ngFor="let item of storageOrderRibbonModel">
+            <span class="description">
+        {{ item[0] | translate}}
+        </span>
+            <span class="number" *ngIf="item[0] === 'TotalOrdersAmount' || item[0] === 'AverageMonthlyAmount' ; else currencyFormatConversion">
+        {{ item[1] | currency:'':''}}
+        </span>
+        <ng-template #currencyFormatConversion>
+            <span class="number">
+                {{ item[1] }}
+                </span>
+        </ng-template>
+        </div>
+    </div>
+  </div>
+
+<div class="row mt-3 mb-3">
+  <div class="col-12 bottom-more-less">
+    <div class="row g-0">
+      <div class="col-lg-6">
+                <h3 class="m-0 text-bold title-text">
+                    {{'rider.list-of-storage-orders' | translate}}
+                </h3>
+              </div>
+              <div class="col-lg-6">
+                <div class="float-end">
+            <button class="mr-2 d-inline-block simple-button left-icon" type="button" routerLink="../rider/rider-details/create"
+            *ngIf="currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Vendor'"
+            >
+              <app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon>
+              {{'rider.storage-order' | translate}}</button>
+
+              <div class="btn-group d-inline-block">
+                <button class="simple-button mat-button-designed" (click)="$event.stopPropagation();" [matMenuTriggerFor]="menu">
+                  {{'common.action' | translate}} <span class="caret"></span>
+                </button>
+                <mat-menu #menu="matMenu" class="mat-menu-designed">
+                  <button mat-menu-item *ngIf="currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin'" (click)="onCopy()">{{'common.copy' | translate}}</button>
+                  <button mat-menu-item (click)="onUpdate()">{{'common.update' | translate}}</button>
+                  <button mat-menu-item *ngIf="currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin'" (click)="onExpire()">{{'common.expire' | translate}}</button>
+                </mat-menu>
+              </div>
+            <!-- <div class="btn-group d-inline-block mr-2" dropdown>
+                <button id="button-basic" dropdownToggle type="button" class="simple-button dropdown-toggle" aria-controls="dropdown-basic">
+                {{'common.action' | translate}} <span class="caret"></span>
+              </button>
+                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                    <li role="menuitem" *ngIf="currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin'"><button  class="dropdown-item" (click)="onCopy()">{{'common.copy' | translate}}</button></li>
+                    <li role="menuitem"><button class="dropdown-item" (click)="onUpdate()">{{'common.update' | translate}}</button></li>
+                    <li role="menuitem" *ngIf="currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin'"><button  class="dropdown-item" (click)="onExpire()">{{'common.expire' | translate}}</button></li>
+                </ul>
+            </div> -->
+            <!-- <app-svg-icon icon="icon-download-icon" class="icon mr-2"></app-svg-icon>
+            <app-svg-icon icon="icon-printer" class="icon"></app-svg-icon> -->
+        </div>
+    </div>
+</div>
+<div class="mtb-15 alert alert-warning" *ngIf="warningMessage">
+  {{'please-select-at-least-one-record-to-proceed' | translate}} <button type="button" (click)="onCloseWarning()" class="btn-close pull-right" aria-label="Close"></button>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="table-container">
+            <div class="table-height-container table-with-bottom responsive-table ridertable header-no-padding">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef>
+                            <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox> -->
+                        </th>
+                        <td mat-cell  [attr.aria-label]="'Select'" *matCellDef="let row">
+                            <mat-checkbox (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" (click)="$event.stopPropagation(); logSelection()">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Rider">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'rider.rider-no' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'rider.rider-no' | translate" *matCellDef="let element">
+                            <a routerLink="../rider/rider-details/view/{{element.Id}}">
+                          {{element.Rider}}
+                        </a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="VendorName">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'rider.vendor' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'rider.vendor' | translate" *matCellDef="let element"> {{element.VendorName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="StorageFacilityName">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'rider.storage' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'rider.storage' | translate" *matCellDef="let element"> {{element.StorageFacilityName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="EffectiveDate">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'rider.eff-date' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'rider.effective-date' | translate" *matCellDef="let element"> {{element.EffectiveDate | date: defaultDateFormat}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ExpiryDate">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'rider.exp-date' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'rider.expiry-date' | translate" *matCellDef="let element"> {{element.ExpiryDate | date: defaultDateFormat }} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="TotalCars">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'contracted_spaces' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'contracted_spaces' | translate" *matCellDef="let element">
+                            {{element.TotalCars}}
+                        </td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="Hazmat">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'rider.hazmat' | translate}} </th>
+                        <td mat-cell  [attr.aria-label]="'rider.hazmat' | translate" *matCellDef="let element"> {{element.Hazmat}} </td>
+                    </ng-container> -->
+                    <ng-container matColumnDef="SwitchIn">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'common.switch-in' | translate}}</th>
+                        <td mat-cell  [attr.aria-label]="'common.switch-in' | translate" *matCellDef="let element"> {{element.SwitchIn | currency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="SwitchOut">
+                        <th mat-sort-header mat-header-cell scope="col" *matHeaderCellDef> {{'common.switch-out' | translate}}</th>
+                        <td mat-cell  [attr.aria-label]="'common.switch-out' | translate" *matCellDef="let element"> {{element.SwitchOut | currency}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <table class="w-100 no-record">
+                    <tr *ngIf="dataSource?.length === 0 || dataSource === undefined">
+                      <td [attr.colspan]="displayedColumns.length">
+                        {{'no-records-found' | translate}}
+                      </td>
+                    </tr>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>

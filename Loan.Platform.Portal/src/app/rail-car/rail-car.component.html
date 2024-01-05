@@ -1,0 +1,57 @@
+<div class="add-rail-car my-3">
+    <mat-icon>add</mat-icon>
+    <label> Add Railcar</label>
+</div>
+<div class="example-container mat-elevation-z8 white-space-tbl rail-car">
+    <table mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort #sort="matSort">
+        <ng-container matColumnDef="position">
+            <th mat-header-cell scope="col" *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element" class="col-img-acquire-all-space">
+                <img [src]="element.imageUrl" />
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="vendor">
+            <th mat-header-cell scope="col" *matHeaderCellDef> {{'vendors' | translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.vendor}} </td>
+        </ng-container>
+        <ng-container matColumnDef="location">
+            <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.location' | translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+        </ng-container>
+        <ng-container matColumnDef="contracted_spaces">
+            <th mat-header-cell scope="col" *matHeaderCellDef> {{'contracted_spaces' | translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.contracted_spaces}} </td>
+        </ng-container>
+        <ng-container matColumnDef="cars_on_hand">
+            <th mat-header-cell scope="col" *matHeaderCellDef> {{'cars_on_hand' | translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.cars_on_hand}} </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell scope="col" *matHeaderCellDef> {{'action' | translate}} </th>
+            <mat-cell *matCellDef="let element">
+                <button mat-icon-button>
+          <mat-icon>edit_note</mat-icon>
+        </button>
+                <button mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+                <button mat-icon-button *ngIf="expandedElement !== element" [class.expanded]="expandedElement === element" (click)="expandedElement = element">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+                <button mat-icon-button *ngIf="expandedElement === element" [class.expanded]="expandedElement === undefined" (click)="expandedElement = undefined">
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="expandedDetail">
+            <mat-cell *matCellDef="let detail">
+                The symbol for {{detail.name}} is {{detail.symbol}}
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row"></mat-row>
+        <mat-row *matRowDef="let row; columns: ['expandedDetail'];" [@detailExpand]="row === expandedElement ? 'expanded' : 'collapsed'" style="overflow: hidden">
+        </mat-row>
+    </table>
+    <mat-paginator class="paginator" #MatPaginator pageSize="5"></mat-paginator>
+</div>

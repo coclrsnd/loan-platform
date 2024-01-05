@@ -1,0 +1,35 @@
+<div class="storage-package">
+  <ng-container>
+    <h3>{{'booknow.booking-summary' | translate}}</h3>
+    <ul>
+      <li class="row g-0">
+        <label class="col-md-6">{{'vendor.storage-facility' | translate}}:</label>
+        <span class="col-md-6"> {{storageInfo?.facility?.Name}} </span>
+      </li>
+      <li class="row g-0">
+        <label class="col-md-6">{{'common.base-daily-rate' | translate}}:</label>
+        <span class="col-md-6"> ${{storageInfo?.facility?.DailyStorageRate| number : '1.2-2'}} ({{storageInfo?.facility?.CurrencyCode}}) </span>
+      </li>
+      <li class="row g-0">
+        <label class="col-md-6">{{'common.interchange-rr' | translate}}:</label>
+        <span class="col-md-6"> {{storageInfo?.facility?.Interchanges}} </span>
+      </li>
+      <ng-container *ngIf="storageInfo.currentIndex >=1">
+        <li class="row g-0">
+          <label class="col-md-6">{{'common.anticipated-start-date' | translate}}:</label>
+          <span class="col-md-6"> {{opportunityModel?.StartDate | date:defaultDateTimeFormat}} </span>
+        </li>
+        <li class="row g-0">
+          <label class="col-md-6">{{'common.anticipated-end-date' | translate}}:</label>
+          <span class="col-md-6"> {{opportunityModel?.EndDate | date:defaultDateTimeFormat}} </span>
+        </li>
+        <li class="row g-0">
+          <label class="col-md-6">{{'common.approx_no_spaces' | translate}}:</label>
+          <span class="col-md-6">
+            {{opportunityModel?.TotalNoApproxSpaces === null ? 'Not Available' : opportunityModel?.TotalNoApproxSpaces}}
+          </span>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-container>
+</div>

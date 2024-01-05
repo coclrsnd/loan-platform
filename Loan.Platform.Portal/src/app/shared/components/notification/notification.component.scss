@@ -1,0 +1,73 @@
+@import "/src/assets/scss/variables";
+.angular-carousel-holder {
+    margin: 10px;
+    margin-bottom: 100px;
+    background: $whight-colour;
+    border-radius: 5px;
+    h3 {
+        color: #16366f;
+        margin: 0;
+        padding: 5px;
+        border-bottom: 1px solid $application-gray-colour;
+        line-height: 15px;
+        margin-bottom: 5px;
+        mat-icon {
+            float: right;
+            margin-top: -3px;
+            background: #16366f;
+            border-radius: 50%;
+            color: $whight-colour;
+            height: 20px;
+            width: 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
+}
+
+::ng-deep {
+    angular-carousel {
+        .carousel__ {
+            &previous,
+            &next {
+                padding: 0;
+                top: -3px;
+                bottom: auto;
+                svg {
+                    width: 15px;
+                    height: 15px;
+                }
+                button {
+                    color: #16366f;
+                    width: 15px;
+                    height: 15px;
+                }
+            }
+            &previous {
+                left: auto;
+                right: 45px;
+            }
+        }
+        .slider-content {
+            text-align: center;
+            p {
+                color: #16366f;
+                margin-top: 5px;
+            }
+            span {
+                &.slide-number {
+                    color: #16366f;
+                    display: block;
+                    text-align: center;
+                    margin-top: -12px;
+                    margin-right: 5px;
+                    min-width: 40px;
+                    float: right;
+                }
+            }
+        }
+        .carousel__slide {
+            padding: 5px !important;
+        }
+    }
+}

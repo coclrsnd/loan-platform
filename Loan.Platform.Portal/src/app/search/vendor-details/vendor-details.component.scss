@@ -1,0 +1,20 @@
+@import "/src/assets/scss/variables";
+.simple-button {
+    &.left-icon {
+        app-svg-icon {
+            top: 0;
+        }
+    }
+}
+
+::ng-deep {
+    table {
+        tr {
+            &.element-row {
+                background-color: $whight-colour;
+                font-weight: 500;
+                border-radius: 5px;
+            }
+        }
+    }
+}

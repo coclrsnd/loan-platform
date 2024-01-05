@@ -1,0 +1,163 @@
+<h3 class="head-title">
+    <app-page-title></app-page-title>
+</h3>
+<div class="search-holder mb-2">
+    <form [formGroup]="usersForm" class="row">
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="Name">{{'common.name' | translate}}</label>
+                <input type="text" placeholder="John" maxlength="50" appCharactorOnly formControlName="FirstName" class="form-control" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="CompanyName">{{'common.company-name' | translate}}</label>
+                <input type="text" maxlength="50" [ngClass]="{ 'is-invalid': usersForm.get('CompanyName')?.hasError('pattern') }" placeholder="{{ 'customer-company-name' | translate }}" formControlName="CompanyName" class="form-control" />
+                <div class="invalid-feedback">
+                  <div *ngIf="usersForm.get('CompanyName')?.hasError('pattern')">
+                    {{ "common.company-name" | translate}}{{ "common.is_not_valid" | translate }}
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="StatusId">{{'common.status' | translate}}</label>
+                <mat-select formControlName="StatusId">
+                  <mat-option [value]="defaultSelectedValueForDropdownlist">
+                    {{ "common.select" | translate }}
+                  </mat-option>
+                    <mat-option *ngFor="let option of statusDetails" [value]="option.Id">
+                        {{option.Name}}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-2">
+            <div class="float-end mt-4">
+              <button class="ml-2 secondary-btn" type="button" mat-raised-button (click)="onResetSearch()">{{'common.reset' | translate}}</button>
+              <!-- <button class="ml-2 secondary-btn" type="button" mat-raised-button>{{'common.save-search' | translate}}</button> -->
+              <button class="ml-2" type="button" mat-raised-button color="primary" (click)="onSearchUsersForm()">{{'common.quick-search' | translate}}</button>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-12 users-table mt-3 responsive-table table-height-container table-with-bottom">
+        <table mat-table #table [dataSource]="dataSource" class="w-100">
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell scope="col" *matHeaderCellDef>
+                <!-- <mat-checkbox
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                >
+                </mat-checkbox> -->
+              </th>
+              <td mat-cell [attr.aria-label]="'select' | translate" *matCellDef="let row">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- FirstName Column -->
+            <ng-container matColumnDef="FirstName">
+              <th mat-header-cell scope="col" *matHeaderCellDef>{{'common.first-name' | translate}}</th>
+              <td mat-cell [attr.aria-label]="'common.first-name' | translate" *matCellDef="let element">{{element.FirstName}}</td>
+            </ng-container>
+
+            <!-- LastName Column -->
+            <ng-container matColumnDef="LastName">
+              <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.last-name' | translate}} </th>
+              <td mat-cell [attr.aria-label]="'common.last-name' | translate" *matCellDef="let element"> {{element.LastName}} </td>
+            </ng-container>
+
+            <!-- CompanyName Column -->
+            <ng-container matColumnDef="CompanyName">
+              <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.company-name' | translate}} </th>
+              <td mat-cell [attr.aria-label]="'common.company-name' | translate" *matCellDef="let element"> {{element.CompanyName}} </td>
+            </ng-container>
+
+            <!-- CompanyEmail Column -->
+            <ng-container matColumnDef="CompanyEmail">
+              <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.company-email' | translate}} </th>
+              <td mat-cell [attr.aria-label]="'common.company-email' | translate" *matCellDef="let element"> {{element.EmailId}} </td>
+            </ng-container>
+
+             <!-- Title Column -->
+             <ng-container matColumnDef="Title">
+                <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.title' | translate}} </th>
+                <td mat-cell [attr.aria-label]="'common.title' | translate" *matCellDef="let element"> {{element.Designation}} </td>
+              </ng-container>
+
+               <!-- Contact No. Column -->
+            <ng-container matColumnDef="ContactNumber">
+                <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.contact-no' | translate}} </th>
+                <td mat-cell [attr.aria-label]="'common.contact-no' | translate" *matCellDef="let element"> {{element.ContactNo}} </td>
+              </ng-container>
+
+             <!-- User Type Column -->
+             <ng-container matColumnDef="Organization">
+              <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.organization' | translate}} </th>
+              <td mat-cell [attr.aria-label]="'common.organization' | translate" *matCellDef="let element">
+                <ng-template [ngIf]="element.Status !== 'Verified'" [ngIfElse]="elseBlock">
+                    {{element.Organization}}
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    <mat-select class="w-80" [(value)]="element.Organization"
+                    (change)="onValueChange(element)"
+                    placeholder="Select Organization">
+                      <mat-option *ngFor="let option of organizations" [value]="option">
+                          {{option.Name}}
+                      </mat-option>
+                  </mat-select>
+                  </ng-template>
+                </td>
+            </ng-container>
+
+            <!-- User Type Column -->
+            <ng-container matColumnDef="UserType">
+              <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.user-type' | translate}} </th>
+              <td mat-cell [attr.aria-label]="'common.user-type' | translate" *matCellDef="let element">
+                <ng-template [ngIf]="element.Status !== 'Verified'" [ngIfElse]="elseBlock">
+                    {{element.UserType}}
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    <mat-select class="w-80" [(value)]="element.UserType"
+                    (change)="onValueChange(element)"
+                    placeholder="Select User Type">
+                      <mat-option *ngFor="let option of userType" [value]="option">
+                          {{option.Name}}
+                      </mat-option>
+                  </mat-select>
+                  </ng-template>
+              </td>
+            </ng-container>
+        <!-- Status Column -->
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell scope="col" *matHeaderCellDef> {{'common.status' | translate}} </th>
+            <td mat-cell [attr.aria-label]="'common.status' | translate" *matCellDef="let element"> {{element.Status}} </td>
+          </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </div>
+    <mat-paginator *ngIf="isPaginationEnabled" [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"
+      [showFirstLastButtons]="true">
+    </mat-paginator>
+</div>
+
+<div class="row" *ngIf="isVerifiedSelected">
+    <div class="col-12">
+        <div class="float-end mt-4">
+          <button class="secondary-btn ml-2 mr-2" type="button" mat-raised-button (click)="onStatusReject()">{{'common.reject' | translate}}</button>
+          <button type="button" mat-raised-button color="primary" (click)="onStatusApproval()">{{'common.approve' | translate}}</button>
+       </div>
+    </div>
+</div>

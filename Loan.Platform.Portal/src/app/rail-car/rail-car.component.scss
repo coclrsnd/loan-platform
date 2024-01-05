@@ -1,0 +1,78 @@
+@import "/src/assets/scss/variables";
+table {
+    width: 100%;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+}
+
+.col-img-acquire-all-space {
+    padding: 0;
+    padding-right: 10px;
+}
+
+.col-img-acquire-all-space img {
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    border-radius: 0px 5px 5px 0px;
+}
+
+td.mat-cell:first-of-type.col-img-acquire-all-space {
+    padding-left: 0;
+}
+
+table {
+    width: 100%;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: #f5f5f5;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+.add-rail-car {
+    padding: 15px;
+    background: repeating-linear-gradient( 150deg, #ffffff, #ffffff 5px, #ecf1f9 5px, #ecf1f9 11px);
+    border-radius: 6px;
+    text-align: center;
+    font-size: 20px;
+    box-shadow: 0 0 2px $application-gray-colour;
+}

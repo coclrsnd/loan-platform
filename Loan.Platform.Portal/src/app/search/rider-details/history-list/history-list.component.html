@@ -1,0 +1,32 @@
+<div class="row g-0">
+  <div class="col-12 history-table responsive-table">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <ng-container *ngIf="column === 'CreatedTime'">
+          <th mat-header-cell scope="col" *matHeaderCellDef>
+            {{ column | translate }}
+          </th>
+          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+            {{ element.CreatedTime | date:'short' }}
+          </td>
+        </ng-container>
+        <th mat-header-cell scope="col" *matHeaderCellDef> {{column | translate}} </th>
+        <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element"> {{element[column]}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    </table>
+    <table class="w-100 no-record">
+      <tr *ngIf="dataSource?.length === 0 || dataSource === undefined">
+        <td [attr.colspan]="columnsToDisplay.length">
+          {{'no-records-found' | translate}}
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="isPaginationEnabled" [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"
+                   [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,339 @@
+<h3 class="head-title">
+  {{ pageTitle }} {{ "common.customer" | translate }}
+  <button class="simple-button left-icon" type="button" (click)="onUpadate()"
+        *ngIf="isCreateUpdate && (currentUserRole === 'Customer' || currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin')">
+    <app-svg-icon icon="icon-update-icon" class="icon"></app-svg-icon>
+    {{ "common.update" | translate }}
+  </button>
+</h3>
+<div class="search-holder mb-2" [ngClass]="{ isViewMode: isViewMode }">
+  <form [formGroup]="onBoardCustomerForm" class="row">
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="OrganizationName" class="required">{{
+          "common.customer" | translate
+          }}</label>
+
+        <input class="form-control"
+        placeholder="{{'customer-company-name' | translate}}"
+        #Organization type="text"
+        (blur)="onOrganizationBlur($event)"
+        [ngClass]="{ 'is-invalid': (onBoardCustomerForm.get('OrganizationName')?.hasError('pattern')
+        || (submittedonBoardCustomer && onBoardCustomer['OrganizationName'].errors) ||
+        onBoardCustomerForm.get('OrganizationName')?.hasError('notUnique'))}"
+          maxlength="50" formControlName="OrganizationName"
+          [matAutocomplete]="autoCompleteOrganization" />
+        <mat-autocomplete
+        panelWidth="auto"
+        #autoCompleteOrganization="matAutocomplete" (optionSelected)="onOrganizationChanged($event)">
+          <mat-option *ngIf="isSearching; else organizationTemplate" disabled="true">
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #organizationTemplate>
+            <mat-option *ngFor="let org of organizationList" [value]="org">
+              {{ org.Name }}
+            </mat-option>
+          </ng-template>
+          <mat-option *ngIf="!isSearching && noResults && !onBoardCustomerForm.controls['OrganizationName'].hasError('pattern')" value="" disabled="true">
+            <button color="primary" (mousedown)="$event.preventDefault()" class="form-control" mat-raised-button (click)="openDialog()">
+              {{'common.add-new' | translate}}
+            </button>
+          </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback">
+          <div *ngIf="(onBoardCustomerForm.get('OrganizationName')?.hasError('required') &&
+                onBoardCustomerForm.get('OrganizationName')?.touched) ||
+              (submittedonBoardCustomer &&
+                onBoardCustomer['OrganizationName'].errors &&
+                !onBoardCustomerForm.get('OrganizationName')?.hasError('notUnique'))
+            ">
+            {{ "common.customer" | translate
+            }}{{ "common.is_required" | translate }}
+          </div>
+          <div *ngIf="onBoardCustomerForm.controls['OrganizationName'].hasError('pattern')">
+            {{ "common.customer" | translate}}{{ "common.is_not_valid" | translate }}
+          </div>
+          <div *ngIf="onBoardCustomerForm.get('OrganizationName')?.hasError('notUnique')">
+            {{'common.duplicate-customer' | translate}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="Name" class="required">{{
+          "common.contact_person_name" | translate
+          }}</label>
+        <input placeholder="{{'customer-nam' | translate}}" type="text" formControlName="Name" appCharactorOnly maxlength="50"
+          class="form-control" [ngClass]="{
+            'is-invalid':
+              submittedonBoardCustomer && onBoardCustomer['Name'].errors
+          }" />
+        <div class="invalid-feedback">
+          <div *ngIf="
+              (onBoardCustomerForm.get('Name')?.hasError('required') &&
+                onBoardCustomerForm.get('Name')?.touched) ||
+              (submittedonBoardCustomer && onBoardCustomer['Name'].errors)
+            ">
+            {{ "common.contact_person_is_required" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="PrimaryContactNo" class="required">{{
+          "common.primary-contact" | translate
+          }}</label>
+        <input type="text" formControlName="PrimaryContactNo" class="form-control"
+          placeholder="{{'customer-contact' | translate}}" maxlength="50" [ngClass]="{
+            'is-invalid':
+              submittedonBoardCustomer &&
+              onBoardCustomer['PrimaryContactNo'].errors ||
+              onBoardCustomerForm.get('PrimaryContactNo')?.hasError('pattern')
+          }" />
+        <div class="invalid-feedback">
+          <div *ngIf="
+              (onBoardCustomerForm
+                .get('PrimaryContactNo')
+                ?.hasError('required') &&
+                onBoardCustomerForm.get('PrimaryContactNo')?.touched) ||
+              (submittedonBoardCustomer &&
+                onBoardCustomer['PrimaryContactNo'].errors)
+            ">
+            {{ "common.primary-contact_is_required" | translate }}
+          </div>
+          <div *ngIf="onBoardCustomerForm.get('PrimaryContactNo')?.hasError('pattern')">
+            {{'common.primary-contact' | translate}}{{ "common.is_not_valid" | translate }}
+                    </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="PrimaryContactEmail" class="required">{{
+          "common.primary-email" | translate
+          }}</label>
+        <input type="text" formControlName="PrimaryContactEmail" class="form-control" maxlength="250"
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="{{'customer-email-id' | translate}}"
+          [ngClass]="{
+            'is-invalid':
+              submittedonBoardCustomer &&
+              onBoardCustomer['PrimaryContactEmail'].errors
+          }" />
+        <div class="invalid-feedback">
+          <div *ngIf="
+              (onBoardCustomerForm
+                .get('PrimaryContactEmail')
+                ?.hasError('required') &&
+                onBoardCustomerForm.get('PrimaryContactEmail')?.touched) ||
+              (submittedonBoardCustomer &&
+                onBoardCustomer['PrimaryContactEmail'].errors)
+            ">
+            {{ "common.primary-email_is_required" | translate }}
+          </div>
+          <div
+            *ngIf="onBoardCustomerForm.get('PrimaryContactEmail')?.hasError('pattern') && onBoardCustomerForm.get('PrimaryContactEmail')?.touched || submittedonBoardCustomer && onBoardCustomer['PrimaryContactEmail'].errors && onBoardCustomerForm.get('PrimaryContactEmail')?.value">
+            {{"common.primary-email" | translate}} {{'common.is_not_valid' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="SecondaryContactNo">{{
+          "common.secondary-contact" | translate
+          }}</label>
+        <input type="text" placeholder="{{'customer-contact' | translate}}"
+          formControlName="SecondaryContactNo" maxlength="50"
+          [ngClass]="{ 'is-invalid': onBoardCustomerForm.get('SecondaryContactNo')?.hasError('pattern') }"
+          class="form-control" />
+          <div class="invalid-feedback">
+            <div *ngIf="onBoardCustomerForm.get('SecondaryContactNo')?.hasError('pattern')">
+              {{'common.common.secondary-contact' | translate}}{{ "common.is_not_valid" | translate }}
+                      </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="SecondaryContactEmail">{{
+          "common.secondary-email" | translate
+          }}</label>
+        <input type="text" placeholder="{{'customer-email-id' | translate}}" formControlName="SecondaryContactEmail"
+        maxlength="250"
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control" />
+          <div class="invalid-feedback">
+            <div
+            *ngIf="onBoardCustomerForm.get('SecondaryContactEmail')?.hasError('pattern') && onBoardCustomerForm.get('SecondaryContactEmail')?.touched || submittedonBoardCustomer && onBoardCustomer['SecondaryContactEmail'].errors && onBoardCustomerForm.get('SecondaryContactEmail')?.value">
+            {{"common.secondary-email" | translate}} {{'common.is_not_valid' | translate}}</div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="CountryId">{{ "common.country" | translate }}</label>
+        <mat-select formControlName="CountryId" class="form-control"
+          (selectionChange)="onCountrySelectionChanged($event)">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let option of CountryList" [value]="option.Id">
+            {{ option.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="StateId">{{ "common.state" | translate }}</label>
+        <mat-select formControlName="StateId" class="form-control">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let option of StatesList" [value]="option.Id">
+            {{ option.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="City">{{ "common.city" | translate }}</label>
+        <input type="text" placeholder="{{'customer-city' | translate}}" maxlength="250" formControlName="City" class="form-control" />
+      </div>
+    </div>
+    <div class="col-md-4 mb-2">
+      <div class="form-group">
+        <label for="Address">{{ "common.address" | translate }}</label>
+        <input formControlName="Address" maxlength="500" placeholder="{{'customer-address' | translate}}" class="form-control" />
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="ZipCode">{{ "common.zip-code" | translate }}</label>
+        <input type="text" (blur)="onUpperCase($event)" placeholder="{{'customer-zip-code' | translate}}" maxlength="7" formControlName="ZipCode" class="form-control" />
+        <div class="invalid-feedback">
+          <div *ngIf="onBoardCustomerForm.controls['ZipCode'].hasError('pattern')">
+            {{ "common.zip-code" | translate}}{{ "common.is_not_valid" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="EffectiveDate" class="required">{{
+          "common.effective-date" | translate
+          }}</label>
+        <span class="date-holder">
+          <input #input type="text" class="form-control" formControlName="EffectiveDate"
+            placeholder="{{'common.date-placeholder' | translate}}" [matDatepicker]="picker" (focus)="picker.open()"
+            [ngClass]="{
+              'is-invalid':
+                submittedonBoardCustomer &&
+                onBoardCustomer['EffectiveDate'].errors
+            }"/>
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+        </span>
+        <div class="invalid-feedback">
+          <div *ngIf="
+              (onBoardCustomerForm.get('EffectiveDate')?.hasError('required') &&
+                onBoardCustomerForm.get('EffectiveDate')?.touched) ||
+              (submittedonBoardCustomer &&
+                onBoardCustomer['EffectiveDate'].errors)
+            ">
+            {{ "common.effective-date" | translate
+            }}{{ "common.is_required" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="ExpiryDate" class="required">{{
+          "common.expiration-date" | translate
+          }}</label>
+        <span class="date-holder">
+          <input #input2 type="text" class="form-control" formControlName="ExpiryDate" [matDatepicker]="picker2"
+          [ngClass]="{ 'is-invalid': onBoardCustomerForm.hasError('expiryIssue') }"
+            placeholder="{{'common.date-placeholder' | translate}}" (focus)="picker2.open()"
+            [ngClass]="{
+              'is-invalid':
+                submittedonBoardCustomer &&
+                onBoardCustomer['ExpiryDate'].errors
+            }"/>
+          <mat-datepicker-toggle matSuffix [for]="picker2">
+            <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+        </span>
+        <div class="invalid-feedback">
+          <div *ngIf="
+              (onBoardCustomerForm.get('ExpiryDate')?.hasError('required') &&
+                onBoardCustomerForm.get('ExpiryDate')?.touched) ||
+              (submittedonBoardCustomer && onBoardCustomer['ExpiryDate'].errors)
+            ">
+            {{ "common.expiration-date" | translate
+            }}{{ "common.is_required" | translate }}
+          </div>
+          <div *ngIf="onBoardCustomerForm.hasError('expiryIssue')">{{'error.effDateLessThanExpDate' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2" *ngIf="(this.currentUserRole !== 'Vendor')">
+      <div class="form-group">
+        <label for="PercentageMargin" class="required">{{'common.percentage-margin' | translate}}</label>
+        <input type="text" formControlName="PercentageMargin"
+               maxlength="6"
+               appPercentage
+               placeholder="{{'customer-percentage' | translate}}"
+               class="form-control" [ngClass]="{ 'is-invalid': submittedonBoardCustomer && onBoardCustomer['PercentageMargin'].errors }"
+               (focus)="onFocusNumber($event)"
+               (blur)="onBlurPercent($event)" />
+        <div class="invalid-feedback">
+          <div *ngIf="onBoardCustomerForm.get('PercentageMargin')?.hasError('required') && onBoardCustomerForm.get('PercentageMargin')?.touched || submittedonBoardCustomer && onBoardCustomer['PercentageMargin'].errors">
+            {{'common.percentage-margin' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="onBoardCustomerForm.controls['PercentageMargin'].hasError('max')">
+            {{'maximum_value_for_this_field_is' | translate}} {{onBoardCustomerForm.controls['PercentageMargin'].errors['max']['max']}}%
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 mb-2">
+      <div class="form-group">
+        <label for="Website">{{ "common.website" | translate }}</label>
+        <input type="text" placeholder="{{'customer-website' | translate}}" maxlength="250" formControlName="Website" class="form-control" />
+      </div>
+    </div>
+    <div class="col-md-12 mb-2">
+      <div class="form-group">
+        <label for="Description">{{ "common.description" | translate }}</label>
+        <textarea type="text" placeholder="{{ 'customer-description' | translate }}" maxlength="1000" formControlName="Description" class="form-control height-5"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="float-end" *ngIf="!isCreateUpdate">
+      <button *ngIf="(mode === 'edit')" class="secondary-btn mr-2" type="button" mat-raised-button
+      (click)="onCancelUpdateClick()">
+      {{ "common.cancel" | translate }}
+    </button>
+    <button class="secondary-btn mr-2" type="button" mat-raised-button (click)="onReset()">
+      {{ "common.reset" | translate }}
+    </button>
+    <button *ngIf="isFromPage === 'searchCustomerDetails'"  type="button" mat-raised-button
+        color="primary" (click)="onUpdateCustomerForm()">
+        {{ "common.update" | translate }}
+      </button>
+      <button *ngIf="isFromPage === 'onboardCustomer'" type="button" mat-raised-button color="primary"
+        (click)="onSubmitonBoardCustomerForm()">
+        {{ "common.on-board" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

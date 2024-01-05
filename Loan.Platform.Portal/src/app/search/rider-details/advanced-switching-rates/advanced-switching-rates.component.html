@@ -1,0 +1,173 @@
+<h3 class="mt-2 mb-0">{{'rider.advanced-switching-rates' | translate}}</h3>
+
+<div class="row" [formGroup]="AdvancedSwitchingRate">
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+        <label for="StandardSwitchIn" class="required">
+         {{ 'common.standard' | translate}} {{'common.switch-in' | translate}}</label>
+        <input type="text" formControlName="StandardSwitchIn" class="form-control"
+        maxlength="9"
+        ngCurrencyOnly
+        placeholder="{{'customer-rate' | translate}}"
+        [ngClass]="{ 'is-invalid': isDetailsSubmitted && AdvancedSwitchingRate.get('StandardSwitchIn')?.errors }"
+        (focus)="onFocusNumber($event)"
+        (blur)="onBlurAmount($event)"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="AdvancedSwitchingRate.get('StandardSwitchIn')?.hasError('required') && AdvancedSwitchingRate.get('StandardSwitchIn')?.touched || isDetailsSubmitted && AdvancedSwitchingRate.get('StandardSwitchIn')?.errors">
+              {{'common.standard' | translate}} {{'common.switch-in' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="AdvancedSwitchingRate.get('StandardSwitchIn')?.hasError('max')">
+              {{'maximum_value_for_this_field_is' | translate}} {{AdvancedSwitchingRate.get('StandardSwitchIn')?.errors['max']['max']}}
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+        <label for="StandardSwitchOut" class="required">
+          {{ 'common.standard' | translate}} {{'common.switch-out' | translate}}</label>
+        <input type="text" formControlName="StandardSwitchOut" class="form-control"
+        maxlength="9"
+        ngCurrencyOnly
+        placeholder="{{'customer-rate' | translate}}"
+        [ngClass]="{ 'is-invalid': isDetailsSubmitted && AdvancedSwitchingRate.get('StandardSwitchOut')?.errors }"
+        (focus)="onFocusNumber($event)"
+        (blur)="onBlurAmount($event)"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="AdvancedSwitchingRate.get('StandardSwitchOut')?.hasError('required') && AdvancedSwitchingRate.get('StandardSwitchOut')?.touched || isDetailsSubmitted && AdvancedSwitchingRate.get('StandardSwitchOut')?.errors">
+              {{'common.standard' | translate}} {{'common.switch-out' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="AdvancedSwitchingRate.get('StandardSwitchOut')?.hasError('max')">
+              {{'maximum_value_for_this_field_is' | translate}} {{AdvancedSwitchingRate.get('StandardSwitchOut')?.errors['max']['max']}}
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-8 col-md-4 mb-2"></div>
+
+  <div class="col-lg-12 col-md-12 mb-2">
+    <div class="form-group">
+      <span>
+        <mat-checkbox (change)="onAdvancedLoadedSwitchingChanged($event)"
+          color="primary" #loadedSwitchingCheckbox
+          [checked]="false"
+          formControlName="IsAdvancedLoadedSwitchingEnabled"
+          class="example-margin mr-2">
+            <span class="d-inline-block ml-10px">{{'rider.advanced-loaded-switching' | translate}}</span>
+        </mat-checkbox>
+      </span>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+        <label for="LoadedSwitchIn"
+        [ngClass]="{ 'required': isAdvancedLoadedSwitchingEnabled }">
+          {{'common.loaded-switch-in' | translate}}</label>
+        <input type="text" formControlName="LoadedSwitchIn" class="form-control"
+        maxlength="9"
+        ngCurrencyOnly
+        placeholder="{{'customer-rate' | translate}}"
+        [ngClass]="{ 'is-invalid': isDetailsSubmitted && AdvancedSwitchingRate.get('LoadedSwitchIn')?.errors }"
+        (focus)="onFocusNumber($event)"
+        (blur)="onBlurAmount($event)"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="AdvancedSwitchingRate.get('LoadedSwitchIn')?.hasError('required') && AdvancedSwitchingRate.get('LoadedSwitchIn')?.touched || isDetailsSubmitted && AdvancedSwitchingRate.get('LoadedSwitchIn')?.errors">
+              {{'common.loaded-switch-in' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="AdvancedSwitchingRate.get('LoadedSwitchIn')?.hasError('max')">
+              {{'maximum_value_for_this_field_is' | translate}} {{AdvancedSwitchingRate.get('LoadedSwitchIn')?.errors['max']['max']}}
+          </div>
+        </div>
+    </div>
+
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+        <label for="LoadedSwitchOut"
+        [ngClass]="{ 'required': isAdvancedLoadedSwitchingEnabled }">
+          {{'common.loaded-switch-out' | translate}}</label>
+        <input type="text" formControlName="LoadedSwitchOut" class="form-control"
+        maxlength="9"
+        ngCurrencyOnly
+        placeholder="{{'customer-rate' | translate}}"
+        [ngClass]="{ 'is-invalid': isDetailsSubmitted && AdvancedSwitchingRate.get('LoadedSwitchOut')?.errors }"
+        (focus)="onFocusNumber($event)"
+        (blur)="onBlurAmount($event)"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="AdvancedSwitchingRate.get('LoadedSwitchOut')?.hasError('required') && AdvancedSwitchingRate.get('LoadedSwitchOut')?.touched || isDetailsSubmitted && AdvancedSwitchingRate.get('LoadedSwitchOut')?.errors">
+              {{'common.loaded-switch-out' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="AdvancedSwitchingRate.get('LoadedSwitchOut')?.hasError('max')">
+              {{'maximum_value_for_this_field_is' | translate}} {{AdvancedSwitchingRate.get('LoadedSwitchOut')?.errors['max']['max']}}
+          </div>
+        </div>
+    </div>
+
+  </div>
+  <div class="col-lg-8 col-md-4 mb-2"></div>
+  <div class="col-lg-12 col-md-12 mb-2">
+    <div class="form-group">
+      <span>
+        <mat-checkbox (change)="onAdvancedHazmatSwitchingChanged($event)"
+        color="primary" #hazmatSwitchingCheckbox
+        formControlName="IsAdvancedHazmatSwitchingEnabled"
+        [checked]="false"
+        class="example-margin mr-2">
+            <span class="d-inline-block ml-10px">{{'rider.advanced-hazmat-switching' | translate}}</span>
+        </mat-checkbox>
+      </span>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+        <label for="HazmatSwitchIn"
+        [ngClass]="{ 'required': isAdvancedHazmatSwitchingEnabled }">
+          {{'common.hazmat-switch-in' | translate}}</label>
+        <input type="text" formControlName="HazmatSwitchIn" class="form-control"
+        maxlength="9"
+        ngCurrencyOnly
+        placeholder="{{'customer-rate' | translate}}"
+        [ngClass]="{ 'is-invalid': isDetailsSubmitted && AdvancedSwitchingRate.get('HazmatSwitchIn')?.errors }"
+        (focus)="onFocusNumber($event)"
+        (blur)="onBlurAmount($event)"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="AdvancedSwitchingRate.get('HazmatSwitchIn')?.hasError('required') && AdvancedSwitchingRate.get('HazmatSwitchIn')?.touched || isDetailsSubmitted && AdvancedSwitchingRate.get('HazmatSwitchIn')?.errors">
+              {{'common.hazmat-switch-in' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="AdvancedSwitchingRate.get('HazmatSwitchIn')?.hasError('max')">
+              {{'maximum_value_for_this_field_is' | translate}} {{AdvancedSwitchingRate.get('HazmatSwitchIn')?.errors['max']['max']}}
+          </div>
+        </div>
+    </div>
+
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+        <label for="HazmatSwitchOut"
+        [ngClass]="{ 'required': isAdvancedHazmatSwitchingEnabled }">
+          {{'common.hazmat-switch-out' | translate}}</label>
+        <input type="text" formControlName="HazmatSwitchOut" class="form-control"
+        maxlength="9"
+        ngCurrencyOnly
+        placeholder="{{'customer-rate' | translate}}"
+        [ngClass]="{ 'is-invalid': isDetailsSubmitted && AdvancedSwitchingRate.get('HazmatSwitchOut')?.errors }"
+        (focus)="onFocusNumber($event)"
+        (blur)="onBlurAmount($event)"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="AdvancedSwitchingRate.get('HazmatSwitchOut')?.hasError('required') && AdvancedSwitchingRate.get('HazmatSwitchOut')?.touched || isDetailsSubmitted && AdvancedSwitchingRate.get('HazmatSwitchOut')?.errors">
+              {{'common.hazmat-switch-out' | translate}}{{'common.is_required' | translate}}
+          </div>
+          <div *ngIf="AdvancedSwitchingRate.get('HazmatSwitchOut')?.hasError('max')">
+              {{'maximum_value_for_this_field_is' | translate}} {{AdvancedSwitchingRate.get('HazmatSwitchOut')?.errors['max']['max']}}
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-8 col-md-4 mb-2"></div>
+</div>

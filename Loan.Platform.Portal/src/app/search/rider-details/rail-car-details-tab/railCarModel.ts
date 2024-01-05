@@ -1,0 +1,36 @@
+import { RailCarRibbon } from 'src/app/shared/models/railcar-ribbon.model';
+import { ContractRailCarChargesModel } from './contractrailcarcharges.model';
+export class railCarModel {
+  Id: number;
+  ContractId: number;
+  RailCarId: number;
+  CarId: string;
+  CarIds: string[] = [];
+  RailCarTypeId: number;
+  LEId: number;
+  LEContents: string;
+  BolDate: string | null;
+  ArrivalDate: string | null;
+  DepartureDate: string | null;
+  Notes: string;
+  Fleet: string;
+  CarTypeName: string;
+  LEName: string;
+  ContractRailCarMappingId: number;
+  InvalidCars: string[] = [];
+  IsSaved: boolean;
+  CreatedTime: Date;
+  CustomerId: number;
+  CarsStored: number;
+  IsUnderStorage: boolean;
+  IsDuplicate: boolean;
+  IsDefault: boolean;
+  StorageOrderId: number;
+  FormArrivalDate: Date;
+  FormDepartureDate: Date;
+  FormBolDate: Date;
+  RailCarList: railCarModel[];
+  RailCarRibbon:RailCarRibbon;
+  ContractRailCarCharge: ContractRailCarChargesModel[];
+  IsHazmatCar:boolean;
+}

@@ -1,0 +1,28 @@
+@import "/src/assets/scss/variables";
+::ng-deep {
+//   .tableHeaderCellDiv {
+//     resize: horizontal;
+//     overflow:hidden;
+// }
+table {
+  tr {
+    td {
+      &.mat-column-expandedDetail {
+          padding: 0 !important;
+          table {
+              tr {
+                  border-bottom: 5px solid $whight-colour;
+              }
+              td {
+               // background-color: #ccd1da !important;
+                &:first-child {
+                  border-right: 0;
+                }
+              }
+          }
+      }
+  }
+  }
+}
+
+}

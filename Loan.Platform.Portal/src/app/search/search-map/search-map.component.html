@@ -1,0 +1,26 @@
+<div class="map-container" [ngClass]="isExpanded ? 'isExpanded' : 'isCollapsed'">
+    <ul class="position-absolute btn-holder more-zindex">
+        <!-- <li>
+            <button class="mx-1 my-2 left-icon" type="button">
+          <app-svg-icon icon="icon-single-star" class="icon"></app-svg-icon>
+      {{'search.ratings' | translate}}</button>
+        </li> -->
+        <li class="search-result">
+            <button class="mx-1 my-2 left-icon" type="button" (click)="onFilterTrigger()">
+              <app-svg-icon icon="icon-filter" class="icon"></app-svg-icon>
+              <span>{{'search.filters' | translate}}</span></button>
+        </li>
+        <li class="filter">
+          <button class="mx-1 my-2 left-icon" type="button" (click)="onResultTrigger()">
+            <app-svg-icon icon="icon-search-deselected" class="icon"></app-svg-icon>
+            <span>{{'search.search-results' | translate}}</span></button>
+      </li>
+        <li>
+            <button class="mx-1 my-2 left-icon pull-right" type="button" (click)="onExpandCollapse()">
+        <span class="material-icons open" *ngIf="!isExpanded">open_in_full</span>
+        <span class="material-icons close" *ngIf="isExpanded">close_fullscreen</span>
+      </button>
+        </li>
+    </ul>
+    <div id="myMap" #map></div>
+</div>

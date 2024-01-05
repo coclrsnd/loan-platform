@@ -1,0 +1,132 @@
+<div class="row mt-3">
+  <div class="col-12 round-bordered-table responsive-table">
+    <table
+      mat-table
+      #outerSort="matSort"
+      [dataSource]="dataSource"
+      multiTemplateDataRows
+      class="{{ isFromPage }} vendor-table"
+      matSort
+    >
+      <ng-container
+        [matColumnDef]="column"
+        *ngFor="let column of columnsToDisplay"
+      >
+        <ng-template [ngIf]="column === 'expand'" [ngIfElse]="elseBlock">
+          <th mat-header-cell scope="col" *matHeaderCellDef></th>
+          <td mat-cell [attr.aria-label]="'Detail'" *matCellDef="let element" (click)="toggleRow(element)">
+            <span *ngIf="!element.isExpanded" class="signs"
+              ><app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon
+            ></span>
+            <span *ngIf="element.isExpanded" class="signs"
+              ><app-svg-icon icon="icon-hyphen" class="icon"></app-svg-icon>
+            </span>
+          </td>
+        </ng-template>
+        <ng-template #elseBlock>
+          <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+            <ng-container *ngIf="column !== 'Delete'">
+              <strong>
+                {{ column | translate }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column === 'Delete'"> </ng-container>
+          </th>
+          <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element; let i = dataIndex">
+            <ng-container *ngIf="(column === 'Facility' || column === 'FacilityName')">
+              <strong>
+                {{ element["Name"] }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column === 'Location'">
+              <strong>
+                {{ element["City"]+ GetStateName(element["StateId"]) }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column === 'Interchange'">
+              <strong>
+                {{ element["StorageFacilityInterchanges"].length }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column === 'PrimaryContact'">
+              <strong>
+                {{ element["PrimaryContactNumber"] }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column === 'AvailableSpace'">
+              <strong>
+                {{ element["AvailableCars"] }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column !== 'Delete'">
+              <strong>
+                {{ element[column] }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="column === 'Delete'">
+              <span *ngIf="dataSource.filteredData.length > 1 && mode === 'create'">
+                <button
+                  type="button"
+                  class="simple-button left-icon pull-right"
+                  (click)="onDeleteStorageFacility(i)"
+                >
+                  <app-svg-icon icon="icon-delete" class="icon"></app-svg-icon>
+                  {{ "common.delete" | translate }}
+                </button>
+              </span>
+            </ng-container>
+          </td>
+        </ng-template>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          mat-cell
+          *matCellDef="let element; let i = dataIndex"
+          [attr.colspan]="columnsToDisplay.length"
+        >
+          <div
+            class="element-detail"
+            *ngIf="element.StorageFacilityRates?.data.length"
+            [@detailExpand]="isExpanded(element)"
+          >
+            <div class="inner-table" *ngIf="isExpanded(element)">
+              <app-storage-facility-details
+                [nestedDisplay]="nestedDisplay"
+                [currentIndex]="i"
+                [isAllowedFromNestedDisplayRate]="
+                  isAllowedFromNestedDisplayRate
+                "
+                [isAllowedFromNestedDisplayInterchange]="
+                  isAllowedFromNestedDisplayInterchange
+                "
+                (saveRates)="saveRates($event)"
+                (deletedRate)="onDeleteRate($event)"
+                (deletedInterchange)="onDeleteInterchange($event)"
+                (deletedLocation)="onDeleteLocation($event)"
+                [isFromPage]="isFromPage"
+                [facilityDetailsForm]="
+                  data.controls.StorageFacilities.controls[i]
+                "
+                [allStorageFacilityList]=" data.controls.StorageFacilities"
+              ></app-storage-facility-details>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: columnsToDisplay"
+        [class.element-row]="element.StorageFacilityRates?.data.length"
+        [class.expanded-row]="isExpanded(element)"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="detail-row full-occoupy"
+      ></tr>
+    </table>
+  </div>
+</div>

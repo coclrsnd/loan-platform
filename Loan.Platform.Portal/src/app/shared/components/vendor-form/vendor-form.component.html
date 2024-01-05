@@ -1,0 +1,267 @@
+<div class="row" *ngIf="vendorDetailsForm" [formGroup]="vendorDetailsForm">
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="Organization" class="required">{{'common.vendor' | translate}}</label>
+      <!-- <input type="text" formControlName="Organization" class="form-control" [ngClass]="{ 'is-invalid': submittedVendorDetails && vendorDetails['Organization'].errors }" /> -->
+      <input class="form-control" #Organization maxlength="50" type="text"
+        formControlName="Organization"
+        [matAutocomplete]="autoCompleteOrganization"
+        (blur)="onOrganizationBlur($event)"
+        [ngClass]="{ 'is-invalid': (vendorDetailsForm.get('Organization')?.hasError('pattern') ||
+        vendorDetailsForm.get('Organization')?.hasError('notUnique'))}" />
+      <mat-autocomplete #autoCompleteOrganization="matAutocomplete" (optionSelected)="onOrganizationChanged($event)">
+        <mat-option *ngIf="isSearching; else organizationTemplate" disabled="true">
+          <em>Searching...</em>
+        </mat-option>
+        <ng-template #organizationTemplate>
+          <mat-option *ngFor="let org of organizationList" [value]="org">
+            {{ org.Name }}
+          </mat-option>
+        </ng-template>
+        <mat-option *ngIf="!isSearching && noResults && !vendorDetailsForm.controls['Organization'].hasError('pattern')"
+          value="" disabled="true">
+          <button color="primary" class="form-control" (mousedown)="$event.preventDefault()" mat-raised-button (click)="openDialog($event)">{{'common.add-new' | translate}}</button>
+        </mat-option>
+      </mat-autocomplete>
+      <div class="invalid-feedback">
+        <div
+          *ngIf="!vendorDetailsForm.get('Organization')?.hasError('notUnique') &&
+          (vendorDetailsForm.get('Organization')?.hasError('required') && vendorDetailsForm.get('Organization')?.touched || submittedVendorDetails && vendorDetails['Organization'].errors)">
+          {{'common.vendor' | translate}}{{'common.is_required' | translate}}</div>
+        <div *ngIf="!vendorDetailsForm.get('Organization')?.hasError('notUnique') &&
+         vendorDetailsForm.get('Organization')?.hasError('pattern')">
+          {{'common.vendor' | translate}}{{ "common.is_not_valid" | translate }}</div>
+          <div *ngIf="vendorDetailsForm.get('Organization')?.hasError('notUnique')">
+            {{'vendor.duplicate-vendor' | translate}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="ContactPersonName" class="required">{{'common.contact-person' | translate}}</label>
+      <input placeholder="{{'common.contact-person' | translate}}" type="text" formControlName="ContactPersonName"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submittedVendorDetails && vendorDetails['ContactPersonName'].errors }" />
+      <div class="invalid-feedback">
+        <div
+          *ngIf="vendorDetailsForm.get('ContactPersonName')?.hasError('required') && vendorDetailsForm.get('ContactPersonName')?.touched || submittedVendorDetails && vendorDetails['ContactPersonName'].errors">
+          {{'common.contact-person' | translate}} {{'common.is_required' | translate}}</div>
+          <div *ngIf="vendorDetailsForm.get('ContactPersonName')?.hasError('pattern')">
+            {{'common.contact-person' | translate}}{{ "common.is_not_valid" | translate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="PrimaryContactNo" class="required">{{'common.primary-contact' | translate}}</label>
+      <input type="text" maxlength="50" placeholder="{{'customer-contact' | translate}}" formControlName="PrimaryContactNo"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submittedVendorDetails && vendorDetails['PrimaryContactNo'].errors || vendorDetailsForm.get('PrimaryContactNo')?.hasError('pattern') }" />
+      <div class="invalid-feedback">
+        <div
+          *ngIf="vendorDetailsForm.get('PrimaryContactNo')?.hasError('required') && vendorDetailsForm.get('PrimaryContactNo')?.touched || submittedVendorDetails && vendorDetails['PrimaryContactNo'].errors">
+          {{'common.primary-contact_is_required' | translate}}</div>
+          <div *ngIf="vendorDetailsForm.get('PrimaryContactNo')?.hasError('pattern')">
+            {{'common.primary-contact' | translate}}{{ "common.is_not_valid" | translate }}
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="PrimaryContactEmail" class="required">{{'common.primary-email' | translate}}</label>
+      <input type="text" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+        placeholder="{{'customer-email-id' | translate}}" formControlName="PrimaryContactEmail" class="form-control"
+        [ngClass]="{ 'is-invalid': submittedVendorDetails && vendorDetails['PrimaryContactEmail'].errors || vendorDetailsForm.get('PrimaryContactEmail')?.hasError('pattern') }" />
+      <div class="invalid-feedback">
+        <div
+          *ngIf="vendorDetailsForm.get('PrimaryContactEmail')?.hasError('required') && vendorDetailsForm.get('PrimaryContactEmail')?.touched || submittedVendorDetails && vendorDetails['PrimaryContactEmail'].errors">
+          {{'common.primary-email_is_required' | translate}}</div>
+        <div
+          *ngIf="vendorDetailsForm.get('PrimaryContactEmail')?.hasError('pattern') && vendorDetailsForm.get('PrimaryContactEmail')?.touched || submittedVendorDetails && vendorDetails['PrimaryContactEmail'].errors && vendorDetailsForm.get('PrimaryContactEmail')?.value">
+          {{"common.primary-email" | translate}} {{'common.is_not_valid' | translate}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="SecondaryContactNo">{{'common.secondary-contact' | translate}}</label>
+      <input maxlength="50" placeholder="{{'customer-contact' | translate}}" type="text" formControlName="SecondaryContactNo"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': vendorDetailsForm.get('SecondaryContactNo')?.hasError('pattern') }"
+        />
+        <div class="invalid-feedback">
+          <div *ngIf="vendorDetailsForm.get('SecondaryContactNo')?.hasError('pattern') && vendorDetailsForm.get('SecondaryContactNo')?.touched || submittedVendorDetails && vendorDetails['SecondaryContactNo'].errors && vendorDetailsForm.get('SecondaryContactNo')?.value">
+            {{"common.secondary-contact" | translate}} {{'common.is_not_valid' | translate}}
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="SecondaryContactEmail">{{'common.secondary-email' | translate}}</label>
+      <input pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" type="text"
+        placeholder="{{'customer-email-id' | translate}}" formControlName="SecondaryContactEmail"
+        [ngClass]="{ 'is-invalid': vendorDetailsForm.get('SecondaryContactEmail')?.hasError('pattern') }"
+        class="form-control" />
+        <div class="invalid-feedback">
+          <div
+          *ngIf="vendorDetailsForm.get('SecondaryContactEmail')?.hasError('pattern') && vendorDetailsForm.get('SecondaryContactEmail')?.touched || submittedVendorDetails && vendorDetails['SecondaryContactEmail'].errors && vendorDetailsForm.get('SecondaryContactEmail')?.value">
+          {{"common.secondary-email" | translate}} {{'common.is_not_valid' | translate}}</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="CountryId">{{'common.country' | translate}}</label>
+      <mat-select formControlName="CountryId" class="form-control"
+        (selectionChange)="onCountrySelectionChanged($event)">
+        <mat-option [value]="defaultSelectedValueForDropdownlist">
+          {{ "common.select" | translate }}
+        </mat-option>
+        <mat-option *ngFor="let option of CountryList" [value]="option.Id">
+          {{ option.Name }}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="StateId">{{'common.state' | translate}}</label>
+      <mat-select formControlName="StateId" class="form-control">
+        <mat-option [value]="defaultSelectedValueForDropdownlist">
+          {{ "common.select" | translate }}
+        </mat-option>
+        <mat-option *ngFor="let option of StatesList" [value]="option.Id">
+          {{ option.Name }}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="City">{{'common.city' | translate}}</label>
+      <input type="text" placeholder="{{'customer-city' | translate}}" maxlength="250"
+        formControlName="City" class="form-control" />
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="Address">{{'common.address' | translate}}</label>
+      <input type="text" placeholder="{{'customer-address' | translate}}" formControlName="Address"
+        class="form-control" />
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="ZipCode">{{'common.zip-code' | translate}}</label>
+      <input type="text" (blur)="onUpperCase($event)" placeholder="{{'customer-zip-code' | translate}}" maxlength="7"
+        formControlName="ZipCode" class="form-control" />
+      <div class="invalid-feedback">
+        <div *ngIf="vendorDetailsForm.controls['ZipCode'].hasError('pattern')">
+          {{ "common.zip-code" | translate}}{{ "common.is_not_valid" | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="RegionId">{{'common.region' | translate}}</label>
+      <!-- <input type="text" formControlName="Region" class="form-control" /> -->
+      <mat-select formControlName="RegionId" class="form-control">
+        <mat-option [value]="defaultSelectedValueForDropdownlist">
+          {{ "common.select" | translate }}
+        </mat-option>
+        <mat-option *ngFor="let option of RegionsList" [value]="option.Id">
+          {{ option.Name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <!-- <div class="form-group"> Logic implemented in storage facility already -> Field moved
+          <label for="RegionId">{{'common.region' | translate}}</label>
+          <mat-select formControlName="RegionId" class="form-control">
+              <mat-option *ngFor="let option of RegionList" [value]="option.Id">
+                {{ option.Name }}
+              </mat-option>
+            </mat-select>
+      </div> -->
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2" *ngIf="(this.currentUserRole !== 'Customer')">
+    <div class="form-group">
+      <label for="PercentageMargin" class="required">{{'common.percentage-margin' | translate}}</label>
+      <input type="text" formControlName="PercentageMargin"
+      maxlength="6"
+      appPercentage
+      placeholder="{{'customer-percentage' | translate}}"
+       class="form-control" [ngClass]="{ 'is-invalid': submittedVendorDetails && vendorDetails['PercentageMargin'].errors }"
+       (focus)="onFocusNumber($event)"
+       (blur)="onBlurPercent($event)"
+       />
+      <div class="invalid-feedback">
+          <div *ngIf="vendorDetailsForm.get('PercentageMargin')?.hasError('required') && vendorDetailsForm.get('PercentageMargin')?.touched || submittedVendorDetails && vendorDetails['PercentageMargin'].errors">
+              {{'common.percentage-margin' | translate}}{{'common.is_required' | translate}}</div>
+              <div *ngIf="vendorDetailsForm.controls['PercentageMargin'].hasError('max')">
+                {{'maximum_value_for_this_field_is' | translate}} {{vendorDetailsForm.controls['PercentageMargin'].errors['max']['max']}}%
+              </div>
+            </div>
+  </div>
+  </div>
+
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="FormEffectiveDate" class="required">{{'common.effective-date' | translate}}</label>
+      <span class="date-holder">
+        <input placeholder="{{'common.date-placeholder' | translate}}" #input type="text" class="form-control"
+          formControlName="FormEffectiveDate" [matDatepicker]="picker" (focus)="picker.open()">
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+      </span>
+      <div class="invalid-feedback">
+        <div
+          *ngIf="vendorDetailsForm.get('FormEffectiveDate')?.hasError('required') && vendorDetailsForm.get('FormEffectiveDate')?.touched || submittedVendorDetails && vendorDetails['FormEffectiveDate'].errors">
+          {{'common.effective-date' | translate}}{{'common.is_required' | translate}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="form-group">
+      <label for="FormExpiryDate" class="required">{{'common.expiration-date' | translate}}</label>
+      <span class="date-holder">
+        <input placeholder="{{'common.date-placeholder' | translate}}" #input2 type="text" class="form-control"
+        [ngClass]="{ 'is-invalid': vendorDetailsForm.hasError('expiryIssue') }"
+          formControlName="FormExpiryDate" [matDatepicker]="picker2" (focus)="picker2.open()">
+        <mat-datepicker-toggle matSuffix [for]="picker2">
+          <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+      </span>
+      <div class="invalid-feedback">
+        <div
+          *ngIf="vendorDetailsForm.get('FormExpiryDate')?.hasError('required') && vendorDetailsForm.get('FormExpiryDate')?.touched || submittedVendorDetails && vendorDetails['FormExpiryDate'].errors">
+          {{'common.expiration-date' | translate}}{{'common.is_required' | translate}}</div>
+          <div *ngIf="vendorDetailsForm.hasError('expiryIssue')">{{'error.effDateLessThanExpDate' | translate}}</div>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 mb-2">
+    <div class="form-group">
+      <label for="Website">{{'common.website' | translate}}</label>
+      <input type="text" placeholder="{{'customer-website' | translate}}" maxlength="250" formControlName="Website"
+        class="form-control" />
+    </div>
+  </div>
+  <div class="col-lg-8 col-md-6 mb-2">
+    <div class="form-group">
+      <label for="Description">{{'common.description' | translate}}</label>
+      <input type="text" formControlName="Description" class="form-control" />
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-12 mb-2" *ngIf="mode !== 'view'">
+    <!-- <button class="mt-4 mr-2" type="button" *ngIf="!isRecordSaved" mat-raised-button color="primary" (click)="onSubmitVendorDetailsForm()">{{'common.save' | translate}}</button>
+        <button class="mt-4 mr-2" type="button" *ngIf="isRecordSaved" mat-raised-button color="primary" (click)="onUpdateVendorDetailsForm()">{{'common.update' | translate}}</button>
+        <button class="mt-4 secondary-btn" type="button" mat-raised-button (click)="onResetVendorDetailsForm()">{{'common.reset' | translate}}</button> -->
+  </div>
+</div>

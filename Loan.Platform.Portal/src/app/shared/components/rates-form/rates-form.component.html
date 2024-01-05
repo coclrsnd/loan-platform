@@ -1,0 +1,266 @@
+<h3 class="head-title">
+    {{'rates.rate' | translate}} {{currentIndex + 1}}
+    <!-- <button *ngIf="currentIndex !== 0 && isSetRatesProcessOpen" class="simple-button left-icon" type="button" (click)="onRemove()">
+      <app-svg-icon icon="icon-delete" class="icon"></app-svg-icon>
+      {{'common.delete' | translate}}</button> -->
+</h3>
+<div class="search-holder" [ngClass]="{'isViewMode': parentComponentName === 'RatesListComponent' && !isUpdateRateBtnEnabled}" >
+    <div [formGroup]="getRatesForm" class="row">
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="CurrencyId" class="required">{{'common.currency' | translate}}</label>
+                <mat-select formControlName="CurrencyId" class="form-control" Placeholder="Select"
+                            [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['CurrencyId'].errors }">
+                  <mat-option [value]="defaultValueForDropdownlist">
+                    {{ "common.select" | translate }}
+                  </mat-option>
+                  <mat-option *ngFor="let option of CurrencyList" [value]="option.Id">
+                    {{ option.Code }}
+                  </mat-option>
+                </mat-select>
+                <div class="invalid-feedback">
+                    <div *ngIf="getRatesForm.get('CurrencyId')?.hasError('required') && getRatesForm.get('CurrencyId')?.touched || submittedRatesDetails && ratesDetails['CurrencyId'].errors">{{'common.currency_is_required' | translate}}</div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group"> Moved to vendor form component
+                <label for="PercentageMargin" class="required">{{'common.percentage-margin' | translate}}</label>
+                <input type="text" ngNumbersOnly formControlName="PercentageMargin" class="form-control" [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['PercentageMargin'].errors }" />
+                <div class="invalid-feedback">
+                    <div *ngIf="getRatesForm.get('PercentageMargin')?.hasError('required') && getRatesForm.get('PercentageMargin')?.touched || submittedRatesDetails && ratesDetails['PercentageMargin'].errors">{{'common.percentage_margin_is_required' | translate}}</div>
+                </div>
+            </div>
+        </div> -->
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="DailyStorageRate" class="required">{{'common.base-daily-rate' | translate}}</label>
+                <input type="text"
+                formControlName="DailyStorageRate"
+                class="form-control"
+                maxlength="9"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"
+                ngCurrencyOnly
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['DailyStorageRate'].errors }"
+                />
+                <div class="invalid-feedback">
+                    <div *ngIf="getRatesForm.get('DailyStorageRate')?.hasError('required') && getRatesForm.get('DailyStorageRate')?.touched || submittedRatesDetails && ratesDetails['DailyStorageRate'].errors">{{'common.base-daily-rate_is_required' | translate}}</div>
+                    <div *ngIf="getRatesForm.get('DailyStorageRate')?.hasError('max')">
+                      {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('DailyStorageRate')?.errors['max']['max']}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="SwitchIn">{{'common.switch-in' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="SwitchIn" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['SwitchIn'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('SwitchIn')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('SwitchIn')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="SwitchOut">{{'common.switch-out' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="SwitchOut" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['SwitchOut'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('SwitchOut')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('SwitchOut')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="SwitchingRate">{{'common.switching-rate' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="SwitchingRate" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['SwitchingRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('SwitchingRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('SwitchingRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="SpecialSwitchingRate">{{'common.special-switching-rate' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="SpecialSwitchingRate" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['SpecialSwitchingRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('SpecialSwitchingRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('SpecialSwitchingRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="HazmatSwitchInRate">{{'common.hazmat-switch-in' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="HazmatSwitchInRate" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['HazmatSwitchInRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('HazmatSwitchInRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('HazmatSwitchInRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+          <div class="form-group">
+              <label for="HazmatSwitchOutRate">{{'common.hazmat-switch-out' | translate}}</label>
+              <input type="text" ngCurrencyOnly formControlName="HazmatSwitchOutRate" class="form-control"
+              maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['HazmatSwitchOutRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('HazmatSwitchOutRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('HazmatSwitchOutRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+          </div>
+      </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="LoadedSwitchInRate">{{'common.loaded-switch-in' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="LoadedSwitchInRate" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['LoadedSwitchInRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('LoadedSwitchInRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('LoadedSwitchInRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+          <div class="form-group">
+              <label for="LoadedSwitchOutRate">{{'common.loaded-switch-out' | translate}}</label>
+              <input type="text" ngCurrencyOnly formControlName="LoadedSwitchOutRate" class="form-control"
+              maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['LoadedSwitchOutRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('LoadedSwitchOutRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('LoadedSwitchOutRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+          </div>
+      </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="CherryPickingRate">{{'common.cherry-picking-rate' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="CherryPickingRate" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['CherryPickingRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('CherryPickingRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('CherryPickingRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="ReservationRate">{{'common.reservation-rate' | translate}}</label>
+                <input type="text" ngCurrencyOnly formControlName="ReservationRate" class="form-control"
+                maxlength="9"
+                placeholder="{{'customer-rate' | translate}}"
+                [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['ReservationRate'].errors }"
+                (focus)="onFocusNumber($event)"
+                (blur)="onBlurAmount($event)"/>
+                <div class="invalid-feedback">
+                  <div *ngIf="getRatesForm.get('ReservationRate')?.hasError('max')">
+                    {{'maximum_value_for_this_field_is' | translate}} ${{getRatesForm.get('ReservationRate')?.errors['max']['max']}}
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="FormEffectiveDate" class="required">{{'common.effective-date' | translate}}</label>
+                <span class="date-holder">
+                    <input placeholder="{{'common.date-placeholder' | translate}}" #input type="text"
+                    class="form-control" formControlName="FormEffectiveDate"
+                    [matDatepicker]="picker" (focus)="picker.open()"
+                    [ngClass]="{ 'is-invalid': submittedRatesDetails && ratesDetails['FormEffectiveDate'].errors }"
+                    (dateChange)="OnRateDateSelection()">
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    <app-svg-icon icon="icon-calendar" class="icon"
+                    matDatepickerToggleIcon></app-svg-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+                </span>
+                <div class="invalid-feedback">
+                    <div *ngIf="getRatesForm.get('FormEffectiveDate')?.hasError('required') && getRatesForm.get('FormEffectiveDate')?.touched || submittedRatesDetails && ratesDetails['FormEffectiveDate'].errors">{{'common.effective-date_is_required' | translate}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+                <label for="FormExpiryDate" class="required">{{'common.expiration-date' | translate}}</label>
+                <span class="date-holder">
+                    <input placeholder="{{'common.date-placeholder' | translate}}" #input2 type="text" class="form-control" formControlName="FormExpiryDate" [matDatepicker]="picker2" (focus)="picker2.open()"
+                    [ngClass]="{ 'is-invalid': getRatesForm.hasError('expiryIssue') || getRatesForm.get('FormExpiryDate')?.hasError('required') && getRatesForm.get('FormExpiryDate')?.touched || submittedRatesDetails && ratesDetails['FormExpiryDate'].errors }"
+                    (dateChange)="OnRateDateSelection()">
+                    <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <app-svg-icon icon="icon-calendar" class="icon"
+                    matDatepickerToggleIcon></app-svg-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+                </span>
+                <div class="invalid-feedback">
+                    <div *ngIf="!getRatesForm.get('FormExpiryDate')?.hasError('notUnique') && (getRatesForm.get('FormExpiryDate')?.hasError('required') && getRatesForm.get('FormExpiryDate')?.touched || submittedRatesDetails && ratesDetails['FormExpiryDate'].errors)">{{'common.expiration-date_is_required' | translate}}</div>
+                    <div *ngIf="!getRatesForm.get('FormExpiryDate')?.hasError('notUnique') && (getRatesForm.hasError('expiryIssue'))">{{'error.effDateLessThanExpDate' | translate}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-12 col-md-12 mb-2" >
+          <button *ngIf="isUpdateRateBtnEnabled" class="pull-right" type="button" mat-raised-button color="primary" (click)="onUpdateRatesForm()">{{'rates.update-rate' | translate}}</button>
+          <button *ngIf="isSaveRateBtnEnabled" class="pull-right" type="button" mat-raised-button color="primary" (click)="onSubmitRatesForm()">{{'rates.save-rates' | translate}}</button>
+          <span *ngIf="getRatesForm.get('FormExpiryDate')?.hasError('notUnique')" class="invalid-feedback mt-2 error-messages d-inline-block mr-2 pull-right" >
+            {{ "rates.duplicate-rate" | translate }}
+          </span>
+          </div>
+      </div>
+</div>

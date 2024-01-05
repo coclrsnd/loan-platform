@@ -1,0 +1,34 @@
+@import "/src/assets/scss/variables";
+.zone {
+    &-green {
+        background-color: #97c198 !important;
+    }
+    &-yellow {
+        background-color: #c1bf98 !important;
+    }
+    &-red {
+        background-color: #e6999a !important;
+    }
+}
+
+mat-table {
+    width: 100%;
+    border-collapse: collapse;
+    tr,
+    th {
+        width: 100%;
+        vertical-align: middle;
+        background: #f6f7f8;
+    }
+    tr {
+        border: none;
+        &.mat-row {
+            border-bottom: 15px solid #f6f7f8;
+        }
+    }
+    td {
+        // border-bottom: 10px solid #f6f7f8 !important;
+        vertical-align: middle;
+        background: $whight-colour;
+    }
+}

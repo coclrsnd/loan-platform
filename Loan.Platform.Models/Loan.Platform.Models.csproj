@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\Contract.cs" />
+    <Compile Remove="Entities\ContractAttachmentMapping.cs" />
+    <Compile Remove="Entities\ContractNoteMapping.cs" />
+    <Compile Remove="Entities\ContractRailCarMapping.cs" />
+    <Compile Remove="Entities\ContractRate.cs" />
+    <Compile Remove="Entities\ContractSFFeatureMapping.cs" />
+    <Compile Remove="Entities\ContractType.cs" />
+    <Compile Remove="Entities\Country.cs" />
+    <Compile Remove="Entities\Currency.cs" />
+    <Compile Remove="Entities\Customer.cs" />
+    <Compile Remove="Entities\LEContent.cs" />
+    <Compile Remove="Entities\Opportunity.cs" />
+    <Compile Remove="Entities\OpportunityAttachments.cs" />
+    <Compile Remove="Entities\OpportunityFeatures.cs" />
+    <Compile Remove="Entities\OpportunityRailcarDetails.cs" />
+    <Compile Remove="Entities\OpportunityReservedSpaces.cs" />
+    <Compile Remove="Entities\RailCar.cs" />
+    <Compile Remove="Entities\RailCarType.cs" />
+    <Compile Remove="Entities\RailRoad.cs" />
+    <Compile Remove="Entities\RangeMaster.cs" />
+    <Compile Remove="Entities\RateType.cs" />
+    <Compile Remove="Entities\Region.cs" />
+    <Compile Remove="Entities\ReportLog.cs" />
+    <Compile Remove="Entities\SavedSearch.cs" />
+    <Compile Remove="Entities\State.cs" />
+    <Compile Remove="Entities\StorageFacility.cs" />
+    <Compile Remove="Entities\StorageFacilityFeatureMapping.cs" />
+    <Compile Remove="Entities\StorageFacilityInterchange.cs" />
+    <Compile Remove="Entities\StorageFacilityInterchangeLocation.cs" />
+    <Compile Remove="Entities\StorageFacilityRates.cs" />
+    <Compile Remove="Entities\StorageFeature.cs" />
+    <Compile Remove="Entities\StorageOpportunity.cs" />
+    <Compile Remove="Entities\SwitchingSchedule.cs" />
+    <Compile Remove="Entities\SwitchInSwitchOut.cs" />
+    <Compile Remove="Entities\Vendor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>

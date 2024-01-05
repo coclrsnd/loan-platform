@@ -1,0 +1,37 @@
+::ng-deep {
+    .btn-group {
+        &.show {
+            height: auto;
+        }
+    }
+    .designed-accordian {
+        .mat-expanded .mat-expansion-panel-header-title .material-icons {
+            transform: rotate(180deg);
+            transform-origin: 10px 10px;
+        }
+        .mat-content,
+        .mat-expansion-panel {
+            overflow: inherit;
+           // background: rgba(0, 0, 0, 0);
+            &:not([class*=mat-elevation-z]) {
+                box-shadow: none;
+            }
+        }
+        .mat-expansion-panel {
+            &-header {
+                height: auto;
+                padding: 0;
+            }
+            &-body {
+                padding: 0;
+            }
+        }
+        .mat-expansion-panel-header-description {
+            margin-right: 0;
+            flex-grow: 0;
+        }
+    }
+    mat-accordion {
+      overflow: hidden;
+    }
+}

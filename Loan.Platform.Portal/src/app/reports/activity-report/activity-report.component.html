@@ -1,0 +1,165 @@
+<h3 class="head-title">
+  <app-page-title></app-page-title>
+</h3>
+<div class="search-holder mb-2">
+  <form [formGroup]="activityReportForm" class="row">
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="Organization" class="required">{{
+          "common.customer" | translate
+          }}</label>
+          <span matTooltipClass="info-tooltip" [matTooltip]="activityReportForm.get('Organization')?.value?.length > 22 ? activityReportForm.get('Organization')?.value : ''">
+        <input type="text" placeholder="Customer Name" maxlength="50" formControlName="Organization" #Organization
+          maxlength="50" type="text" [matAutocomplete]="autoCo" class="form-control" (blur)="onCustomerBlur($event)"
+          [ngClass]="{ 'is-invalid': submittedDownload && activityReportForm.get('Organization')?.errors}" />
+          </span>
+        <mat-autocomplete panelWidth="auto" #autoCo="matAutocomplete" (optionSelected)="onCustomerChanged($event)">
+          <mat-option *ngIf="isSearching; else organizationTemplate" disabled="true">
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #organizationTemplate>
+            <mat-option *ngFor="let org of orgList" [value]="org">
+              {{ org.Name }}
+            </mat-option>
+          </ng-template>
+          <mat-option *ngIf="!isSearching && noResults" value="" disabled="true">
+            <strong>No results found</strong>
+          </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback">
+          <div
+            *ngIf="activityReportForm.get('Organization')?.hasError('required') && activityReportForm.get('Organization')?.touched || submittedDownload && activityReportForm.get('Organization')?.errors">
+            {{'common.customer' | translate}}{{'common.is_required' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="StorageOrder" class="required">{{'StorageOrder' | translate}}</label>
+        <span matTooltipClass="info-tooltip" [matTooltip]="activityReportForm.get('StorageOrder')?.value?.length > 22 ? activityReportForm.get('StorageOrder')?.value : ''">
+        <input type="text"
+          [ngClass]="{ 'is-invalid': submittedDownload && activityReportForm.get('StorageOrder')?.errors}"
+          maxlength="50" formControlName="StorageOrder" class="form-control" #StorageOrder maxlength="200" type="text"
+          [matAutocomplete]="autoComStorageOrder" (blur)="onStorageOrderBlur($event)" 
+          placeholder="{{'customer-storage-order' | translate}}" />
+        </span>
+        <mat-autocomplete panelWidth="auto" #autoComStorageOrder="matAutocomplete"
+          (optionSelected)="onStorageOrderChanged($event)">
+          <mat-option *ngIf="isSearching; else StorageTemplate" disabled="true">
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #StorageTemplate>
+            <mat-option *ngFor="let org of storageOrderList" [value]="org">
+              {{ org.Name }}
+            </mat-option>
+          </ng-template>
+          <mat-option *ngIf="!isSearching && noResults" value="" disabled="true">
+            <strong>No results found</strong>
+          </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback">
+          <div
+            *ngIf="activityReportForm.get('StorageOrder')?.hasError('required') && activityReportForm.get('StorageOrder')?.touched || submittedDownload && activityReportForm.get('StorageOrder')?.errors">
+            {{'StorageOrder' | translate}}{{'common.is_required' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="ContractType">{{'common.contract-type' | translate}}</label>
+        <span matTooltipClass="info-tooltip" [matTooltip]="activityReportForm.get('ContractType')?.value?.length > 22 ? activityReportForm.get('ContractType')?.value : ''">
+        <input type="text" maxlength="50" formControlName="ContractType" class="form-control"
+          
+          [ngClass]="{ 'is-invalid': activityReportForm.get('ContractType')?.hasError('pattern') }" />
+          </span>
+        <div class="invalid-feedback">
+          <div *ngIf="activityReportForm.get('Rider')?.hasError('pattern')">
+            {{'rider.rider-no' | translate}}{{ "common.is_not_valid" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="TimeRange" class="required">{{'common.time-range' | translate}}</label>
+        <mat-select formControlName="TimeRange"
+          [ngClass]="{ 'is-invalid': submittedDownload && activityReportForm.get('TimeRange')?.errors || submittedDownload && activityReportForm.get('TimeRange')?.value === 0 || activityReportForm.get('TimeRange')?.touched && activityReportForm.get('TimeRange')?.value === 0}"
+          (selectionChange)="onTimeRangeSelected($event)">
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let option of timeRange" [value]="option.Id">
+            {{option.Name}}
+          </mat-option>
+        </mat-select>
+        <div class="invalid-feedback">
+          <div
+            *ngIf="activityReportForm.get('TimeRange')?.hasError('required') && activityReportForm.get('TimeRange')?.touched || submittedDownload && activityReportForm.get('TimeRange')?.errors || submittedDownload && activityReportForm.get('TimeRange')?.value === 0 || activityReportForm.get('TimeRange')?.touched && activityReportForm.get('TimeRange')?.value === 0">
+            {{'common.time-range' | translate}}{{'common.is_required' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2" [ngClass]="activityReportForm.get('TimeRange')?.value !== 3 ? 'd-none' : ''">
+      <div class="form-group">
+        <label for="FormFromDate" class="required">{{'common.from-date' | translate}}</label>
+        <span class="date-holder">
+          <input placeholder="{{'common.date-placeholder'| translate}}" #input type="text" class="form-control"
+            formControlName="FormFromDate"
+            [ngClass]="{ 'is-invalid': submittedDownload && activityReportForm.get('FormFromDate')?.errors}"
+            [matDatepicker]="picker" (focus)="picker.open()" [max]="todaysDate">
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+        </span>
+        <div class="invalid-feedback">
+          <div *ngIf="
+          (activityReportForm
+            .get('FormFromDate')
+            ?.hasError('required') &&
+            activityReportForm.get('FormFromDate')?.touched) ||
+          (submittedDownload && activityReportForm.get('FormFromDate')?.errors)
+        ">
+            {{ "common.from-date" | translate }} {{ "common.is_required" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2" [ngClass]="activityReportForm.get('TimeRange')?.value !== 3 ? 'd-none' : ''">
+      <div class="form-group">
+        <label for="FormToDate" class="required">{{'common.to-date' | translate}}</label>
+        <span class="date-holder">
+          <input placeholder="{{'common.date-placeholder'| translate}}" #input2 type="text" class="form-control"
+            formControlName="FormToDate" [max]="todaysDate"
+            [ngClass]="{ 'is-invalid': activityReportForm.hasError('expiryIssue') || submittedDownload && activityReportForm.get('FormToDate')?.errors }"
+            [matDatepicker]="picker2" (focus)="picker2.open()">
+          <mat-datepicker-toggle matSuffix [for]="picker2">
+            <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+        </span>
+        <div class="invalid-feedback">
+          <div *ngIf="
+      (activityReportForm
+        .get('FormToDate')
+        ?.hasError('required') &&
+        activityReportForm.get('FormToDate')?.touched) ||
+      (submittedDownload &&
+        activityReportForm.get('FormToDate')?.errors)
+    ">
+            {{ "common.to-date" | translate }} {{ "common.is_required" | translate }}
+          </div>
+          <div *ngIf="activityReportForm.hasError('expiryIssue')">{{'error.fromDateLessThanToDate' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mb-2" [ngClass]="activityReportForm.get('TimeRange')?.value !== 3 ? 'col-lg-4' : 'col-lg-12'">
+      <div class="float-end mt-4">
+        <button class="ml-2 secondary-btn" type="button" mat-raised-button
+          (click)="onResetActivityReportForm()">{{'common.reset' | translate}}</button>
+        <button class="ml-2" type="button" mat-raised-button color="primary" [disabled]="!this.downloadButtonEnable"
+          (click)="onSearchActivityReportForm()">{{'common.download-report' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</div>

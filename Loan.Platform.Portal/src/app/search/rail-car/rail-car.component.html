@@ -1,0 +1,321 @@
+<h3 class="head-title">
+  <app-page-title></app-page-title>
+</h3>
+<div *ngIf="loadContent" class="search-holder mb-2">
+  <form [formGroup]="railCarForm" class="row">
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="StorageOrder">
+          {{ "common.storageOrder" | translate }}
+        </label>
+        <input
+               class="form-control"
+               placeholder="{{'customer-storage-order' | translate}}"
+               #StorageOrder
+               [ngClass]="{ 'is-invalid': railCarForm.get('StorageOrder')?.hasError('pattern') }"
+               type="text"
+               formControlName="StorageOrder"
+               [matAutocomplete]="autoCo" />
+
+        <mat-autocomplete #autoCo="matAutocomplete"
+        panelWidth="auto"
+                          (optionSelected)="onStorageOrderChanged($event)">
+          <mat-option *ngIf="isSearching; else storageOrderTemplate"
+                      disabled="true">
+            <em>Searching...</em>
+          </mat-option>
+          <ng-template #storageOrderTemplate>
+            <mat-option
+              *ngFor="let storageOrder of storageOrderList"
+              [value]="storageOrder"
+            >
+              {{ storageOrder.Rider }}
+            </mat-option>
+          </ng-template>
+          <mat-option
+            *ngIf="!isSearching && noResults"
+            value=""
+            disabled="true"
+          >
+            <b>No results found</b>
+          </mat-option>
+        </mat-autocomplete>
+        <div class="invalid-feedback">
+          <div *ngIf="railCarForm.get('StorageOrder')?.hasError('pattern')">
+                      {{ "common.storageOrder" | translate}}{{ "common.is_not_valid" | translate }}
+                    </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="CarId">{{'CarId' | translate}}</label>
+        <input type="text" maxlength="11" (blur)="onUpperCase($event)" placeholder="{{'customer-car-id' | translate}}" formControlName="CarId" class="form-control" [ngClass]="{ 'is-invalid': submittedSearch && railCarGetter['CarId'].errors }" />
+        <div class="invalid-feedback">
+          <div *ngIf="railCarForm.get('CarId')?.hasError('pattern')">
+                      {{ "CarId" | translate}}{{ "common.is_not_valid" | translate }}
+                    </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="CarType">{{ "CarType" | translate }}</label>
+        <mat-select
+          formControlName="CarType"
+          [ngClass]="{
+            'is-invalid': submittedSearch && railCarGetter['CarType'].errors
+          }"
+        >
+          <mat-option [value]="defaultSelectedValueForDropdownlist">
+            {{ "common.select" | translate }}
+          </mat-option>
+          <mat-option
+            *ngFor="let railCarType of railCarTypesList"
+            [value]="railCarType.Id"
+          >
+            {{ railCarType.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="FormArrivalDate">{{ "common.arrival-date" | translate }}</label>
+        <span class="date-holder">
+          <input
+            #input
+            type="text"
+            placeholder="{{ 'common.date-placeholder' | translate }}"
+            class="form-control"
+            formControlName="FormArrivalDate"
+            [matDatepicker]="picker"
+            (focus)="picker.open()"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <app-svg-icon
+              icon="icon-calendar"
+              class="icon"
+              matDatepickerToggleIcon
+            ></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2">
+      <div class="form-group">
+        <label for="FormDepartureDate">{{
+          "common.departure-date" | translate
+        }}</label>
+        <span class="date-holder">
+          <input [ngClass]="{ 'is-invalid': railCarForm.hasError('departureIssue') }" #input2 type="text" placeholder="{{'common.date-placeholder' | translate}}" class="form-control" formControlName="FormDepartureDate" [matDatepicker]="picker2" (focus)="picker2.open()">
+          <mat-datepicker-toggle matSuffix [for]="picker2">
+            <app-svg-icon
+              icon="icon-calendar"
+              class="icon"
+              matDatepickerToggleIcon
+            ></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+        </span>
+        <div class="invalid-feedback">
+          <div *ngIf="railCarForm.hasError('departureIssue')">{{'error.arrDateLessThanDepDate' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+      <div class="form-group">
+        <label for="FormBolDate">{{ "BolDate" | translate }}</label>
+        <span class="date-holder">
+          <input
+            #input3
+            type="text"
+            placeholder="{{ 'common.date-placeholder' | translate }}"
+            class="form-control"
+            formControlName="FormBolDate"
+            [matDatepicker]="picker3"
+            (focus)="picker3.open()"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker3">
+            <app-svg-icon
+              icon="icon-calendar"
+              class="icon"
+              matDatepickerToggleIcon
+            ></app-svg-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker3 (closed)="input3.blur()"></mat-datepicker>
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+      <div class="form-group">
+        <label for="LandE">{{ "LandE" | translate }}</label>
+        <mat-select
+          formControlName="LandE"
+          [ngClass]="{
+            'is-invalid': submittedSearch && railCarGetter['LandE'].errors
+          }"
+        >
+        <mat-option [value]="defaultSelectedValueForDropdownlist">
+          {{ "common.select" | translate }}
+        </mat-option>
+          <mat-option
+            *ngFor="let leContent of leContentList"
+            [value]="leContent.Id"
+          >
+            {{ leContent.Name }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <ng-container *ngIf="isAdvanceSearch">
+      <div class="col-lg-2 col-md-4 mb-2">
+        <div class="form-group">
+          <label for="LEContents">{{'LEContents' | translate}}</label>
+          <input maxlength="50" type="text" placeholder="{{'customer-contents' | translate}}" formControlName="LEContents" class="form-control w-100" [ngClass]="{ 'is-invalid': submittedSearch && railCarGetter['LEContents'].errors || railCarForm.get('LEContents')?.hasError('pattern') }" />
+          <div class="invalid-feedback">
+            <div *ngIf="railCarForm.get('LEContents')?.hasError('pattern')">
+              {{'LEContents' | translate}}{{ "common.is_not_valid" | translate }}
+                      </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4 mb-2">
+        <div class="form-group">
+          <label for="Fleet">{{'Fleet' | translate}}</label>
+          <input placeholder="{{'customer-fleet' | translate}}" type="text" maxlength="50" formControlName="Fleet" class="form-control" [ngClass]="{ 'is-invalid': submittedSearch && railCarGetter['Fleet'].errors }" />
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="col-12 bottom-more-less">
+      <div class="row g-0">
+        <div class="col-md-6">
+          <span
+            class="advance-more-less"
+            [ngClass]="{ 'arrow-reverse': isAdvanceSearch !== false }"
+            (click)="toggleAdvanceSearch()"
+          >
+            <span *ngIf="isAdvanceSearch; else elseBlock">{{
+              "common.quick-search" | translate
+            }}</span>
+            <ng-template #elseBlock>
+              {{ "common.advanced-search" | translate }}
+            </ng-template>
+            <app-svg-icon
+              icon="icon-down-arrow-double"
+              class="icon"
+            ></app-svg-icon>
+          </span>
+        </div>
+        <div class="col-md-6">
+          <div class="float-end">
+            <button
+            class="secondary-btn mr-2"
+            type="button"
+            mat-raised-button
+            (click)="onResetSearch()"
+          >
+            {{ "common.reset" | translate }}
+          </button>
+          <!-- <button
+            class="secondary-btn mr-2"
+            type="button"
+            mat-raised-button
+            (click)="onSaveSearch()"
+          >
+            {{ "common.save-search" | translate }}
+          </button> -->
+          <button
+            *ngIf="isAdvanceSearch"
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmitRailCarForm()"
+          >
+            {{ "common.search" | translate }}
+          </button>
+          <button
+            *ngIf="!isAdvanceSearch"
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmitRailCarForm()"
+          >
+            {{ "common.quick-search" | translate }}
+          </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-saved-search
+  [isSearchEnable]="isSearch"
+  (isContentLoad)="onBackToSearchButtonClick($event)"
+  (searchFormData)="onRailCarSavedSearchClick($event)"
+>
+</app-saved-search>
+
+<div class="bg-box mb-3 mt-3">
+  <div class="d-table">
+      <div class="d-table-cell total-holder" *ngFor="let item of railCarRibbonModel">
+          <span class="description">
+      {{ item[0] | translate}}
+      </span>
+          <span class="number">
+      {{ item[1] }}
+      </span>
+
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <h3 class="text-bold title-text">{{'list-of-railcars' | translate}}</h3>
+  </div>
+  <div class="col-lg-6">
+    <div class="float-end">
+<!-- <button
+        class="simple-button left-icon d-inline-block"
+        type="button"
+        (click)="onDownloadTemplate(); $event.stopPropagation()"
+      >
+        <span class="material-icons">cloud_download</span>
+        {{ "common.template" | translate }}
+      </button> -->
+
+      <div class="btn-group ml-2 d-inline-block">
+        <button class="simple-button mat-button-designed left-icon" (click)="$event.stopPropagation();" [matMenuTriggerFor]="menu">
+          <app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon>
+          {{'common.railcar' | translate}} <span class="caret"></span>
+        </button>
+        <mat-menu #menu="matMenu" class="mat-menu-designed">
+          <button (click)="eventUpdate('addCars')" mat-menu-item>{{'common.add-cars' | translate}}</button>
+          <!-- <button (click)="eventUpdate('upload')" mat-menu-item>{{'common.upload' | translate}}</button> -->
+        </mat-menu>
+      </div>
+      <div class="btn-group ml-2 d-inline-block">
+        <button class="simple-button mat-button-designed" (click)="$event.stopPropagation();" [matMenuTriggerFor]="menu1">
+          {{'common.action' | translate}} <span class="caret"></span>
+        </button>
+        <mat-menu #menu1="matMenu" class="mat-menu-designed">
+          <button (click)="eventUpdate('duplicate')" mat-menu-item>{{'common.duplicate' | translate}}</button>
+          <button (click)="eventUpdate('update')" mat-menu-item>{{'common.update' | translate}}</button>
+        </mat-menu>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+
+<app-rail-car-details-tab (updatedRibbonModel)="getRibbonDataFromChild($event)" [optionsConfig]="optionsConfig"
+[ngClass]="{isViewMode: isViewMode}" [isFromPage]="isFromPage"
+[riderModelData]="riderModel"
+[currentUserRole]="currentUserRole"
+[SearchFilterModel]="railCarModel"></app-rail-car-details-tab>

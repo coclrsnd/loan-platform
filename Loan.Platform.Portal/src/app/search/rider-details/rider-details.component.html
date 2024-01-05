@@ -1,0 +1,893 @@
+<h3 class="head-title">
+  {{mode}} {{'rider.storage-order' | translate}}
+  <button class="simple-button left-icon" type="button" (click)="onUpdate()" *ngIf="isViewMode">
+    <app-svg-icon icon="icon-update-icon" class="icon"></app-svg-icon>
+    {{'common.update' | translate}}
+  </button>
+</h3>
+<div [formGroup]="riderDetailsForm" [ngClass]="{isViewMode: isViewMode}">
+  <div class="search-holder mb-2">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="Rider">{{'rider.order-no' | translate}}</label>
+              <span matTooltipClass="info-tooltip" [matTooltip]="riderDetailsForm.get('Rider')?.value?.length > 22 ? riderDetailsForm.get('Rider')?.value : ''">
+                <input type="text" formControlName="Rider" class="form-control" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['Rider'].errors }" />
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="VendorName" class="required">{{'rider.vendor' | translate}}</label>
+              <span matTooltipClass="info-tooltip" [matTooltip]="riderDetailsForm.get('VendorName')?.value?.length > 22 ? riderDetailsForm.get('VendorName')?.value : ''">
+                <input class="form-control"
+                       #Vendor
+                       maxlength="50"
+                       type="text"
+                       [ngClass]="{ 'is-invalid': riderDetailsForm.get('VendorName')?.hasError('required') && riderDetailsForm.get('VendorName')?.touched || submittedDetails && riderDetailsGetter['VendorName'].errors }"
+                       formControlName="VendorName"
+                       [matAutocomplete]="autoCo" />
+              </span>
+              <mat-autocomplete #autoCo="matAutocomplete"
+                                panelWidth="auto"
+                                (optionSelected)="onVendorChanged($event)">
+                <mat-option *ngIf="isSearching; else vendorTemplate"
+                            disabled="true">
+                  <em>Searching...</em>
+                </mat-option>
+                <ng-template #vendorTemplate>
+                  <mat-option *ngFor="let vendor of vendorList" [value]="vendor">
+                    {{ vendor.Organization }}
+                  </mat-option>
+                </ng-template>
+                <mat-option *ngIf="!isSearching && noResults"
+                            value=""
+                            disabled="true">
+                  <b>No results found</b>
+                </mat-option>
+              </mat-autocomplete>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorName')?.hasError('required') && riderDetailsForm.get('VendorName')?.touched || submittedDetails && riderDetailsGetter['VendorName'].errors">
+                  {{'rider.vendor' | translate}}{{'common.is_required' | translate}}
+                </div>
+                <div *ngIf="riderDetailsForm.get('VendorName')?.hasError('pattern')">
+                  {{ "rider.vendor" | translate}}{{ "common.is_not_valid" | translate }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="StorageFacilityName" class="required">{{'rider.storage-facility' | translate}}</label>
+              <mat-select formControlName="StorageFacilityName" [(ngModel)]="selectedStorageFacilityId" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['StorageFacilityName'].errors }" (selectionChange)="onStorageFacilityChange($event)">
+                <mat-option *ngFor="let option of storageFacilityList" [value]="option.Id">
+                  {{option.Name}}
+                </mat-option>
+              </mat-select>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('StorageFacilityName')?.hasError('required') && riderDetailsForm.get('StorageFacilityName')?.touched || submittedDetails && riderDetailsGetter['StorageFacilityName'].errors">
+                  {{'rider.storage-facility' | translate}}{{'common.is_required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="Customer" class="required">{{'common.customer' | translate}}</label>
+              <input class="form-control"
+                     #Customer
+                     type="text"
+                     formControlName="CustomerName"
+                     maxlength="50"
+                     [ngClass]="{ 'is-invalid': riderDetailsForm.get('CustomerName')?.hasError('required') && riderDetailsForm.get('CustomerName')?.touched || submittedDetails && riderDetailsGetter['CustomerName'].errors }"
+                     [matAutocomplete]="autoCoForCustomer" />
+              <mat-autocomplete #autoCoForCustomer="matAutocomplete"
+                                panelWidth="auto"
+                                (optionSelected)="onCustomerChanged($event)">
+                <mat-option *ngIf="isSearching; else customerTemplate"
+                            disabled="true">
+                  <em>Searching...</em>
+                </mat-option>
+                <ng-template #customerTemplate>
+                  <mat-option *ngFor="let customer of customerList" [value]="customer">
+                    {{ customer.Name }}
+                  </mat-option>
+                </ng-template>
+                <mat-option *ngIf="!isSearching && noResults"
+                            value=""
+                            disabled="true">
+                  <b>No results found</b>
+                </mat-option>
+              </mat-autocomplete>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerName')?.hasError('required') && riderDetailsForm.get('CustomerName')?.touched || submittedDetails && riderDetailsGetter['CustomerName'].errors">
+                  {{'common.customer' | translate}}{{'common.is_required' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="ContractTypeName" class="required">{{'common.contract-type' | translate}}</label>
+              <mat-select formControlName="ContractTypeName" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['ContractTypeName'].errors }"
+                          (selectionChange)="onContractTypeChange($event)"
+                          >
+                <mat-option *ngFor="let option of contractTypeList" [value]="option.Id">
+                  {{option.Name}}
+                </mat-option>
+              </mat-select>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('ContractTypeName')?.hasError('required') && riderDetailsForm.get('ContractTypeName')?.touched || submittedDetails && riderDetailsGetter['ContractTypeName'].errors">
+                  {{'common.contract-type' | translate}}{{'common.is_required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="Location">{{'common.location' | translate}} </label>
+              <input type="text" formControlName="Location" class="form-control" />
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="TotalCars" class="required">{{'rider.contracted-spaces' | translate}}</label>
+              <input type="text" formControlName="TotalCars" class="form-control"
+                     maxlength="6"
+                     ngNumbersOnly
+                     placeholder="{{'customer-number' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['TotalCars'].errors || riderDetailsForm.get('TotalCars')?.hasError('pattern') }" />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('TotalCars')?.hasError('required') && riderDetailsForm.get('TotalCars')?.touched || submittedDetails && riderDetailsGetter['TotalCars'].errors">
+                  {{'rider.contracted-spaces' | translate}}{{'common.is_required' | translate}}</div>
+                <div *ngIf="riderDetailsForm.get('TotalCars')?.hasError('pattern')">
+                  {{ "error.decimalNotAllowed" | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="(this.riderDetailsForm.controls['ContractTypeName'].value === contractTypeId)">
+            <div class="form-group">
+              <label for="ReservedSpaces" [ngClass]="isRequiredResSpace ? 'required' : ''">{{'rider.reserved-spaces' | translate}}</label>
+              <input type="text" formControlName="ReservedSpaces" class="form-control"
+                     maxlength="6"
+                     ngNumbersOnly
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['ReservedSpaces'].errors || riderDetailsForm.get('ReservedSpaces')?.hasError('pattern')|| riderDetailsForm.hasError('reservedSpacesIssue') }" />
+              <div class="invalid-feedback">
+
+                <div *ngIf="riderDetailsForm.get('ReservedSpaces')?.hasError('required') && riderDetailsForm.get('ReservedSpaces')?.touched || submittedDetails && riderDetailsGetter['ReservedSpaces'].errors">
+                  {{'rider.reserved-spaces' | translate}}{{'common.is_required' | translate}}</div>
+                <div *ngIf="riderDetailsForm.get('ReservedSpaces')?.hasError('pattern')">
+                  {{ "error.decimalNotAllowed" | translate}}
+                </div>
+                <div *ngIf="riderDetailsForm.hasError('reservedSpacesIssue')">
+                  {{ "error.contractedSpacesLessThanReservedSpaces" | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="CarsStored">{{'rider.cars-stored' | translate}}</label>
+              <input type="text" formControlName="CarsStored" class="form-control"
+                     maxlength="6"
+                     [ngClass]="{ 'is-invalid': riderDetailsForm.get('CarsStored')?.hasError('pattern') }"
+                     ngNumbersOnly />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CarsStored')?.hasError('pattern')">
+                  {{ "error.decimalNotAllowed" | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="FormEffectiveDate" class="required">{{'common.effective-date' | translate}}</label>
+              <span class="date-holder">
+                <input placeholder="{{'common.date-placeholder' | translate}}" #input type="text" class="form-control" formControlName="FormEffectiveDate" [matDatepicker]="picker"
+                       [ngClass]="{ 'is-invalid': riderDetailsForm.get('FormEffectiveDate')?.hasError('required') && riderDetailsForm.get('FormEffectiveDate')?.touched || submittedDetails && riderDetailsGetter['FormEffectiveDate'].errors }"
+                       (focus)="picker.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+              </span>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('FormEffectiveDate')?.hasError('required') && riderDetailsForm.get('FormEffectiveDate')?.touched || submittedDetails && riderDetailsGetter['FormEffectiveDate'].errors">
+                  {{'common.effective-date' | translate}}{{'common.is_required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="FormExpiryDate" class="required">{{'common.expiration-date' | translate}}</label>
+              <span class="date-holder">
+                <input placeholder="{{'common.date-placeholder' | translate}}" #input2 type="text" class="form-control" formControlName="FormExpiryDate" [matDatepicker]="picker2"
+                       (focus)="picker2.open()"
+                       [ngClass]="{ 'is-invalid': riderDetailsForm.get('FormExpiryDate')?.hasError('required') && riderDetailsForm.get('FormExpiryDate')?.touched || submittedDetails && riderDetailsGetter['FormExpiryDate'].errors || riderDetailsForm.hasError('expiryIssue') }"
+                       >
+                <mat-datepicker-toggle matSuffix [for]="picker2">
+                  <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+              </span>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('FormExpiryDate')?.hasError('required') && riderDetailsForm.get('FormExpiryDate')?.touched || submittedDetails && riderDetailsGetter['FormExpiryDate'].errors">
+                  {{'common.expiration-date' | translate}}{{'common.is_required' | translate}}</div>
+                <div *ngIf="riderDetailsForm.hasError('expiryIssue')">{{'error.effDateLessThanExpDate' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="CurrencyName" class="required">{{'common.currency' | translate}}</label>
+              <mat-select formControlName="CurrencyName" [(ngModel)]="selectedCurrency"  [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['CurrencyName'].errors }">
+                <mat-option *ngFor="let option of currencyList" [value]="option.Id">
+                  {{option.Code}}
+                </mat-option>
+              </mat-select>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CurrencyName')?.hasError('required') && riderDetailsForm.get('CurrencyName')?.touched || submittedDetails && riderDetailsGetter['CurrencyName'].errors">
+                  {{'common.currency' | translate}}{{'common.is_required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4">
+            <div class="form-group">
+              <label for="StorageFeatures">{{
+                        "facility.features" | translate
+                }}</label>
+              <mat-select formControlName="StorageFeatures" multiple>
+                <mat-option *ngFor="let feature of featureList" [value]="feature.Id" (onSelectionChange)="onChangeOfSOFeatures($event,feature)">{{
+                          feature.Name
+                  }}</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-2">
+            <div class="form-group">
+              <label for="Description">{{'common.description' | translate}} </label>
+              <input type="text" formControlName="Description" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-2"
+               *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin') && mode === 'create'">
+            <div class="form-group mt-2 mb-2">
+              <!-- <label>{{'common.brokerage' | translate}}</label> -->
+              <div class="selected-city-or-region">
+                <span class="d-inline-block" [ngClass]="!isFlatRate ? 'heighlight' : ''">{{'common.percentage-margin' | translate}}</span>
+                <mat-slide-toggle class="d-inline-block" [checked]="isFlatRate" (change)="onChangeEvent($event)"></mat-slide-toggle>
+                <span class="d-inline-block" [ngClass]="isFlatRate ? 'heighlight' : ''">{{'common.flat-rate' | translate}}</span>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-6 mb-2">
+            <div class="form-group mt-2 mb-2">
+              <mat-checkbox (change)="AdvancedSwitchingRatesChanged($event)"
+                            formControlName="IsAdvancedSwitchingRatesEnabled"
+                            color="primary" #AdvancedSwitchingRatesCheckbox
+                            [checked]="false"
+                            [disabled] = "((currentUserRole === 'Vendor' && mode !== 'create') || currentUserRole === 'Customer')"
+                            class="example-margin mr-2">
+                <span class="d-inline-block ml-10px">{{'rider.advanced-switching-rates' | translate}}</span>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12" [hidden]="!isFlatRate" [ngClass]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin') ? 'top-saperator' : ''" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Vendor')">
+        <h3 class="mt-2 mb-0" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin')">Vendor Cost</h3>
+        <div class="row" formGroupName="VendorCost">
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="DailyStorageRate" class="required">{{'common.base-daily-rate' | translate}}</label>
+              <input type="text" formControlName="DailyStorageRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     [required]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Vendor') && isFlatRate"
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+                     <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.hasError('required') &&
+                          riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.touched || submittedDetails &&
+                          riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.errors &&
+                          !riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.hasError('min') &&
+                          !riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.hasError('max')">
+                           {{'common.base-daily-rate' | translate}}{{'common.is_required' | translate}}</div>
+                          <div *ngIf="riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.hasError('min')">
+                            {{'min_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.errors['min']['min']}}
+                          </div>
+                        <div *ngIf="riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.hasError('max')">
+                          {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('DailyStorageRate')?.errors['max']['max']}}
+                        </div>
+                    </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="!isTakeOrPay">
+            <div class="form-group">
+              <label for="LoadedSurcharge">{{'common.loaded-surcharge' | translate}}</label>
+              <input type="text" formControlName="LoadedSurcharge" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('LoadedSurcharge')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)" />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorCost')?.get('LoadedSurcharge')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('LoadedSurcharge')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="!isTakeOrPay">
+            <div class="form-group">
+              <label for="HazmatSurcharge">{{'common.hazmat-surcharge' | translate}}</label>
+              <input type="text" formControlName="HazmatSurcharge" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('HazmatSurcharge')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorCost')?.get('HazmatSurcharge')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('HazmatSurcharge')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="SwitchIn">{{'common.switch-in' | translate}}</label>
+              <input type="text" formControlName="SwitchIn" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('SwitchIn')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorCost')?.get('SwitchIn')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('SwitchIn')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="SwitchOut">{{'common.switch-out' | translate}}</label>
+              <input type="text" formControlName="SwitchOut" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('SwitchOut')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorCost')?.get('SwitchOut')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('SwitchOut')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="CherryPickingRate">{{'common.cherry-picking-rate' | translate}}</label>
+              <input type="text" formControlName="CherryPickingRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('CherryPickingRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorCost')?.get('CherryPickingRate')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('CherryPickingRate')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="(this.riderDetailsForm.controls['ContractTypeName'].value === contractTypeId)">
+            <div class="form-group">
+              <label for="ReservationRate">{{'common.reservation-rate' | translate}}</label>
+              <input type="text" formControlName="ReservationRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('VendorCost')?.get('ReservationRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('VendorCost')?.get('ReservationRate')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('VendorCost')?.get('ReservationRate')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-advanced-switching-rates *ngIf="isAdvancedSwitchingRatesEnabled && isFlatRate"
+                                      class="mt-3 mb-3"
+                                      [mode]="mode"
+                                      [isDetailsSubmitted]="submittedDetails"
+                                      [currentUserRole]="currentUserRole"
+                                      [AdvancedSwitchingRate]="$any(riderDetailsForm.controls['VendorCost'].get('AdvancedSwitchingRates'))"
+                                      (AdvancedHazmatSwitchingEnabled)="getIsAdvancedHazmatSwitchingEnabled($event,'VendorCost')"
+                                      (AdvancedLoadedSwitchingEnabled)="getIsAdvancedLoadedSwitchingEnabled($event,'VendorCost')">
+        </app-advanced-switching-rates>
+      </div>
+      <div class="col-lg-12" [hidden]="!isFlatRate" [ngClass]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin') ? 'top-saperator' : ''" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Customer')">
+        <h3 class="mt-2 mb-0" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin')">Customer Rate</h3>
+        <div class="row" formGroupName="CustomerRate">
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="DailyStorageRate" class="required">{{'common.base-daily-rate' | translate}}</label>
+              <input type="text" formControlName="DailyStorageRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     [required]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Customer') && isFlatRate"
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+                     <div class="invalid-feedback">
+                      <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.hasError('required') && riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.touched || submittedDetails && riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.errors &&
+                      !riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.hasError('min') &&
+                      !riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.hasError('max')">
+                          {{'common.base-daily-rate' | translate}}{{'common.is_required' | translate}}</div>
+                        <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.hasError('min')">
+                          {{'min_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.errors['min']['min']}}
+                        </div>
+                      <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.hasError('max')">
+                        {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('DailyStorageRate')?.errors['max']['max']}}
+                      </div>
+                    </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="!isTakeOrPay">
+            <div class="form-group">
+              <label for="LoadedSurcharge">{{'common.loaded-surcharge' | translate}}</label>
+              <input type="text" formControlName="LoadedSurcharge" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('LoadedSurcharge')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('LoadedSurcharge')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('LoadedSurcharge')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="!isTakeOrPay">
+            <div class="form-group">
+              <label for="HazmatSurcharge">{{'common.hazmat-surcharge' | translate}}</label>
+              <input type="text" formControlName="HazmatSurcharge" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('HazmatSurcharge')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('HazmatSurcharge')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('HazmatSurcharge')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="SwitchIn">{{'common.switch-in' | translate}}</label>
+              <input type="text" formControlName="SwitchIn" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('SwitchIn')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('SwitchIn')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('SwitchIn')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="SwitchOut">{{'common.switch-out' | translate}}</label>
+              <input type="text" formControlName="SwitchOut" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('SwitchOut')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('SwitchOut')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('SwitchOut')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="CherryPickingRate">{{'common.cherry-picking-rate' | translate}}</label>
+              <input type="text" formControlName="CherryPickingRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('CherryPickingRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('CherryPickingRate')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('CherryPickingRate')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="(this.riderDetailsForm.controls['ContractTypeName'].value === contractTypeId)">
+            <div class="form-group">
+              <label for="ReservationRate">{{'common.reservation-rate' | translate}}</label>
+              <input type="text" formControlName="ReservationRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('CustomerRate')?.get('ReservationRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('CustomerRate')?.get('ReservationRate')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('CustomerRate')?.get('ReservationRate')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-advanced-switching-rates *ngIf="isAdvancedSwitchingRatesEnabled && isFlatRate"
+                                      class="mt-3 mb-3"
+                                      [mode]="mode"
+                                      [isDetailsSubmitted]="submittedDetails"
+                                      [currentUserRole]="currentUserRole"
+                                      [AdvancedSwitchingRate]="$any(riderDetailsForm.controls['CustomerRate'].get('AdvancedSwitchingRates'))"
+                                      (AdvancedHazmatSwitchingEnabled)="getIsAdvancedHazmatSwitchingEnabled($event,'CustomerRate')"
+                                      (AdvancedLoadedSwitchingEnabled)="getIsAdvancedLoadedSwitchingEnabled($event,'CustomerRate')">
+        </app-advanced-switching-rates>
+      </div>
+      <div class="col-lg-12" [hidden]="isFlatRate" [ngClass]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin') ? 'top-saperator' : ''" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Customer' || currentUserRole === 'Vendor')">
+        <h3 class="mt-2 mb-0" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin')">Percentage Rate</h3>
+        <div class="row" formGroupName="PercentageRate">
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="DailyStorageRate" class="required">{{'common.base-daily-rate' | translate}}</label>
+              <input type="text" formControlName="DailyStorageRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     [required]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Vendor') && !isFlatRate"
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+                  <div class="invalid-feedback">
+                    <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.hasError('required') && riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.touched || submittedDetails && riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.errors &&
+                      !riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.hasError('min') &&
+                       !riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.hasError('max')">
+                          {{'common.base-daily-rate' | translate}}{{'common.is_required' | translate}}
+                      </div>
+                        <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.hasError('min')">
+                          {{'min_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.errors['min']['min']}}
+                        </div>
+                      <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.hasError('max')">
+                        {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('DailyStorageRate')?.errors['max']['max']}}
+                      </div>
+                  </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="!isTakeOrPay">
+            <div class="form-group">
+              <label for="LoadedSurcharge">{{'common.loaded-surcharge' | translate}}</label>
+              <input type="text" formControlName="LoadedSurcharge" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('LoadedSurcharge')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('LoadedSurcharge')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('LoadedSurcharge')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="!isTakeOrPay">
+            <div class="form-group">
+              <label for="HazmatSurcharge">{{'common.hazmat-surcharge' | translate}}</label>
+              <input type="text" formControlName="HazmatSurcharge" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('HazmatSurcharge')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('HazmatSurcharge')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('HazmatSurcharge')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="SwitchIn">{{'common.switch-in' | translate}}</label>
+              <input type="text" formControlName="SwitchIn" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('SwitchIn')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('SwitchIn')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('SwitchIn')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="SwitchOut">{{'common.switch-out' | translate}}</label>
+              <input type="text" formControlName="SwitchOut" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('SwitchOut')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('SwitchOut')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('SwitchOut')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2">
+            <div class="form-group">
+              <label for="CherryPickingRate">{{'common.cherry-picking-rate' | translate}}</label>
+              <input type="text" formControlName="CherryPickingRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('CherryPickingRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('CherryPickingRate')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('CherryPickingRate')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="(this.riderDetailsForm.controls['ContractTypeName'].value === contractTypeId)">
+            <div class="form-group">
+              <label for="ReservationRate">{{'common.reservation-rate' | translate}}</label>
+              <input type="text" formControlName="ReservationRate" class="form-control"
+                     maxlength="9"
+                     ngCurrencyOnly
+                     placeholder="{{'customer-rate' | translate}}"
+                     [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('ReservationRate')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurAmount($event)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('ReservationRate')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} ${{riderDetailsForm.get('PercentageRate')?.get('ReservationRate')?.errors['max']['max']}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Vendor')">
+            <div class="form-group">
+              <label for="ListingFee" class="required">{{'common.listing-fee' | translate}}</label>
+              <input type="text" formControlName="ListingFee"
+                     maxlength="6"
+                     appPercentage
+                     [required]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Vendor') && !isFlatRate"
+                     placeholder="{{'customer-percentage' | translate}}"
+                     class="form-control" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('ListingFee')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurPercent($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('ListingFee')?.hasError('required') && riderDetailsForm.get('PercentageRate')?.get('ListingFee')?.touched || submittedDetails && riderDetailsForm.get('PercentageRate')?.get('ListingFee')?.errors">
+                  {{'common.listing-fee' | translate}}{{'common.is_required' | translate}}</div>
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('ListingFee')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} {{riderDetailsForm.get('PercentageRate')?.get('ListingFee')?.errors['max']['max']}}%
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-2" *ngIf="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Customer')">
+            <div class="form-group">
+              <label for="BookingFee" class="required">{{'common.booking-fee' | translate}}</label>
+              <input type="text" formControlName="BookingFee"
+                     maxlength="6"
+                     appPercentage
+                     [required]="(currentUserRole === 'SuperAdmin' || currentUserRole === 'Admin' || currentUserRole === 'Customer') && !isFlatRate"
+                     placeholder="{{'customer-percentage' | translate}}"
+                     class="form-control" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsForm.get('PercentageRate')?.get('BookingFee')?.errors }"
+                     (focus)="onFocusNumber($event)"
+                     (blur)="onBlurPercent($event)"
+                     />
+              <div class="invalid-feedback">
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('BookingFee')?.hasError('required') && riderDetailsForm.get('PercentageRate')?.get('BookingFee')?.touched || submittedDetails && riderDetailsForm.get('PercentageRate')?.get('BookingFee')?.errors">
+                  {{'common.booking-fee' | translate}}{{'common.is_required' | translate}}</div>
+                <div *ngIf="riderDetailsForm.get('PercentageRate')?.get('BookingFee')?.hasError('max')">
+                  {{'maximum_value_for_this_field_is' | translate}} {{riderDetailsForm.get('PercentageRate')?.get('BookingFee')?.errors['max']['max']}}%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-advanced-switching-rates *ngIf="isAdvancedSwitchingRatesEnabled && !isFlatRate"
+                                      class="mt-3 mb-3"
+                                      [isDetailsSubmitted]="submittedDetails"
+                                      [mode]="mode"
+                                      [currentUserRole]="currentUserRole"
+                                      [AdvancedSwitchingRate]="$any(riderDetailsForm.controls['PercentageRate'].get('AdvancedSwitchingRates'))"
+                                      (AdvancedHazmatSwitchingEnabled)="getIsAdvancedHazmatSwitchingEnabled($event,'PercentageRate')"
+                                      (AdvancedLoadedSwitchingEnabled)="getIsAdvancedLoadedSwitchingEnabled($event,'PercentageRate')">
+        </app-advanced-switching-rates>
+      </div>
+      <div class="col-12" *ngIf="!isViewMode">
+        <div class="float-end mt-2">
+          <button class="secondary-btn mr-2" type="button" *ngIf="currentUserRole !== 'Customer'" mat-raised-button (click)="onFormReset()">{{'common.reset' | translate}}</button>
+          <button type="button" *ngIf="mode === 'create'" mat-raised-button (click)="onSubmitRiderDetailsForm()" color="primary">{{'common.save' | translate}}</button>
+          <button type="button" *ngIf="mode === 'copy'" mat-raised-button (click)="onSubmitRiderDetailsForm()" color="primary">{{'common.save' | translate}}</button>
+          <button type="button" *ngIf="mode !== 'create' && mode !== 'copy' && currentUserRole !== 'Customer'" mat-raised-button (click)="onUpdateRiderDetailsForm()" color="primary">{{'common.update' | translate}}</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- <div class="row mt-3" *ngIf="loadFeatures"> -->
+  <div class="row mt-3" *ngIf="false">
+    <div class="col-12">
+      <div class="row g-0 features mb-3">
+        <label>{{'facility.features' | translate}}</label>
+        <div *ngFor="let unit of featureList; let i=index" class="col featureslist">
+          <mat-checkbox [formControlName]="unit.Name" id="units[{{i}}]" name="units[{{i}}]" (change)="onfeatureSelected($event,unit)">
+            {{ unit.Name }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-1 designed-accordian">
+  <div class="col-12">
+    <mat-accordion multi>
+      <mat-expansion-panel hideToggle [(expanded)]="expandonClick">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{'rider.railcar-details' | translate}}
+            <span class="material-icons">expand_more</span>
+          </mat-panel-title>
+          <mat-panel-description *ngIf="!isViewMode">
+            <div class="text-right">
+              <!-- <button class="simple-button left-icon d-inline-block" type="button" (click)="onDownloadTemplate();$event.stopPropagation();">
+                <span class="material-icons">cloud_download</span>
+                {{'common.template' | translate}}
+              </button> -->
+              <div class="btn-group ml-2 d-inline-block">
+                <button class="simple-button mat-button-designed left-icon" (click)="$event.stopPropagation();" [matMenuTriggerFor]="menu">
+                  <app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon>
+                  {{'common.railcar' | translate}} <span class="caret"></span>
+                </button>
+                <mat-menu #menu="matMenu" class="mat-menu-designed">
+                  <button (click)="eventUpdate('addCars')" mat-menu-item>{{'common.add-cars' | translate}}</button>
+                  <!-- <button (click)="eventUpdate('upload')" mat-menu-item>{{'common.upload' | translate}}</button> -->
+                </mat-menu>
+              </div>
+              <div class="btn-group ml-2 d-inline-block">
+                <button class="simple-button mat-button-designed" (click)="$event.stopPropagation();" [matMenuTriggerFor]="menu1">
+                  {{'common.action' | translate}} <span class="caret"></span>
+                </button>
+                <mat-menu #menu1="matMenu" class="mat-menu-designed">
+                  <button (click)="eventUpdate('duplicate')" mat-menu-item>{{'common.duplicate' | translate}}</button>
+                  <button (click)="eventUpdate('update')" mat-menu-item>{{'common.update' | translate}}</button>
+                </mat-menu>
+              </div>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- Railcar Details Table Start-->
+        <div>
+          <app-rail-car-details-tab [currentUserRole]="currentUserRole" [optionsConfig]="optionsConfig" [ngClass]="{isViewMode: isViewMode}" [isFromPage]="isFromPage" [riderModelData]="riderModel" [mode]="mode" (onCarsUpdated)="onCarsUpdated($event)"
+                                    (updateHistoryList)="updateHistoryList($event)"></app-rail-car-details-tab>
+        </div>
+
+        <!-- Railcar Details End -->
+
+      </mat-expansion-panel>
+      <mat-expansion-panel hideToggle [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Attachments
+            <span class="material-icons">expand_more</span>
+          </mat-panel-title>
+          <mat-panel-description *ngIf="!isViewMode">
+            <div class="text-right">
+              <button class="simple-button ml-2 left-icon d-inline-block" type="button" (click)="onUploadAttachment();$event.stopPropagation();">
+                <span class="material-icons">cloud_upload</span>
+                {{'common.upload' | translate}}
+              </button>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- Attachments Table Start-->
+        <div class="fixed-height-tables bordered-look">
+          <app-attachments-list [riderModelData]="riderModel" [mode]="mode" [events]="addAttachmentSubject.asObservable()" (updateHistoryList)="updateHistoryList($event)"></app-attachments-list>
+        </div>
+
+        <!-- Attachments End -->
+      </mat-expansion-panel>
+      <mat-expansion-panel hideToggle [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Notes
+            <span class="material-icons">expand_more</span>
+          </mat-panel-title>
+          <mat-panel-description *ngIf="!isViewMode">
+            <div class="text-right">
+              <button class="simple-button ml-2 left-icon d-inline-block" type="button" (click)="onAddNotes();$event.stopPropagation();">
+                <app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon>
+                {{'common.note' | translate}}
+              </button>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- Notes Table Start-->
+        <div class="fixed-height-tables bordered-look">
+          <app-notes-list [riderModelData]="riderModel" [mode]="mode" [events]="addNoteSubject.asObservable()" (updateHistoryList)="updateHistoryList($event)"></app-notes-list>
+        </div>
+
+        <!-- Notes End -->
+      </mat-expansion-panel>
+      <mat-expansion-panel hideToggle [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            History
+            <span class="material-icons">expand_more</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <!-- History Table Start-->
+        <div class="fixed-height-tables bordered-look">
+          <app-history-list [riderModelData]="riderModel" [configuration]="configuration"></app-history-list>
+        </div>
+
+        <!-- History End -->
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="clearfix"></div>
+</div>

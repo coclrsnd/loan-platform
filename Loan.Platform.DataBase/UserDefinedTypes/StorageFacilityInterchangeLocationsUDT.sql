@@ -1,0 +1,23 @@
+﻿create Type [dbo].[StorageFacilityInterchangeLocationsUDT] as Table(	
+	[StorageFacilityId] [bigint] NULL,
+	[StorageFacilityName] [nvarchar](100) NULL,
+	[InterchangeId] [bigint] NULL,
+	[RailRoadId] [nvarchar](max) NULL,
+	[Id] [bigint] NULL,
+	[CountryId] [bigint] NULL,
+	[StateId] [bigint] NULL,
+	[CITY] [nvarchar](max) NULL,
+	[SPLC] [nvarchar](max) NULL,
+	[R260] [nvarchar](max) NULL,
+	[FSAC] [nvarchar](max) NULL,
+	[Lat] [nvarchar](max) NULL,
+	[Long] [nvarchar](max) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreatedTime] [datetime2](7) NULL,
+	[CreatedBy] [bigint] NULL,
+	[ModifiedTime] [datetime2](7) NULL,
+	[ModifiedBy] [bigint] NULL,
+	[OrganizationId] [bigint] NULL,
+	[TenantId] [bigint] NULL,
+	[IsActive] [bit] NULL
+	)

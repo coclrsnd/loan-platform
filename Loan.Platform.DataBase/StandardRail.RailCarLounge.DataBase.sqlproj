@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>StandardRail.RailCarLounge.DataBase</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{7f999e98-5e95-4ba1-8c34-96556bffc364}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>StandardRail.RailCarLounge.DataBase</RootNamespace>
+    <AssemblyName>StandardRail.RailCarLounge.DataBase</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="StoredProcedures" />
+    <Folder Include="UserDefinedTypes" />
+    <Folder Include="Functions" />
+    <Folder Include="Tables" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\Rollback" />
+    <Folder Include="Scripts\Add" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="StoredProcedures\SP_GetStorageOrderDetails.sql" />
+    <Build Include="UserDefinedTypes\StorageFacilityUDT.sql" />
+    <Build Include="UserDefinedTypes\VendorUDT.sql" />
+    <Build Include="UserDefinedTypes\StorageFacilityRateUDT.sql" />
+    <Build Include="UserDefinedTypes\StorageFacilityFeaturesUDT.sql" />
+    <Build Include="StoredProcedures\usp_CreateOrUpdateVendor.sql" />
+    <Build Include="StoredProcedures\SP_GetCustomersOnFilter.sql" />
+    <Build Include="Functions\fn_SplitStringToTable.sql" />
+    <Build Include="StoredProcedures\SP_GetStorageOrderDetailsById.sql" />
+    <Build Include="StoredProcedures\SP_GetSOCountByVendorCustomerEffectiveDate.sql" />
+    <Build Include="StoredProcedures\SP_GetRailCarDetailsByContractId.sql" />
+    <Build Include="Functions\fnSplit.sql" />
+    <Build Include="StoredProcedures\SP_SearchFacility.sql" />
+    <Build Include="UserDefinedTypes\SPLCMileUDT.sql" />
+    <Build Include="StoredProcedures\SP_GetUserDetails.sql" />
+    <Build Include="Tables\DB_Errors.sql" />
+    <Build Include="StoredProcedures\SP_GetVendorDetails.sql" />
+    <Build Include="StoredProcedures\SP_GetVendorsOnFilter.sql" />
+    <Build Include="UserDefinedTypes\StorageFacilityInterchangesUDT.sql" />
+    <Build Include="UserDefinedTypes\StorageFacilityInterchangeLocationsUDT.sql" />
+    <Build Include="StoredProcedures\SP_GetRailCarDetails.sql" />
+    <Build Include="StoredProcedures\SP_GetNotesByContractId.sql" />
+    <Build Include="StoredProcedures\SP_GetAttachmentsByContractId.sql" />
+    <Build Include="StoredProcedures\SP_GetAuditLogsByContractId.sql" />
+    <Build Include="Scripts\Add\MasterTablesSeed.sql" />
+    <Build Include="UserDefinedTypes\ContractUDT.sql" />
+    <Build Include="UserDefinedTypes\ContractRateUDT.sql" />
+    <Build Include="StoredProcedures\usp_CreateOrUpdateContract.sql" />
+    <Build Include="Tables\Range.sql" />
+    <Build Include="StoredProcedures\SP_StorageFacilityActivityReport.sql" />
+    <Build Include="StoredProcedures\SP_GetAuditLogsOnFilter.sql" />
+    <Build Include="UserDefinedTypes\ContractSFFeatureMappingUDT.sql" />
+    <Build Include="UserDefinedTypes\OpportunityAttachmentsUDT.sql" />
+    <Build Include="StoredProcedures\usp_CreateOrUpdateOpportunity.sql" />
+    <Build Include="StoredProcedures\SP_GetOpportunityDetailsById.sql" />
+    <Build Include="Scripts\Add\Iteration2_1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Add\DBCleanupUAT.sql" />
+    <None Include="Scripts\Add\23SeptProdRelease.sql" />
+    <None Include="Scripts\Add\29SeptProdChangeScript.sql" />
+    <None Include="Scripts\Add\MasterTablesSeed.sql" />
+    <None Include="Scripts\Add\MasterTablesSeed.sql" />
+    <None Include="Scripts\Add\Iteration2.sql" />
+    <None Include="Scripts\Rollback\Iteration2.sql" />
+  </ItemGroup>
+</Project>

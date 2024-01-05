@@ -1,0 +1,73 @@
+<div class="white-bg-box">
+    <form [formGroup]="contractSearchForm" (ngSubmit)="submitForm()">
+        <div class="row g-0">
+            <div class="row mb-2">
+                <div class="col-md-3 g-0">
+                    <div class="form-group">
+                        <label for="VendorName">{{'vendor-name' | translate}}</label>
+                        <input type="text" formControlName="VendorName" class="form-control" [ngClass]="{ 'is-invalid': submitted && contractsForm['VendorName'].errors }" />
+                        <div *ngIf="submitted && contractsForm['VendorName']?.errors" class="invalid-feedback">
+                            <div *ngIf="contractsForm['VendorName'].errors?.['required']">Vendor Name is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ContractType">{{'common.contract-type' | translate}}</label>
+                        <select class="form-select form-control" data-live-search="true" formControlName="ContractType">
+          <option *ngFor="let option of contractType" value={{option.id}}> {{option.value}} </option>
+        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="RiderNumber">{{'rider-number' | translate}}</label>
+                        <select class="form-select form-control" data-live-search="true" formControlName="RiderNumber">
+        <option *ngFor="let option of riderNumber" value={{option.id}}> {{option.value}} </option>
+      </select>
+                    </div>
+                </div>
+                <div class="col-md-3 g-0">
+                    <div class="form-group">
+                        <label for="SwitchIn">{{'total-cars-spaces' | translate}}</label>
+                        <input type="text" formControlName="TotalCars" class="form-control" [ngClass]="{ 'is-invalid': submitted && contractsForm['TotalCars'].errors }" />
+                        <div *ngIf="submitted && contractsForm['TotalCars'].errors" class="invalid-feedback">
+                            <div *ngIf="contractsForm['TotalCars'].errors?.['required']">Total Cars is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 g-0">
+                    <div class="form-group">
+                        <label for="SwitchIn">{{'switch-in' | translate}}</label>
+                        <input type="text" formControlName="SwitchIn" class="form-control" [ngClass]="{ 'is-invalid': submitted && contractsForm['SwitchIn'].errors }" />
+                        <div *ngIf="submitted && contractsForm['SwitchIn'].errors" class="invalid-feedback">
+                            <div *ngIf="contractsForm['SwitchIn'].errors?.['required']">Switch In is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="CustomerName">{{'customer-name' | translate}}</label>
+                        <select class="form-select form-control" data-live-search="true" formControlName="CustomerName">
+              <option *ngFor="let option of customerName" value={{option.id}}> {{option.value}} </option>
+            </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="EffectiveDate">{{'effective-date' | translate}}</label>
+                        <input type="text" [bsConfig]="bsConfig" #dp="bsDatepicker" formControlName="EffectiveDate" class="form-control" bsDatepicker [(bsValue)]="myDateValue" [ngClass]="{ 'is-invalid': submitted && contractsForm['EffectiveDate'].errors }" />
+                        <div *ngIf="submitted && contractsForm['EffectiveDate'].errors" class="invalid-feedback">
+                            <div *ngIf="contractsForm['EffectiveDate'].errors?.['required']">Effective Date is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <button type="submit" mat-raised-button color="primary">Signup</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

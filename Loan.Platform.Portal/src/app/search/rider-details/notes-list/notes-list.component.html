@@ -1,0 +1,39 @@
+<div class="mb-3" *ngIf="isNotes">
+  <div class="search-holder mt-3">
+    <div class="row" [formGroup]="notesForm">
+      <div class="col-10">
+        <input type="text" maxlength="250" placeholder="{{'enter_note_here' | translate}}" formControlName="Description" class="form-control w-100" [ngClass]="{ 'is-invalid': submittedDetails && notesFormGetter['Description'].errors }" />
+      </div>
+      <div class="col-2">
+        <button class="mr-2 pull-right" type="button" mat-raised-button (click)="onSubmitNotesForm()" color="primary">{{'common.save' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-0">
+  <div class="col-12 notes-table responsive-table">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+         <ng-container *ngIf="column === 'CreatedTime'">
+                                 <th mat-header-cell scope="col" *matHeaderCellDef>
+                                   {{ column | translate }}
+                                 </th>
+                                 <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element">
+                                   {{ element.CreatedTime | date:'short' }}
+                                 </td>
+                               </ng-container>
+        <th mat-header-cell scope="col" *matHeaderCellDef> {{column | translate}} </th>
+        <td mat-cell [attr.aria-label]="column | translate" *matCellDef="let element"> {{element[column]}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+  </table>
+  <table class="w-100 no-record">
+    <tr *ngIf="dataSource?.length === 0 || dataSource === undefined">
+      <td [attr.colspan]="columnsToDisplay.length">
+        {{'no-records-found' | translate}}
+      </td>
+    </tr>
+  </table>
+  </div>
+</div>

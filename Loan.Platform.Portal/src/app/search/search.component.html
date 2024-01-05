@@ -1,0 +1,425 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="head-title">
+            <app-page-title *ngIf="isSearch"></app-page-title>
+            <span *ngIf="!isSearch">{{'common.save-search-criteria' | translate}}</span>
+        </h3>
+        <div *ngIf="loadContent" class="white-bg-box">
+            <form [formGroup]="formGroup" class="row">
+                <div class="col-lg-2 col-md-4 mb-2 form-group">
+                  <label for="enableMultiCity">{{'common.search-by' | translate}}</label>
+                    <div class="selected-city-or-region">
+                        <span class="d-inline-block" [ngClass]="!enableMultiCity ? 'heighlight' : ''">{{'search.region' | translate}}</span>
+                        <!-- <ui-switch [checked]="formGroup.get('enableMultiCity')?.value" formControlName="enableMultiCity" (changeEvent)="onChangeEvent(formGroup.controls)"></ui-switch> -->
+                        <mat-slide-toggle class="d-inline-block" [checked]="enableMultiCity" (change)="onChangeEvent($event)"></mat-slide-toggle>
+                        <span class="d-inline-block" [ngClass]="enableMultiCity ? 'heighlight' : ''">{{'search.multicity' | translate}}</span>
+                    </div>
+                </div>
+                <!-- <div class="mb-2" [ngClass]="enableMultiCity? 'col-lg-5' : 'col-lg-2'"> -->
+                <div class="col-lg-4">
+                    <div class="form-group" *ngIf="!enableMultiCity">
+                        <label for="Region" [ngClass]="{ 'required': !enableMultiCity }">{{'common.select-region' | translate}}</label>
+                        <!-- <select class="form-select form-control"
+                        [ngClass]="{ 'is-invalid': formGroup.get('Region')?.hasError('required') && formGroup.get('Region')?.touched || submittedSearch && search['Region'].errors }"
+                        data-live-search="true" formControlName="Region">
+                          <option value="" disabled selected>{{'common.select-region' | translate}}</option>
+                  <optgroup label="{{'search.usited_states_region' | translate}}">
+                    <option *ngFor="let option of unitedState" value={{option.id}}> {{option.title}} </option>
+                  </optgroup>
+                  <optgroup class="divider"></optgroup>
+                  <optgroup label="{{'search.canadian_states_region' | translate}}">
+                    <option *ngFor="let option of canadianState" value={{option.id}}> {{option.title}} </option>
+                  </optgroup>
+                  </select> -->
+                  <mat-select formControlName="Region" [ngClass]="{ 'is-invalid': formGroup.get('Region')?.hasError('required') && formGroup.get('Region')?.touched || submittedSearch && search['Region'].errors }">
+                    <mat-option [value]="defaultSelectedValueForDropdownlist">
+                      {{ "common.select" | translate }}
+                    </mat-option>
+                    <mat-optgroup label="{{'search.usited_states_region' | translate}}">
+                      <mat-option *ngFor="let option of unitedState" value="{{option.id}}">
+                        {{option.title}}
+                      </mat-option>
+                    </mat-optgroup>
+                    <mat-optgroup label="{{'search.canadian_states_region' | translate}}">
+                      <mat-option *ngFor="let option of canadianState" value="{{option.id}}">
+                        {{option.title}}
+                      </mat-option>
+                    </mat-optgroup>
+                  </mat-select>
+                  <div class="invalid-feedback">
+                    <div *ngIf="formGroup.get('Region')?.hasError('required') && formGroup.get('Region')?.touched || submittedSearch && search['Region'].errors">{{'common.select-region' | translate}} {{'common.is_required' | translate}}</div>
+                </div>
+                    </div>
+                    <div class="row form-group" *ngIf="enableMultiCity">
+                        <div class="col-lg-5 col-md-12 pr-lg-0">
+                            <label for="FromCity" [ngClass]="{ 'required': enableMultiCity }">{{'from_city' | translate}}</label>
+                            <!-- <app-input-autocomplete [renderTemplate]="'cityState'" formControlName="FromCity" placeholder="Please enter From City" [render] [options]="fromCity$ | async">
+                            </app-input-autocomplete> -->
+                            <input
+
+                            class="form-control"
+                            placeholder="From City"
+                            #FromCity
+                            type="text"
+                            formControlName="FromCity"
+                            [ngClass]="{ 'is-invalid': formGroup.get('FromCity')?.hasError('required') && formGroup.get('FromCity')?.touched || submittedSearch && search['FromCity'].errors }"
+                            [matAutocomplete]="fromCityAutoComplete"
+                          />
+                            <mat-autocomplete
+                            panelWidth="auto"
+                            #fromCityAutoComplete="matAutocomplete"
+                            (optionSelected)="onFromCitySelected($event)"
+                            [displayWith]="displayCityState.bind(this)"
+                          >
+                            <mat-option
+                              *ngIf="isSearching; else FromCityTemplate"
+                              disabled="true"
+                            >
+                              <em>Searching...</em>
+                            </mat-option>
+                            <ng-template #FromCityTemplate>
+                              <mat-option *ngFor="let option of fromCity$ | async" [value]="option">
+                                <div>
+                                    <ng-container>
+                                        {{ option?.Address?.City }}, {{ option?.Address?.State }}
+                                    </ng-container>
+                                  </div>
+                              </mat-option>
+                            </ng-template>
+                            <mat-option
+                              *ngIf="!isSearching && noResults"
+                              value=""
+                              disabled="true"
+                            >
+                                <b>No results found</b>
+                            </mat-option>
+                          </mat-autocomplete>
+                          <div class="invalid-feedback">
+                            <div *ngIf="formGroup.get('FromCity')?.hasError('required') && formGroup.get('FromCity')?.touched || submittedSearch && search['FromCity'].errors">{{'from_city' | translate}} {{'common.is_required' | translate}}</div>
+                        </div>
+                        </div>
+                        <div class="col-lg-2 col-md-12">
+                            <div class="switcher mt-lg-4 mt-md-2 mt-sm-2">
+                                <app-svg-icon
+                                (click)="interChangeValues()" icon="icon-interchange" class="icon"
+                                ></app-svg-icon>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-12 pl-lg-0">
+                            <label for="ToCity" [ngClass]="{ 'required': enableMultiCity }">{{'to_city' | translate}}</label>
+                            <!-- <input type="text" appCharactorOnly formControlName="ToCity" class="form-control" /> -->
+                            <!-- <app-input-autocomplete [renderTemplate]="'cityState'"  formControlName="ToCity" placeholder="Please enter To City" [options]="toCity$ | async">
+                            </app-input-autocomplete> -->
+                            <input
+
+                            class="form-control"
+                            placeholder="To City"
+                            [ngClass]="{ 'is-invalid': formGroup.get('ToCity')?.hasError('required') && formGroup.get('ToCity')?.touched || submittedSearch && search['ToCity'].errors }"
+                            #ToCity
+                            type="text"
+                            formControlName="ToCity"
+                            [matAutocomplete]="autoCo"
+                          />
+                            <mat-autocomplete
+                            #autoCo="matAutocomplete"
+                            (optionSelected)="onToCitySelected($event)"
+                            [displayWith]="displayCityState.bind(this)"
+                            panelWidth="auto"
+                          >
+                            <mat-option
+                              *ngIf="isSearching; else ToCityTemplate"
+                              disabled="true"
+                            >
+                              <em>Searching...</em>
+                            </mat-option>
+                            <ng-template #ToCityTemplate>
+                              <mat-option *ngFor="let option of toCity$ | async" [value]="option">
+                                <div>
+                                    <ng-container>
+                                        {{ option?.Address?.City }}, {{ option?.Address?.State }}
+                                    </ng-container>
+                                  </div>
+                              </mat-option>
+                            </ng-template>
+                            <mat-option
+                              *ngIf="!isSearching && noResults"
+                              value=""
+                              disabled="true"
+                            >
+                                <b>No results found</b>
+                            </mat-option>
+                          </mat-autocomplete>
+                          <div class="invalid-feedback">
+                            <div *ngIf="formGroup.get('ToCity')?.hasError('required') && formGroup.get('ToCity')?.touched || submittedSearch && search['ToCity'].errors">{{'to_city' | translate}} {{'common.is_required' | translate}}</div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-2" *ngIf="enableMultiCity">
+                    <div class="form-group">
+                        <label for="RailRoad" [ngClass]="{ 'required': enableMultiCity }">{{'common.railroads' | translate}}</label>
+                        <mat-select formControlName="RailRoad" placeholder="{{'search.select-railroad' | translate}}" (selectionChange)="onOut()" panelClass="mat-select" [ngClass]="{ 'is-invalid': submittedSearch && search['RailRoad'].errors }" [(ngModel)]="selectedValues">
+                            <mat-option *ngFor="let railroad of originDestinationRailroads;" [value]="railroad">
+                                {{railroad}}
+                            </mat-option>
+                        </mat-select>
+                        <div class="invalid-feedback">
+                          <div *ngIf="formGroup.get('RailRoad')?.hasError('required') && formGroup.get('RailRoad')?.touched || submittedSearch && search['RailRoad'].errors">{{'common.railroads' | translate}} {{'common.is_required' | translate}}</div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-2" *ngIf="!isAdvanceSearch">
+                    <div class="float-end mt-4">
+                      <button class="secondary-btn mr-2" type="button" mat-raised-button (click)="resetSearchForm()">{{'common.reset' | translate}}</button>
+                      <!-- <button class="mr-2 secondary-btn" type="button" mat-raised-button (click)="onSaveSearch()">{{'common.save-search' | translate}}</button> -->
+                      <button type="submit" mat-raised-button value="submit" color="primary" (click)="searchMap()">{{'common.quick-search' | translate}}</button>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+                    <div class="form-group">
+                        <label for="EffectiveDate">{{'rider.effective-date' | translate}}</label>
+                        <span class="date-holder">
+                      <input placeholder="{{'common.date-placeholder'| translate}}" #input type="text" class="form-control" formControlName="EffectiveDate" [matDatepicker]="picker" (focus)="picker.open()">
+                      <mat-datepicker-toggle matSuffix [for]="picker">
+                        <app-svg-icon icon="icon-calendar" class="icon"
+                        matDatepickerToggleIcon></app-svg-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+                    </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+                    <div class="form-group">
+                        <label for="ExpiryDate">{{'rider.expiration-date' | translate}}</label>
+                        <span class="date-holder">
+                  <input placeholder="{{'common.date-placeholder'| translate}}" #input2 type="text" class="form-control" formControlName="ExpiryDate"
+                  [ngClass]="{ 'is-invalid': formGroup.hasError('expiryIssue') }"
+                  [matDatepicker]="picker2" (focus)="picker2.open()">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <app-svg-icon icon="icon-calendar" class="icon"
+                    matDatepickerToggleIcon></app-svg-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+                </span>
+                <div class="invalid-feedback">
+                  <div *ngIf="formGroup.hasError('expiryIssue')">{{'error.effDateLessThanExpDate' | translate}}</div>
+                </div>
+                </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+                    <!-- <div class="form-group">
+                        <div class="row">
+                            <label for="PriceRange1">{{'search.price-range' | translate}}</label>
+                            <div class="col-5 pr-0">
+                                <input type="text" ngNumbersOnly formControlName="PriceRange1" class="form-control" />
+                            </div>
+                            <div class="col-2 text-center g-0">
+                                <app-svg-icon icon="icon-sort-arrows" class="icon rotate-90"></app-svg-icon>
+                            </div>
+                            <div class="col-5 pl-0">
+                                <input type="text" formControlName="PriceRange2" class="form-control" />
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                      <label for="DailyRate">{{'common.base-daily-rate' | translate}}</label>
+                      <mat-select placeholder="Daily Rate" formControlName="DailyRate" (selectionChange)="onDailyRateSelected()" panelClass="mat-select">
+                          <mat-option *ngFor="let rate of dailyRates; let i =index" [value]="rate.value">
+                              <${{rate.value}}.00
+                          </mat-option>
+                      </mat-select>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+                  <div class="form-group">
+                    <label for="SwitchingFee">{{'common.switching-rate' | translate}}</label>
+                    <mat-select placeholder="Switching Fee" formControlName="SwitchingFee" (selectionChange)="onSwitchingFeeSelected()" panelClass="mat-select">
+                        <mat-option *ngFor="let rate of switchingFees; let i =index" [value]="rate.value">
+                            <${{rate.value}}.00
+                        </mat-option>
+                    </mat-select>
+                </div>
+              </div>
+                <div class="col-lg-2 col-md-4 mb-2" *ngIf="isAdvanceSearch">
+                    <div class="form-group">
+                        <label for="Features">{{'common.features' | translate}}</label>
+                        <mat-select multiple placeholder="Features" formControlName="Features" (selectionChange)="onOut()" panelClass="mat-select">
+                            <mat-option *ngFor="let featuresItem of features; let i =index" [value]="featuresItem">
+                                {{featuresItem.Name}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+
+                </div>
+                <!-- <div class="col-lg-5 mb-2" *ngIf="isAdvanceSearch">
+                    <ngx-slider [(value)]="minValue" formControlName="Distance" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+                </div> -->
+                <div class="col-12 bottom-more-less">
+                    <div class="d-flex">
+                        <div class="mr-auto my-auto">
+                            <span class="advance-more-less" [ngClass]="{'arrow-reverse': isAdvanceSearch !== false}" (click)="toggleAdvanceSearch()">
+                            <span *ngIf="isAdvanceSearch else elseBlock">{{'common.quick-search' | translate}}</span>
+                            <ng-template #elseBlock>
+                                {{'common.advanced-search' | translate}}
+                            </ng-template>
+                            <app-svg-icon icon="icon-down-arrow-double" class="icon"></app-svg-icon>
+                            </span>
+                        </div>
+                        <ng-container *ngIf="isAdvanceSearch">
+                          <button class="secondary-btn mr-2" type="reset" mat-raised-button (click)="resetSearchForm()">{{'common.reset' | translate}}</button>
+                          <!-- <button class="mr-2 secondary-btn" type="button" mat-raised-button (click)="onSaveSearch()">{{'common.save-search' | translate}}</button> -->
+                          <button type="button" mat-raised-button color="primary" (click)="searchMap()">{{'common.search' | translate}}</button>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!--  | <input type="reset" value="Reset"> | <input type="button" value="Toggle Select All" (click)="multiSelect.toggleSelectAll()"> -->
+            </form>
+        </div>
+        <div *ngIf="!isSearch" class="white-bg-box">
+          <form [formGroup]="searchFormGroup" class="row">
+            <div class="col-lg-4 mb-2">
+              <div class="form-group">
+                <label for="NameYourSearch">{{'common.name-your-search' | translate}}</label>
+                <input placeholder="{{'common.enter-a-unique-name-for-your-search' | translate}}" type="text" formControlName="NameYourSearch" class="form-control" />
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-2">
+              <div class="form-group">
+                <label for="ExpiryDate">{{'rider.expiration-date' | translate}}</label>
+                        <span class="date-holder">
+                  <input placeholder="{{'common.date-placeholder'| translate}}" #input3 type="text" class="form-control" formControlName="ExpiryDate" [matDatepicker]="picker3" (focus)="picker3.open()">
+                  <mat-datepicker-toggle matSuffix [for]="picker3">
+                    <app-svg-icon icon="icon-calendar" class="icon"
+                    matDatepickerToggleIcon></app-svg-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker3 (closed)="input3.blur()"></mat-datepicker>
+                </span>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+              <div class="float-end mt-4">
+                <button class="secondary-btn mr-2" type="button" (click)="onBackToSearch()"  mat-raised-button>{{'common.back-to-search' | translate}}</button>
+                <!-- <button type="button" color="primary" (click)="onSaveSearchScreen()"  mat-raised-button>{{'common.save-search' | translate}}</button> -->
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+<mat-drawer-container [class.drawer-opened]="drawer.opened" class="row mt-3">
+
+    <mat-drawer #drawer class="drawer col-lg-3" mode="side" opened="false">
+      <div class="header" *ngIf="searchResult">
+        <h3>{{'search.search-results' | translate}}</h3>
+    </div>
+        <div class="content" *ngIf="searchResult">
+
+            <ul class="rate-holder">
+                <li *ngFor="let item of searchResults; let i = index;" class="{{item.status}}" [value]="item.rating">
+                    <ul>
+                        <!-- <li>
+                            <div class="favorate">
+                                <mat-icon>favorite_border</mat-icon>
+                            </div>
+                        </li> -->
+                        <!-- <li class="distance">
+                            {{item.distance}} {{'mi-away' | translate}}
+                        </li> -->
+                        <li class="current-facility-details">
+                            {{item.Name}} <!-- #{{item.Id}} --> </li>
+                                <!-- <li class="rating-details">
+                                    <span class="rating-star d-inline-block align-middle">
+                                      <mat-icon *ngIf="number(math.trunc(item.Rating)) >= 1">star</mat-icon>
+                                      <mat-icon *ngIf="number(math.trunc(item.Rating)) >= 2">star</mat-icon>
+                                      <mat-icon *ngIf="number(math.trunc(item.Rating)) >= 3">star</mat-icon>
+                                      <mat-icon *ngIf="number(math.trunc(item.Rating)) >= 4">star</mat-icon>
+                                      <mat-icon *ngIf="number(math.trunc(item.Rating)) >= 5">star</mat-icon>
+                                      <mat-icon *ngIf="number((item.Rating-math.trunc(item.Rating)).toFixed(2))">star_half</mat-icon>
+                                      <mat-icon *ngIf="item.Rating < 5 && number(math.ceil(item.Rating)) !== 5">star_border</mat-icon>
+                                      <mat-icon *ngIf="item.Rating < 4 && number(math.ceil(item.Rating)) !== 4">star_border</mat-icon>
+                                      <mat-icon *ngIf="item.Rating < 3 && number(math.ceil(item.Rating)) !== 3">star_border</mat-icon>
+                                      <mat-icon *ngIf="item.Rating < 2 && number(math.ceil(item.Rating)) !== 2">star_border</mat-icon>
+                                      <mat-icon *ngIf="item.Rating < 1 && number(math.ceil(item.Rating)) !== 1">star_border</mat-icon>
+                                    </span>
+                                    <span class="count">
+                      {{item.Rating*10}} {{'common.rating' | translate}}
+                    </span>
+                                </li> -->
+                                <li class="citystate">
+                                    {{item.City+', '+item.StateCode}}
+                                </li>
+                                <li class="availibility">
+                                    {{'search.availibility' | translate}}: {{item.AvailableCars}} {{'search.out-of' | translate}} {{item.Capacity}}
+                                </li>
+                                <li class="ratedetails">
+                                    <div class="d-flex">
+                                        <div class="mr-auto my-auto">
+                                            <span>{{'search.daily-rate' | translate}}</span>
+                                            <span class="rate">${{item.DailyStorageRate}}</span>
+                                        </div>
+                                        <button mat-raised-button color="primary" class="mt-3" (click)="onBookNow(item)">{{'search.book-now' | translate}}</button>
+                                    </div>
+                                </li>
+                    </ul>
+                    </li>
+            </ul>
+        </div>
+        <div class="header" *ngIf="filterResult">
+          <h3>{{'search.search-filters' | translate}}</h3>
+      </div>
+        <div class="content" *ngIf="filterResult">
+            <div class="row g-0" [formGroup]="filterForm">
+                <div class="col-12">
+                    <div class="features px-2 py-2">
+                        <label>{{'search.class-one-railroads' | translate}}</label>
+                        <div *ngFor="let unit of routeList; let i=index" class="featureslist">
+                            <mat-checkbox (change)="toggleVisibility($event, unit)" [formControlName]="unit.points" id="{{unit.id}}" name="{{unit.id}}">
+                                <span class="line" [ngStyle]="{'background': unit.lineColor}"></span> {{ unit.title }}
+                            </mat-checkbox>
+                            <span class="loading blink" *ngIf="unit.isLayerLoading">Loading...</span>
+                        </div>
+                        <div *ngIf="showContinuousMessage" class="note">
+                          <p>Please be patient while the railroad routes load.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-12">
+                    <div class="features px-2 py-2">
+                        <label>{{'common.contract-type' | translate}}</label>
+                        <div *ngFor="let unit of contractTypes; let i=index" class="featureslist">
+                            <mat-checkbox [formControlName]="unit.controlName" id="units[{{i}}]" name="units[{{i}}]">
+                                <span class="line" [ngStyle]="{'background': unit.lineColor}"></span> {{ unit.title }}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-12">
+                    <div class="features px-2 py-2">
+                        <label>{{'common.favourites' | translate}}</label>
+                        <div *ngFor="let unit of favourities; let i=index" class="featureslist">
+                            <mat-checkbox  [formControlName]="unit.id" id="units[{{i}}]" name="units[{{i}}]">
+                                {{ unit.title }}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-12">
+                    <div class="d-flex">
+                        <div class="mr-auto my-auto">
+                        </div>
+                        <button mat-raised-button color="primary" class="mt-3 mr-1 mb-3" (click)="onApplyFilter()">{{'common.apply' | translate}}</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </mat-drawer>
+    <div [ngClass]="drawer.opened ? 'col-lg-9' : 'col-lg-12'">
+        <div class="side-arrow" (click)="onOpenCloseDrawer()">
+            <span *ngIf="!drawer.opened" class="signs"><app-svg-icon icon="icon-drop-down-arrow" class="icon rotate-neg-90"></app-svg-icon></span>
+            <span *ngIf="drawer.opened" class="signs"><app-svg-icon icon="icon-drop-down-arrow" class="icon rotate-90"></app-svg-icon> </span>
+        </div>
+        <app-search-map (filter)="onFilterTrigger()" (searchResult)="onSearchResult()" [upadateMap]="upadateMap" [railRoadColor]="selectedRailRoadColor"></app-search-map>
+    </div>
+</mat-drawer-container>

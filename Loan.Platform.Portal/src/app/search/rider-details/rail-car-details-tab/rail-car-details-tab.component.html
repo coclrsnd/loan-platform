@@ -1,0 +1,451 @@
+
+<div class="mb-3 alert alert-warning" *ngIf="warningMessage">
+  {{'please-select-at-least-one-record-to-proceed' | translate}} <button type="button" (click)="onCloseWarning()" class="btn-close pull-right" aria-label="Close"></button>
+</div>
+  <div class="mb-3 position-relative" [formGroup]="riderDetailsTabForm" *ngIf="isAddCars || isDuplicate || isUpdate">
+    <button title="{{'close' | translate}}" class="close-icon" (click)="onCloseForm()">
+      X
+    </button>
+    <div class="search-holder bluish-bg mb-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-lg-3 col-md-4 mb-2">
+                <div class="form-group">
+                  <label for="CarId" class="required">{{'CarId' | translate}}</label>
+                  <textarea type="text"
+                  [placeholder]="'customer-car-id' | translate"
+                  formControlName="CarId" class="form-control w-100 min-height-180" (blur)="onUpperCase($event)" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['CarId'].errors }"></textarea>
+                  <div class="invalid-feedback">
+                    <div *ngIf="riderDetailsTabForm.get('CarId')?.hasError('required') && riderDetailsTabForm.get('CarId')?.touched || submittedDetails && riderDetailsGetter['CarId'].errors">
+                      {{'CarId' | translate}} {{'common.is_required' | translate}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-9 col-md-12">
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label class="required" for="CarType">{{'common.car-type' | translate}}</label>
+                      <mat-select formControlName="CarType" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['CarType'].errors }">
+                        <mat-option *ngFor="let railCarType of railCarTypesList" [value]="railCarType.Id">
+                          {{railCarType.Name}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsTabForm.get('CarType')?.hasError('required') && riderDetailsTabForm.get('CarType')?.touched || submittedDetails && riderDetailsGetter['CarType'].errors">
+                            {{'common.car-type' | translate}}{{'common.is_required' | translate}}</div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="LandE" [ngClass]="{ 'required': isDynamicValidatorApplied }">{{'LandE' | translate}}</label>
+                      <mat-select formControlName="LandE" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['LandE'].errors }">
+                        <mat-option *ngFor="let leContent of leContentList" [value]="leContent.Id">
+                          {{leContent.Name}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsTabForm.get('LandE')?.hasError('required') && riderDetailsTabForm.get('LandE')?.touched || submittedDetails && riderDetailsGetter['LandE'].errors">
+                            {{'LandE' | translate}}{{'common.is_required' | translate}}</div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="Hazmat" [ngClass]="{ 'required': isDynamicValidatorApplied }">{{'Hazmat' | translate}}</label>
+                      <mat-select formControlName="Hazmat" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['Hazmat'].errors }">
+                        <mat-option *ngFor="let haz of hazmatTF" [value]="haz.Id">
+                          {{haz.Name}}
+                        </mat-option>
+                      </mat-select>
+                      <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsTabForm.get('Hazmat')?.hasError('required') && riderDetailsTabForm.get('Hazmat')?.touched || submittedDetails && riderDetailsGetter['Hazmat'].errors">
+                            {{'Hazmat' | translate}}{{'common.is_required' | translate}}</div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="FormBolDate">{{'BolDate' | translate}}</label>
+                      <span class="date-holder">
+                        <input placeholder="{{'common.date-placeholder' | translate}}" #input3 type="text" class="form-control"
+                               formControlName="FormBolDate" [matDatepicker]="picker3"
+                               [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['FormBolDate'].errors }"
+                               (focus)="picker3.open()">
+                        <mat-datepicker-toggle matSuffix [for]="picker3">
+                          <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker3 (closed)="input3.blur()"></mat-datepicker>
+                      </span>
+                      <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsTabForm.get('FormBolDate')?.hasError('required') && riderDetailsTabForm.get('FormBolDate')?.touched || submittedDetails && riderDetailsGetter['FormBolDate'].errors">
+                            {{'BolDate' | translate}}{{'common.is_required' | translate}}</div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="FormArrivalDate">{{'common.arrival-date' | translate}}</label>
+                      <span class="date-holder">
+                        <input placeholder="{{'common.date-placeholder' | translate}}" #input type="text" class="form-control" formControlName="FormArrivalDate" [matDatepicker]="picker"
+                               (focus)="picker.open()">
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                          <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+                        <!-- <span (click)="clearDate()">X</span> -->
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="FormDepartureDate">{{'common.departure-date' | translate}}</label>
+                      <span class="date-holder">
+                        <input placeholder="{{'common.date-placeholder' | translate}}" #input2 type="text" class="form-control" formControlName="FormDepartureDate" [matDatepicker]="picker2"
+                               (focus)="picker2.open()" [ngClass]="{ 'is-invalid': riderDetailsTabForm.hasError('departureIssue') }">
+                        <mat-datepicker-toggle matSuffix [for]="picker2">
+                          <app-svg-icon icon="icon-calendar" class="icon" matDatepickerToggleIcon></app-svg-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker2 (closed)="input2.blur()"></mat-datepicker>
+                      </span>
+                      <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsTabForm.hasError('departureIssue')">{{'error.arrDateLessThanDepDate' | translate}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="isFromPage === 'searchRailCars'" class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                    <label for="StorageOrder" class="required"> {{ "common.storageOrder" | translate }}
+                    </label>
+                    <input
+                           class="form-control"
+                           [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['StorageOrder'].errors }"
+                           required
+                           placeholder="Storage Order"
+                           #StorageOrder
+                           type="text"
+                           formControlName="StorageOrder"
+                           [matAutocomplete]="autoCo" />
+                    <mat-autocomplete #autoCo="matAutocomplete"
+                    panelWidth="auto"
+                                      (optionSelected)="onStorageOrderChanged($event)">
+                      <mat-option *ngIf="isSearching; else storageOrderTemplate"
+                                  disabled="true">
+                        <em>Searching...</em>
+                      </mat-option>
+                      <ng-template #storageOrderTemplate>
+                        <mat-option *ngFor="let storageOrder of storageOrderList" [value]="storageOrder">
+                          {{ storageOrder.Rider }}
+                        </mat-option>
+                      </ng-template>
+                      <mat-option *ngIf="!isSearching && noResults"
+                                  value=""
+                                  disabled="true">
+                        <b>No results found</b>
+                      </mat-option>
+                    </mat-autocomplete>
+                    <div class="invalid-feedback">
+                      <div *ngIf="riderDetailsTabForm.get('StorageOrder')?.hasError('required') && riderDetailsTabForm.get('StorageOrder')?.touched || submittedDetails && riderDetailsGetter['StorageOrder'].errors">{{'common.storageOrder' | translate}} {{'common.is_required' | translate}}</div>
+                  </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="LEContents">{{'LEContents' | translate}}</label>
+                      <input type="text" placeholder="{{'customer-contents' | translate}}" formControlName="LEContents" class="form-control w-100" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['LEContents'].errors || riderDetailsTabForm.get('LEContents')?.hasError('pattern') }" />
+                      <div class="invalid-feedback">
+                        <div *ngIf="riderDetailsTabForm.get('LEContents')?.hasError('pattern')">
+                          {{'LEContents' | translate}}{{ "common.is_not_valid" | translate }}
+                                  </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-4 mb-2">
+                    <div class="form-group">
+                      <label for="Fleet">{{'Fleet' | translate}}</label>
+                      <input type="text" placeholder="{{'customer-fleet' | translate}}" maxlength="50" formControlName="Fleet" class="form-control w-100" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['Fleet'].errors }" />
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                      <label for="Notes">{{'common.notes' | translate}}</label>
+                      <input type="text" placeholder="{{'enter_note_here' | translate}}" maxlength="250" formControlName="Notes" class="form-control w-100" [ngClass]="{ 'is-invalid': submittedDetails && riderDetailsGetter['Notes'].errors }" />
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+
+    <!-- Location details form -->
+    <div formArrayName="RailCarSwitching">
+      <div class="divider"></div>
+      <div
+        *ngFor="
+          let switchingDetailsList of getSwitchingDetailsForm;
+          let i = index;
+          let last = last;
+          let first = first
+        "
+        [formGroupName]="i"
+      >
+        <div class="divider" *ngIf="!first"></div>
+          <div class="row">
+            <div class="col-lg-3 col-md-4 mb-2">
+              <div class="form-group">
+                  <label for="SpecialSwitchingRate" [ngClass]="{ 'required': (switchingDetailsList.get('SpecialSwitchingRate')?.hasError('required'))}">{{'common.special-switching-rate' | translate}}</label>
+                  <input type="text" ngCurrencyOnly [allowNegative]="true" formControlName="SpecialSwitchingRate" class="form-control"
+                  maxlength="9"
+                  placeholder="{{'customer-rate' | translate}}"
+                  [ngClass]="{ 'is-invalid': switchingDetailsList.get('SpecialSwitchingRate')?.errors }"
+                  (focus)="onFocusNumber($event)"
+                  (blur)="onBlurAmount($event)"
+                  (change)="onRateChange(i)"/>
+                  <div class="invalid-feedback">
+                    <div *ngIf="switchingDetailsList.get('SpecialSwitchingRate')?.hasError('max')">
+                      {{'maximum_value_for_this_field_is' | translate}} ${{switchingDetailsList.get('SpecialSwitchingRate')?.errors['max']['max']}}
+                    </div>
+                    <div *ngIf="(switchingDetailsList.get('SpecialSwitchingRate')?.hasError('required') &&
+                    switchingDetailsList.get('SpecialSwitchingRate')?.dirty ||
+                   (submittedDetails || isSSRValidationEnabled) &&
+                  switchingDetailsList.get('SpecialSwitchingRate')?.errors)">
+                  {{'common.special-switching-rate' | translate}}{{'common.is_required' | translate}}</div>
+                </div>
+              </div>
+          </div>
+        <div class="col-lg-3 col-md-4 mb-2">
+          <div class="form-group">
+              <label for="SpecialSwitchingTitle" [ngClass]="{ 'required': (switchingDetailsList.get('SpecialSwitchingTitle')?.hasError('required'))}">{{'common.special-switching-title' | translate}}</label>
+              <input type="text" formControlName="SpecialSwitchingTitle" class="form-control"
+              maxlength="50"
+              [ngClass]="{ 'is-invalid': switchingDetailsList.get('SpecialSwitchingTitle')?.errors }"
+               (change)="onTitleChanged(i)"/>
+              <div class="invalid-feedback">
+                <div *ngIf="(switchingDetailsList.get('SpecialSwitchingTitle')?.hasError('required') &&
+                switchingDetailsList.get('SpecialSwitchingTitle')?.dirty ||
+                (submittedDetails || isSSRValidationEnabled) &&
+              switchingDetailsList.get('SpecialSwitchingTitle')?.errors)">
+                    {{'common.special-switching-title' | translate}}{{'common.is_required' | translate}}</div>
+            </div>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-4 mb-2">
+        <div class="form-group">
+            <label for="FormSpecialSwitchingDate" [ngClass]="{ 'required': (switchingDetailsList.get('FormSpecialSwitchingDate')?.hasError('required'))}">{{'common.special-switching-date' | translate}}</label>
+            <span class="date-holder">
+              <input
+                #input
+                type="text"
+                placeholder="{{ 'common.date-placeholder' | translate }}"
+                class="form-control"
+                formControlName="FormSpecialSwitchingDate"
+                [matDatepicker]="picker4"
+                (focus)="picker4.open()"
+                (dateChange)="onSpecialChargeDateChanged(i)"
+                [max]="todaysDate"
+                [ngClass]="{ 'is-invalid':  switchingDetailsList.get('FormSpecialSwitchingDate')?.errors }"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker4">
+                <app-svg-icon
+                  icon="icon-calendar"
+                  class="icon"
+                  matDatepickerToggleIcon
+                ></app-svg-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker4 (closed)="input.blur()"></mat-datepicker>
+            </span>
+            <div class="invalid-feedback">
+              <div *ngIf="(switchingDetailsList.get('FormSpecialSwitchingDate')?.hasError('required') &&
+              switchingDetailsList.get('FormSpecialSwitchingDate')?.dirty ||
+            (submittedDetails || isSSRValidationEnabled) &&
+            switchingDetailsList.get('FormSpecialSwitchingDate')?.errors)">
+                  {{'common.special-switching-date' | translate}}{{'common.is_required' | translate}}</div>
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-4 mb-2">
+      <button
+      *ngIf="getSwitchingDetailsForm.length > 1 && isAddRailCarChargesButtonVisible"
+      class="simple-button left-icon pull-right mt-4 ml-2"
+      type="button"
+      (click)="onRemoveSwitching(i)"
+    >
+      <app-svg-icon
+        icon="icon-delete"
+        class="icon icon-delete"
+      ></app-svg-icon>
+      {{ "common.delete" | translate }}
+    </button>
+    <button
+      *ngIf="(getSwitchingDetailsForm.length === i + 1) && isAddRailCarChargesButtonVisible"
+      class="simple-button left-icon pull-right mt-4"
+      type="button"
+      (click)="onAddSwitchingForm(i)"
+    >
+      <app-svg-icon icon="icon-add-plus" class="icon"></app-svg-icon>
+      {{ "common.add" | translate }}
+    </button>
+    </div>
+          </div>
+      </div>
+    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+        <div class="row">
+            <div class="col-12">
+              <div class="float-end mt-2">
+                <button class="secondary-btn mr-2" type="button" (click)="onReset()" mat-raised-button>{{'common.reset' | translate}}</button>
+                <button *ngIf="currentlyActiveActivity === 'update'" type="button" mat-raised-button (click)="onSubmitForm()" color="primary">{{'common.update' | translate}}</button>
+                <button *ngIf="currentlyActiveActivity !== 'update'" type="button" mat-raised-button (click)="onSubmitForm()" color="primary">{{'common.save' | translate}}</button>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+<div class="mb-3" *ngIf="isUpload">
+  <div class="search-holder mt-3">
+    <div class="row">
+      <div class="col-10">
+        <span (click)="fileInput.click()" class="d-inline-block w-100">
+          <mat-form-field class="columns w-100">
+            <mat-label *ngIf="selectedFiles; else newFile">{{selectedFiles.item(0).name}}</mat-label>
+            <ng-template #newFile>
+                <mat-label>Browse</mat-label>
+            </ng-template>
+            <input matInput disabled>
+            <button mat-icon-button matSuffix>
+                <mat-icon>attach_file</mat-icon>
+            </button>
+            <input hidden (change)="selectFile($event)" #fileInput type="file" id="file">
+        </mat-form-field>
+      </span>
+      </div>
+      <div class="col-2">
+        <button class="mr-2 pull-right" type="button" mat-raised-button (click)="onSubmitUploadForm()" color="primary">{{'common.upload' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="railcar-details-table mt-3 responsive-table table-with-bottom table-height-container row-table header-no-padding">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort aria-label="Rail Car Details Table">
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                               <ng-container *ngIf="column === 'select'; else notSelect">
+                                   <th mat-sort-header="{{column}}" mat-header-cell *matHeaderCellDef>
+                                   </th>
+                                   <td mat-cell  [attr.aria-label]="'select' | translate" *matCellDef="let row">
+                                       <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                                       </mat-checkbox>
+                                   </td>
+                               </ng-container>
+                               <ng-container *ngIf="column === 'ArrivalDate'">
+                                 <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+                                   {{ column | translate }}
+                                 </th>
+                                 <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                   {{ element.ArrivalDate | date: defaultDateFormat }}
+                                 </td>
+                               </ng-container>
+                               <ng-container *ngIf="column === 'BolDate'">
+                                <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+                                  {{ column | translate }}
+                                </th>
+                                <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                  {{ element.BolDate | date: defaultDateFormat }}
+                                </td>
+                              </ng-container>
+                              <ng-container *ngIf="column === 'DepartureDate'">
+                                <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+                                  {{ column | translate }}
+                                </th>
+                                <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                  {{ element.DepartureDate | date: defaultDateFormat }}
+                                </td>
+                              </ng-container>
+                              <ng-container *ngIf="column === 'Notes'">
+                                <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+                                  {{ column | translate }}
+                                </th>
+                                <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                 <span appEllipsifyMe>{{ element.Notes }}</span>
+                                </td>
+                              </ng-container>
+                              <ng-container *ngIf="column === 'Details'">
+                                <th mat-header-cell *matHeaderCellDef> Details </th>
+                                <td mat-cell *matCellDef="let element">
+                                  <mat-icon [ngClass]="element?.ContractRailCarCharge?.length? 'cursor-pointer' : 'disabled-pointer'"
+                                  (click)="expandedElement = expandedElement === element ? null : element">{{expandedElement === element ? 'expand_less' : 'expand_more'}}</mat-icon>
+                                </td>
+                              </ng-container>
+                               <ng-template #notSelect>
+                                   <th mat-sort-header="{{column}}" mat-header-cell *matHeaderCellDef> {{ column | translate }} </th>
+                                   <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                    <span>{{element[column]}}</span> </td>
+                               </ng-template>
+                           </ng-container>
+                           <ng-container matColumnDef="expandedDetail">
+                            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                              <div class="example-element-detail"
+                                   [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+                                <table class="separate-deep-table" mat-table [dataSource]="element.ContractRailCarCharge" multiTemplateDataRows matSort aria-label="Inner Table">
+                                  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayInDetails">
+                                    <ng-container *ngIf="column === 'Amount'">
+                                      <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+                                        {{ 'ssr'+column | translate }}
+                                      </th>
+                                      <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                        {{ element.Amount | currency }}
+                                      </td>
+                                    </ng-container>
+                                      <ng-container *ngIf="column === 'Date'">
+                                        <th mat-header-cell scope="col" *matHeaderCellDef mat-sort-header>
+                                          {{ 'ssr'+column | translate }}
+                                        </th>
+                                        <td mat-cell  [attr.aria-label]="column | translate" *matCellDef="let element">
+                                          {{ element.Date | date: defaultDateFormat }}
+                                        </td>
+                                      </ng-container>
+                                                             <ng-container>
+                                                                 <th mat-sort-header="{{column}}" mat-header-cell *matHeaderCellDef>
+                                                                  {{ 'ssr'+column | translate }}
+                                                                 </th>
+                                                                 <td mat-cell  [attr.aria-label]="'ssr'+column | translate" *matCellDef="let element">
+                                                                  <span>{{element[column]}}</span> </td>
+                                                             </ng-container>
+                                                         </ng-container>
+                                                         <tr mat-header-row *matHeaderRowDef="columnsToDisplayInDetails; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let element; columns: columnsToDisplayInDetails;"
+                                    class="example-element-row top-row"
+                                    [class.example-expanded-row]="expandedElement === element">
+                                </tr>
+                                                     </table>
+                                                     <table class="w-100 no-record" aria-label="Empty Table">
+                                                      <tr class="d-none"><th></th></tr>
+                                                      <tr *ngIf="element.ContractRailCarCharge?.length === 0 || element.ContractRailCarCharge === undefined">
+                                                        <td [attr.colspan]="columnsToDisplayInDetails.length">
+                                                          {{'no-records-found' | translate}}
+                                                        </td>
+                                                      </tr>
+                                                    </table>
+                              </div>
+                            </td>
+                          </ng-container>
+                           <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row top-row"
+      [class.example-expanded-row]="expandedElement === element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                       </table>
+                       <table class="w-100 no-record" aria-label="Empty Table">
+                        <tr class="d-none"><th></th></tr>
+                        <tr *ngIf="dataSource?.length === 0 || dataSource === undefined">
+                          <td [attr.colspan]="columnsToDisplay.length">
+                            {{'no-records-found' | translate}}
+                          </td>
+                        </tr>
+                      </table>
+</div>
+
