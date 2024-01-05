@@ -34,6 +34,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Loan.Platform.Portal", "Loa
 		SlnRelativePath = "Loan.Platform.Portal\"
 	EndProjectSection
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{AD74EB82-6CB6-43BB-BBD3-04ABAE9EC945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{BCB47581-57A2-4AE6-86AB-8C0D91EB5ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCB47581-57A2-4AE6-86AB-8C0D91EB5ADB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCB47581-57A2-4AE6-86AB-8C0D91EB5ADB}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{AD74EB82-6CB6-43BB-BBD3-04ABAE9EC945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD74EB82-6CB6-43BB-BBD3-04ABAE9EC945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD74EB82-6CB6-43BB-BBD3-04ABAE9EC945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD74EB82-6CB6-43BB-BBD3-04ABAE9EC945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

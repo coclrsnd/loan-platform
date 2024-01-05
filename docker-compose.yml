@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  loan.platform.rest:
+    image: ${DOCKER_REGISTRY-}loanplatformrest
+    build:
+      context: .
+      dockerfile: Loan.Platform.Rest/Dockerfile
+
+  loandb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
