@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,10 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML.Report" Version="0.2.4" />
-    <PackageReference Include="GeoJSON.Text" Version="1.0.0" />
-    <PackageReference Include="SendGrid" Version="9.28.0" />
-    <PackageReference Include="SharpDocx" Version="2.2.0" />
+    <PackageReference Include="ClosedXML.Report" Version="0.2.8" />
+    <PackageReference Include="GeoJSON.Text" Version="1.0.2" />
+    <PackageReference Include="SendGrid" Version="9.28.1" />
+    <PackageReference Include="SharpDocx" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>

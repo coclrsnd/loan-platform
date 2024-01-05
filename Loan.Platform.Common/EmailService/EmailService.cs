@@ -53,7 +53,6 @@ namespace Loan.Platform.Common.EmailService
             return emailProvider.ToLower() switch
             {
                 "sendgrid" => new SendGridEmailService(Configuration, _logger),
-                "azure" => new AzureEmailService(Configuration, _logger),
                 "smtp" => new SMTPEmailService(Configuration),
                 _ => throw new ArgumentOutOfRangeException(nameof(IEmailProvider), $"Not expected provider value -{emailProvider}")
             };
