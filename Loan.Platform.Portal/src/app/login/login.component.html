@@ -1,11 +1,12 @@
 <div class="head-image">
-  <img src="../../../assets/images/white-logo.png" alt="logo" class="p-3 d-inline-block centered-logos" />
-  <h3 class="d-inline-block">Railcar Lounge</h3>
+  <!--<img src="../../../assets/images/white-logo.png" alt="logo" class="p-3 d-inline-block centered-logos" />-->
+  <h3 class="d-inline-block">CLR</h3>
 </div>
 <div class="white-bg-box  min-max-width-550 min-height-200 login-center full-border" >
   <ng-container *ngIf="showLoginSignupScreen">
     <mat-tab-group animationDuration="0ms" [selectedIndex]="selectedTabIndex" (selectedTabChange)="selectedTabChange($event)">
-      <mat-tab label="{{'signup' | translate}}">
+
+      <!--<mat-tab label="{{'signup' | translate}}">
           <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegForm()" class="row">
             <div class="col-md-4">
               <div class="form-group">
@@ -71,7 +72,8 @@
       </div>
 
           </form>
-      </mat-tab>
+      </mat-tab>-->
+
       <mat-tab label="{{'login' | translate}}">
           <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()">
 
