@@ -23,7 +23,6 @@ namespace Loan.Platform.Data.SqlServer.Repositories
         {
             return await Task.Run(
                 () => { return this._railCarLoungeContext.Loans.Where(expression); });
-
         }
     }
 }

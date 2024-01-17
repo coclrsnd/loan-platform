@@ -124,7 +124,7 @@ namespace Loan.Platform.Business
                 }
 
                 var tokenString = GenerateJwtTokenHandler(authClaims);
-                var orgDetails = (await _organizationRepository.GetByCondition(ex => ex.Id == user.Id)).FirstOrDefault();
+                var orgDetails = (await _organizationRepository.GetByCondition(ex => ex.Id == user.OrganizationId)).FirstOrDefault();
 
                 securityContext = new SecurityContext();
                 securityContext.Token = tokenString;

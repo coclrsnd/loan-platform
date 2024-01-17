@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   loan.api:
-    image: ${DOCKER_REGISTRY-}loanplatformrest
+    image: ${DOCKER_REGISTRY-}loanapi
     build:
       context: .
       dockerfile: Loan.Platform.Rest/Dockerfile
