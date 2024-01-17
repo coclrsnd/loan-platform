@@ -46,6 +46,7 @@ import { VarcharSpaceDirective } from './directives/varchar-space.directive';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SavedSearchComponent } from './components/saved-search/saved-search.component';
 import { CurrencyOnlyDirective } from './directives/currency-only.directive';
+import { LoanSearchComponent } from './components/Loan/loan-search';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { CurrencyOnlyDirective } from './directives/currency-only.directive';
     VarcharOnlyDirective,
     VarcharSpaceDirective,
     SavedSearchComponent,
-    CurrencyOnlyDirective
+    CurrencyOnlyDirective,
+    LoanSearchComponent
   ],
   imports: [
     CommonModule,
@@ -140,7 +142,8 @@ import { CurrencyOnlyDirective } from './directives/currency-only.directive';
     VarcharOnlyDirective,
     VarcharSpaceDirective,
     SavedSearchComponent,
-    CurrencyOnlyDirective
+    CurrencyOnlyDirective,
+    LoanSearchComponent
   ]
 })
 export class SharedModule { }

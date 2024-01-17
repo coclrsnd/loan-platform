@@ -11,6 +11,7 @@ import { SharedService } from '../../shared.service';
 export class TopHeaderComponent implements OnChanges {
   @ViewChild('searchbar') searchbar: ElementRef;
   @Input() shortUserName;
+  @Input() logoPath;
   public shortName: string = '';
   searchText = '';
 

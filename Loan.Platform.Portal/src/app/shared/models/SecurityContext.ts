@@ -4,7 +4,8 @@ export class SecurityContext {
   RoleName: string;
   EmailId: string;
   Name: string;
-  OrganizationId:string;
+  OrganizationId: string;
+  LogoPath: string;
   TenantId:string;
   CurrentRole:string;
 }

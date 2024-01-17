@@ -14,6 +14,8 @@
 
         public long OrganizationId { get; set; }
 
+        public string LogoPath { get; set; }
+
         public long TenantId { get; set; }
 
         public string CurrentRole { get; set; }

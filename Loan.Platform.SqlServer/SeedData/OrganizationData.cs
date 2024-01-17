@@ -16,7 +16,16 @@ namespace StandardRail.RailCarLounge.Data.SqlServer.SeedData
             {
                 Id=1,
                 Name="Standard Rail",
-                Description= "Standard Rail Description"
+                Description= "Standard Rail Description",
+                Code ="STDR",
+                LogoPath = ""
+            },
+            new Organization{
+                Id = 2,
+                Name = "Co _ Operative bank",
+                Description = "Co _operative Bank Sindhanur",
+                Code = "COPSIND",
+                LogoPath = "../../../assets/images/train-bg-one.jpg"
             });
 
         }

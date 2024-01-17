@@ -71,7 +71,7 @@ namespace Loan.Platform.Rest
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
-            services.AddApplicationInsightsTelemetry(Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+            //services.AddApplicationInsightsTelemetry(Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
             //services.AddMvcCore(options =>
             //{
             //    options.Filters.Add(typeof(HttpGlobalExceptionFilter));

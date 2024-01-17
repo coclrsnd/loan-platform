@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   // Variable declearations
   public numInfo = APP_CONSTANTS.numInfo;
   public single: any[];
@@ -87,10 +87,10 @@ export class DashboardComponent implements OnInit {
     this.dataSourceDetails = new MatTableDataSource(APP_CONSTANTS.savedSearch);
   }
 
-  ngOnInit(): void {
-    this.getSavedSearchForDashboard();
-    this.sharedService.loadMasterData();
-  }
+  // ngOnInit(): void {
+  //   // this.getSavedSearchForDashboard();
+  //   // this.sharedService.loadMasterData();
+  // }
 
   /**
  * function to show click on pie chart

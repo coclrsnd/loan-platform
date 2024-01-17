@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  loan.platform.rest:
+  loan.api:
     image: ${DOCKER_REGISTRY-}loanplatformrest
     build:
       context: .

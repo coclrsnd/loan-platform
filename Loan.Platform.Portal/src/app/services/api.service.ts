@@ -28,6 +28,7 @@ export class ApiService<T>
   public static RoleName: string = '';
   public static Name: string = '';
   public static OrganizationId: string = '';
+  public static LogoPath: string = '';
   public static TenantId: string = '';
   public static CurrentRole: string = '';
   public static LastActivityTime: Date = new Date();

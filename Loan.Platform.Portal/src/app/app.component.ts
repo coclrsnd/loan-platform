@@ -28,6 +28,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   triggerResize: boolean = false;
   shortUserName: string = APP_CONSTANTS.emptyString;
   public todayDate = new Date().getFullYear();
+  orgLogo: string;
   constructor(private translate: TranslateService, private router: Router,
     private renderer: Renderer2,
     private activatedRoute: ActivatedRoute,
@@ -68,6 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit{
         this.scrollTopBody();
         rt.data.subscribe((data: any) => {
           const isUserLoggedIn = this.authService.isLoggedIn();
+          this.orgLogo = ApiService.LogoPath;
           data.title === 'Dashboard' ? this.shortUserName = APP_CONSTANTS.emptyString : this.shortUserName;
           if (isUserLoggedIn && this.shortUserName === APP_CONSTANTS.emptyString || data.title === 'Dashboard' ) {
             this.getUserName();

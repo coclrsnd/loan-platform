@@ -10,6 +10,6 @@
 
         public string Designation { get; set; }
 
-        public string CompanyName { get; set; }
+        public string SocietyCode { get; set; }
     }
 }

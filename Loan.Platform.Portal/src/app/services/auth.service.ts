@@ -27,11 +27,12 @@ export class AuthService {
       // Initialize UserContext
       ApiService.UserId = securityContext.UserId;
       ApiService.RoleName = securityContext.RoleName;
+      ApiService.LogoPath = securityContext.LogoPath;
       ApiService.Token = securityContext.Token;
       ApiService.EmailId = securityContext.EmailId;
       ApiService.TenantId = securityContext.TenantId;
       ApiService.OrganizationId=securityContext.OrganizationId;
-      ApiService.Name=securityContext.Name;
+      ApiService.Name = securityContext.Name;
       ApiService.CurrentRole=securityContext.CurrentRole;
       AuthService.securityContext = securityContext;
       this.isValidSecurityToken.next(true);

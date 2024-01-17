@@ -10,12 +10,16 @@ using Loan.Platform.Common.UserContext;
 using Loan.Platform.Data.SqlServer.SeedData;
 using Loan.Platform.Models.Entities;
 using Loan.Platform.Models.UserManagementModels;
+using StandardRail.RailCarLounge.Data.SqlServer.SeedData;
 
 namespace Loan.Platform.Data.SqlServer
 {
     public class RailCarLoungeContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Loans> Loans { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<Loan.Platform.Models.Entities.Loan> Loan { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<MailConfiguration> MailConfigurations { get; set; }
         public DbSet<MailLog> MailLogs { get; set; }
@@ -69,7 +73,7 @@ namespace Loan.Platform.Data.SqlServer
             //SwitchingScheduleData.SwitchingScheduleSeedData(modelBuilder);
             //StorageFacilityData.StorageFacilitySeedData(modelBuilder);
             //StorageFacilityFeatureMappingData.StorageFacilityFeatureMappingSeedData(modelBuilder);
-            //OrganizationData.OrganizationSeedData(modelBuilder);
+            OrganizationData.OrganizationSeedData(modelBuilder);
             //CustomerData.CustomerSeedData(modelBuilder);
             //ContractData.ContractSeedData(modelBuilder);
             //ContractSFFeatureMappingData.ContractSFFeatureMappingDataSeedData(modelBuilder);
@@ -95,6 +99,7 @@ namespace Loan.Platform.Data.SqlServer
             FluentApiExtensions.UserRoleAppFeatureExtension(modelBuilder);
             FluentApiExtensions.LoanExtension(modelBuilder);
             FluentApiExtensions.ApplicantExtension(modelBuilder);
+            FluentApiExtensions.LoansExtension(modelBuilder);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

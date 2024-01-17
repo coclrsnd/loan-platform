@@ -153,6 +153,25 @@ namespace Loan.Platform.Data.SqlServer
         }
 
 
+        public static void LoansExtension(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Loans>(entity =>
+            {
+                entity.HasKey(e => e.Id); 
+                // Configure other properties
+                entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.Organization).HasMaxLength(100);
+                entity.Property(e => e.Organization).HasMaxLength(5);
+                entity.Property(e => e.LoanBorrower).HasMaxLength(150);
+                entity.Property(e => e.LoanType).HasMaxLength(50);
+                entity.Property(e => e.LoanDate).HasColumnName("LoanDate").IsRequired();
+                entity.ToTable("Loans");
+
+            });
+
+        }
+
+
         public static void OrganizationExtension(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Organization>(entity =>
@@ -164,6 +183,14 @@ namespace Loan.Platform.Data.SqlServer
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100); // Adjust the length as needed
+
+                entity.Property(e => e.Code)
+                   .IsRequired()
+                   .HasMaxLength(5); // Adjust the length as needed
+
+                entity.Property(e => e.LogoPath)
+                   .HasMaxLength(100); // Adjust the length as needed
+
 
                 // Description property configuration
                 entity.Property(e => e.Description)

@@ -76,8 +76,10 @@ namespace Loan.Platform.Rest.IOC
 
             services.TryAddTransient<IEmailService, EmailService>();
             services.TryAddTransient<IUserManagerService, UserManagerService>();
+            services.TryAddTransient<ILoanService, LoanService>();
             services.TryAddTransient<IRepository<User, long>, UserRepository>();
-           
+            services.TryAddTransient<IRepository<Loans, long>, LoansRepository>();
+
             services.TryAddTransient<IRepository<Organization, long>, OrganizationRepository>();
            
             services.TryAddTransient<IRepository<UserFilterViewModel, long>, UserADORepository>();

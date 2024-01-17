@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="container-fluid layout-view" [class.layout-view-fixed]="LayoutfixedSidebar" [ngClass]="isOnLoginPage? '' : 'login-page'">
-        <app-top-header [shortUserName]="shortUserName" [ngClass]="isOnLoginPage? '' : 'd-none'"></app-top-header>
+        <app-top-header [shortUserName]="shortUserName"  [logoPath]="orgLogo" [ngClass]="isOnLoginPage? '' : 'd-none'"></app-top-header>
         <div [ngClass]="isOnLoginPage? 'p-3' : 'login-boxholder'">
             <span [ngClass]="isOnLoginPage? '' : 'd-none'">
             <app-opened-pages *ngIf="menusUniqueByKey" [menusUniqueByKey]="menusUniqueByKey" [LayoutfixedSidebar]="LayoutfixedSidebar"></app-opened-pages>

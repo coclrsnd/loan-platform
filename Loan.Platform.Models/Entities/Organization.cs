@@ -7,13 +7,11 @@ namespace Loan.Platform.Models.Entities
     public class Organization
     {
         public long Id { get; set; }
-
         public string Name { get; set; }
-
+        public string Code { get; set; }
         public string Description { get; set; }
-
+        public string LogoPath { get; set; }
         public bool? IsActive { get; set; }
-
         public DateTime CreatedTime { get; set; }
 
         [Required(AllowEmptyStrings = false)]

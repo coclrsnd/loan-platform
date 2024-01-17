@@ -32,6 +32,7 @@ import { ApiInterceptor } from './services/api.interceptor';
 import { AppConfigService } from './services/app-config.service';
 import { JwtModule } from "@auth0/angular-jwt";
 import { ReportService } from './reports/activity-report/report-service';
+import { DashboardService } from './dashboard/dashboard-service';
 
 const appInitializerFn = (appConfig: AppConfigService) => {
   return () => {
@@ -70,7 +71,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     })
   ],
   providers: [Title, UserService, ApiService, AuthService, RiderService, CurrencyService, StorageFeatureService,
-      UserManagementService, VendorService, CustomerService, StorageFacilityService, ContractTypeService, RailCarTypeService, LEContentService, RailCarService,ReportService,
+      UserManagementService, VendorService, CustomerService, StorageFacilityService, ContractTypeService, RailCarTypeService,
+       LEContentService, RailCarService,ReportService,DashboardService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     AppConfigService,{ provide: APP_INITIALIZER, useFactory: appInitializerFn, multi: true, deps: [AppConfigService] }],
   bootstrap: [AppComponent]

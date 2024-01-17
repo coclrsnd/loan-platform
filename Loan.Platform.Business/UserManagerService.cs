@@ -20,6 +20,8 @@ using Loan.Platform.Models.Entities;
 using Loan.Platform.Models.Enums;
 using Loan.Platform.Models.UserManagementModels;
 using Loan.Platform.Models.ViewModels;
+using Loan.Platform.Data.SqlServer.Repositories;
+using System.Linq.Expressions;
 
 namespace Loan.Platform.Business
 {
@@ -37,6 +39,8 @@ namespace Loan.Platform.Business
         private readonly IRepository<UserRoleAppFeatureMapping, long> _userRoleAppFeatureRepository;
         private readonly IRepository<UserStatus, long> _userStatusRepository;
         private readonly IRepository<MailConfiguration, long> _mailConfigurationRepository;
+        private readonly IRepository<Organization, long> _organizationRepository;
+        
         private readonly ICommonService _commonService;
 
         private long? UserId;
@@ -47,7 +51,8 @@ namespace Loan.Platform.Business
             IRepository<UserFilterViewModel, long> userViewModelRepository,
             IRepository<UserRoles, long> userRolesRepository, IRepository<UserRoleAppFeatureMapping, long> UserRoleAppFeatureRepository,
             IEmailService emailService, IRepository<MailConfiguration, long> mailConfigurationRepository,
-            IRepository<UserStatus, long> userStatusRepository, IUserContext claimsProvider, ICommonService commonService)
+            IRepository<UserStatus, long> userStatusRepository, IUserContext claimsProvider, ICommonService commonService,
+            IRepository<Organization, long> organizationRepository)
         {
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -62,7 +67,9 @@ namespace Loan.Platform.Business
             _userStatusRepository = userStatusRepository ?? throw new ArgumentNullException(nameof(userStatusRepository));
             _mailConfigurationRepository = mailConfigurationRepository ?? throw new ArgumentNullException(nameof(mailConfigurationRepository));
             UserId = claimsProvider.UserId;
-            _commonService = commonService ?? throw new ArgumentNullException(nameof(commonService)); ;
+            _commonService = commonService ?? throw new ArgumentNullException(nameof(commonService));
+            _organizationRepository = organizationRepository;
+            ;
         }
 
         /// <inheritdoc cref="Loan.Platform.Business.Pact.IUserManagerService"/>
@@ -117,6 +124,7 @@ namespace Loan.Platform.Business
                 }
 
                 var tokenString = GenerateJwtTokenHandler(authClaims);
+                var orgDetails = (await _organizationRepository.GetByCondition(ex => ex.Id == user.Id)).FirstOrDefault();
 
                 securityContext = new SecurityContext();
                 securityContext.Token = tokenString;
@@ -127,6 +135,7 @@ namespace Loan.Platform.Business
                 securityContext.EmailId = user.EmailId;
                 securityContext.Name = user.FirstName + " " + user.LastName;
                 securityContext.CurrentRole = currentRole;
+                securityContext.LogoPath = orgDetails.LogoPath;
             }
             return securityContext;
         }
@@ -370,7 +379,7 @@ namespace Loan.Platform.Business
                     var existingUser = await userManager.FindByNameAsync(user.Email);
                     if (existingUser != null)
                     {
-                        return false;
+                        throw new Exception("Existing User");
                     }
                     using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
@@ -455,17 +464,19 @@ namespace Loan.Platform.Business
             }
 
             var savedIdentityUser = await this.userManager.FindByNameAsync(aspNetAdminUser.Email);
+            var signUpUser = await _signUpUserRepository.GetByCondition((ex)=>ex.EmailId == savedIdentityUser.Email);
+            var organization = await _organizationRepository.GetByCondition(ex=>ex.Code == signUpUser.FirstOrDefault().Organization);
 
             User adminUser = new User();
             adminUser.FirstName = "Admin";
-            adminUser.OrganizationName = "Standard Rail";
-            adminUser.OrganizationId = 1;
+            adminUser.OrganizationName = organization.FirstOrDefault().Name;
+            adminUser.OrganizationId = organization.FirstOrDefault().Id;
             adminUser.TenantId = 1;
             adminUser.EmailId = savedIdentityUser.Email;
             adminUser.AspNetUserId = savedIdentityUser.Id;
             adminUser.ContactNo = "00000000000";
             adminUser.IsActive = true;
-            adminUser.CompanyName = "Standard Rail";
+            adminUser.CompanyName = organization.FirstOrDefault().Name;
             if (signupUserId > 0)
             {
                 adminUser.SignUpUserId = signupUserId;
@@ -622,19 +633,21 @@ namespace Loan.Platform.Business
 
         private async Task<SignUpUser> CreateSignUpUser(AdminUserModel user)
         {
+            Expression<Func<Organization, bool>> exp = exp => exp.Code.ToLower() == user.SocietyCode.ToLower();
+            var org = await _organizationRepository.GetByCondition(exp);
             var signUpUser = new SignUpUser()
             {
                 EmailId = user.Email,
-                CompanyName = user.CompanyName,
+                CompanyName = user.SocietyCode,
                 Designation = user.Designation,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 StatusId = Convert.ToInt64(UserStatusEnum.Approved),
                 UserTypeId = 1,
                 IsApproved = true,
-                OrganizationId = 1,
+                OrganizationId = org.FirstOrDefault().Id,
                 IsActive = true,
-                Organization = "Standard Rail"
+                Organization = org.FirstOrDefault().Code
             };
             return await this._signUpUserRepository.Create(signUpUser);
         }

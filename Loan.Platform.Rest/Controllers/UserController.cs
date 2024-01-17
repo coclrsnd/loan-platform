@@ -329,7 +329,7 @@ namespace Loan.Platform.Rest.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Error in GetVendorList - " + ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }
